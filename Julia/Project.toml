@@ -1,0 +1,4 @@
+[deps]
+PhysicalConstants = "5ad8b20f-a522-5ce9-bfc9-ddf1d5bda6ab"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
+UpdateJulia = "770da0de-323d-4d28-9202-0e205c1e0aff"
