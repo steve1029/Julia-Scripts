@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>psutil 모듈</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">psutil 모듈</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/Python</p>
+                                    <p class="date">2016-10-07 14:16:56</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>파이썬을 이용해서 시스템의 정보 및 실행 중인 프로세스들의 정보를 파악할 수 있는 함수를 내장하고 있는 패키지이다.<br><br>리눅스, 윈도우, 맥OS 모두 가리지 않고 psutil 코드를 이용해 cpu 정보, 메모리 정보, gpu 정보등을 알아낼 수 있다. 역시 파이썬은 편리해.<br><br>심지어 Sun solaris, FreeBSD, OpenBSD 같은 마이너한 운영체제에서도 쓸 수 있는 강력한 패키지이다. 32bit, 64bit 운영체제 모두에서 작동한다.<br><br>파이썬 버전 2.6부터 추가된 패키지이며, 아나콘다 파이썬에는 기본으로 내장되어 있다. 물론 파이썬 3에는 당연히 포함되어있다.<br><br>기본적인 함수들을 살펴보자.<br><br>	import psutil as ps<br><br>	ps.cpu_times(percpu=True)<br><br>	이렇게 하면 cpu time 에 대한 정보를 준다. cpu time 이 뭔지는 아직 모르겠다. 하여간 코어가 4개인 cpu를 사용한다면, <br><br>	각 cpu에 대한 정보를 줄 것이다.<br><br>	ps.cpu_time()<br><br>	이렇게만 하면 맨처음 코어에 대해서만 정보를 출력한다.	<br><br>	ps.cpu_count()<br><br>	이건 코어의 개수를 출력하는 함수이다.<br><br>	ps.cpu_stats()<br><br>	이런 함수도 있다.<br><br>		<br><br>	메모리에 대한 정보를 출력할 수 있는 함수들은 다음과 같다.<br><br>		ps.swap_memory()<br><br>		ps.virtual_memory()<br><br>	이런거 등등...<br><br>	디스크에 대한 정보를 출력할 수도 있다.<br><br>		psutil.disk_partitions()		: 각 디스크의 파티션과 마운트 포인트, 파일시스템 타입, option 등을 출력한다. \<br>							  이 옵션은 읽기쓰기 가능여부, 제거가능 여부등이 포함되어 있다.<br><br>		psutil.disk_usage('/')			: 각 디스크의 용량 현황을 출력한다.<br><br>		psutil.disk_io_counters(perdisk=False)	: 이건 해당 디스크가 몇 번 쓰여졌고 얼마나 읽혔고 하는 등등의 정보를 출력한다.<br><br>	이외에도 다양한 시스템 정보들을 출력할 수 있는데, 몇가지 재밌는 함수로는<br><br>		ps.boot_time()				: 이건 부팅시간을 리턴한다.<br><br>		psutil.users()				: 현재 유저 정보를 리턴한다.<br><br>	<br>	또한 현재 시스템에서 실행되고 있는 프로세스들의 정보도 불러올 수 있다.<br><br>	ps.pids()			: 현재 실행되고 있는 프로세스들의 아이디 목록을 불러온다.<br><br>	p = ps.Process(7055)		: 현재 프로세스들 중에 pid가 7055 인 애만 하나 뽑아온 것.<br><br>	p.name()			: 이 프로세스의 이름.<br><br>	p.exe()				: 실행파일의 위치?<br><br>	p.cwd()				: 실행 명령을 내린 위치?<br><br>	p.status			: 현재 실행중인지 아닌지를 알 수 있다.<br><br>	p.username()			: 실행시킨 사람의 아이디. 서버 관리자는 서버에서 실행되는 프로세스를 확인할 때 누가 실행시켰는지 알아야할 때가 있겠지.<br><br>	p.create_time()			: 실행된 시각.	<br><br>	p.cpu_times()			: 뭔지 모르겠다.<br><br>	p.cpu_percent(interval=1.0)	: 이 프로세스가 차지하는 cpu 비율을 1초 간격으로 측정한다.<br><br>	p.cpu_affinity()		: 이 프로세스가 접근할 수 있는 cpu의 코어들을 나열한다.<br><br><br>뭐 등등 여러가지 함수가 있다. 자세한 정보는 <a class="tx-link" target="_blank" href="https://pypi.python.org/pypi/psutil">https://pypi.python.org/pypi/psutil</a> 에서 확인하자.<br><br>Documentation 주소는 <a class="tx-link" target="_blank" href="https://pythonhosted.org/psutil/">https://pythonhosted.org/psutil/</a> 이다.<br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

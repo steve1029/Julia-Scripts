@@ -1,0 +1,98 @@
+#!/usr/bin/env python
+
+from datetime import datetime as dt
+import subprocess as sp
+import psutil as ps
+import numpy as np
+import os
+import sys
+import time
+
+def ext_exec_wait(cmd):
+    out, err = sp.Popen(cmd.split(), stdout=sp.PIPE, stderr=sp.PIPE).communicate()
+    if err != '': print err
+    return out
+
+def ext_exec_nowait(cmd):
+    sp.Popen(cmd.split(), stdout=sp.PIPE, stderr=sp.PIPE)
+
+try:
+    import pyopencl as cl
+    cl_plf = cl.get_platforms()
+    for plf in cl_plf:
+        if 'AMD' in plf.name:
+            dev = plf.get_devices()[0]
+    cpu_name = dev.name
+except:
+    cpuinfo = ext_exec_wait('/bin/cat /proc/cpuinfo')
+    cpu_name = cpuinfo[79:118]
+
+class Dummy:
+    def write(self, s):
+        pass
+
+if os.fork():
+    os._exit(0)
+
+os.setpgrp()
+os.umask(0)
+sys.stdin.close()
+sys.stdout = Dummy()
+sys.stderr = Dummy()
+
+homedir = os.path.expanduser('~')
+#if not os.path.exists('%s/.ystat/' % homedir):
+#    os.mkdir('%s/.ystat' % homedir)
+if not os.path.exists('/root/.ystat/'):
+    os.mkdir('/root/.ystat')
+
+myname = ext_exec_wait('hostname').rstrip('\n')
+
+while True:
+    try:
+        plist = ps.get_pid_list()
+        ctime = np.zeros(len(plist), dtype=np.float64)
+        cpu_pct = ps.cpu_percent()*ps.NUM_CPUS
+        for p, pid in enumerate(plist):
+            temp_proc = ps.Process(pid)
+            if temp_proc.username == 'root' and temp_proc.name == 'python':
+                ctime[p] = 0.
+            else:
+                ctime[p] = temp_proc.get_cpu_times().user
+        pmax = ctime.argmax()
+        proc = ps.Process(plist[pmax])
+        if   hasattr(proc.name, '__call__'): procname = proc.name()
+        else                               : procname = proc.name
+        if   hasattr(proc.username, '__call__'): username = proc.username()
+        else                                   : username = proc.username
+        proc_pct = proc.get_cpu_percent()
+        procid   = proc.pid
+
+        ctime[pmax] = 0
+        pmax_ = ctime.argmax()
+        proc_ = ps.Process(plist[pmax_])
+        pct_  = proc_.get_cpu_percent()
+        if pct_ > 50.:
+            twoprocs = 1
+        else:
+            twoprocs = 0
+
+        mems = ps.phymem_usage()
+
+#        if proc_pct < 20.:
+#            procname = ''
+#            username = ''
+#            proc_pct = 0.
+
+        now = dt.now()
+        now_t = ((now.day*24 + now.hour)*60 + now.minute)*60 + now.second
+        data  = (myname, cpu_name, cpu_pct, username, procid, procname, proc_pct, mems.total, mems.used, mems.percent, now_t, twoprocs)
+
+#       info  = file('%s/.ystat/%s' % (homedir, myname), 'w')
+        info  = file('/root/.ystat/%s' % myname, 'w')
+        info.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s' % data)
+        info.close()
+    except:
+        pass
+
+    time.sleep(60)

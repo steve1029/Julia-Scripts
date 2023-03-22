@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>parted 명령어</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">parted 명령어</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/리눅스 일반</p>
+                                    <p class="date">2016-09-26 10:07:55</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p><span style="font-size: 11pt; color: rgb(255, 255, 255);">parted 는&nbsp;2테라 이상의 하드를 마운트하고 파티션 분배를 해주는 패키지.</span></p><p><span style="font-size: 11pt; color: rgb(255, 255, 255);">2TB 이하의 하드는 cfdisk 명령어로 파티션을 나누고 파일시스템을 지정해줄 수 있지만, 그 이상은 parted 앱을 이용해야 한다.</span></p><p><span style="font-size: 11pt; color: rgb(255, 255, 255);">cfdisk 는 2TB 이상의 하드를 제어할 수 없기 때문이다.</span></p><p><span style="font-size: 11pt; color: rgb(255, 255, 255);">aptitude 를 이용해 parted 를 설치하고 나면 다음의 명령어들을 이용할 수 있다.</span><br><br><span style="font-size: 11pt; color: rgb(255, 255, 255);">먼저 parted 환경으로 들어가자.</span></p><p><br></p><p><span style="font-size: 11pt; color: rgb(255, 255, 255);"># parted</span><br><br><span style="font-size: 11pt; color: rgb(255, 255, 255);">이제 command line이 # 이 아니라 (parted) 로 바뀐다. 명령어들과 그에 대한 설명을 보고 싶다면 다음을 입력하자.</span><br><br><span style="font-size: 11pt; color: rgb(255, 255, 255);">(parted) help</span><br><br><span style="font-size: 11pt; color: rgb(255, 255, 255);">resque START END:&nbsp;</span></p><p style="margin-left: 2em;"><span style="font-size: 11pt; color: rgb(255, 255, 255);">START 부터 END 까지의 파티션을 복구해준다. 어떤 파티션이 디스크의 START에서 시작하여 END 에서 끝난다고 하자. 실수로 rm PARTITION_NUMBER&nbsp;로 이 파티션을 지워버렸다고 하자. 이걸 다시 복구시켜주려면 resque 명령어를 이용하면 된다. START와 END 는 print 명령어를 이용해 알 수 있다.</span></p><p><span style="font-size: 11pt; color: rgb(255, 255, 255);"><br></span></p><p><span style="font-size: 11pt; color: rgb(255, 255, 255);">print : 현재 디스크 상황을 출력해준다.</span></p><p><span style="font-size: 11pt; color: rgb(255, 255, 255);"><br></span></p><p><span style="font-size: 11pt; color: rgb(255, 255, 255);">version : 설치되어 있는 parted 앱의 버젼을 출력해준다.</span></p><p><font color="#ffffff"><span style="font-size: 14.6667px;"><br></span></font><span style="font-size: 11pt; color: rgb(255, 255, 255);">mklabel	: gpt를 써줘야 2TB 이상의 하드를 인식하고 사용할 수 있다. ex) # mklabel gpt</span></p><p><font color="#ffffff"><span style="font-size: 14.6667px;"><br></span></font><span style="font-size: 11pt; color: rgb(255, 255, 255);">mkpart	: 파티션을 만든다. ex) mkpart primary 0 100% : primary 파티션을 0(시작)부터 끝(100%)까지 만듬</span></p><p><font color="#ffffff"><span style="font-size: 14.6667px;"><br></span></font><span style="font-size: 11pt; color: rgb(255, 255, 255);">unit 		: 용량 표시 단위를 기본 MB 에서 GB 나 TB 등 다른 단위로 바꿈 ex) unit GB</span></p><p><font color="#ffffff"><span style="font-size: 14.6667px;"><br></span></font><span style="font-size: 11pt; color: rgb(255, 255, 255);">quit		: parted 앱에서 나감.</span><br></p><p><span style="font-size: 11pt; color: rgb(255, 255, 255);"><br></span></p><p><span style="font-size: 11pt; color: rgb(255, 255, 255);">먼저 parted 환경에 들어가서 print 를 하면 인식된 2TB 이상의 하드가 보일 것이다. 하지만 생성된 파일시스템은 하나도 안보일 것이다. 이제 파티션을 만들어 줄것.</span></p><p><span style="font-size: 11pt; color: rgb(255, 255, 255);"><br></span></p><p><span style="font-size: 11pt; color: rgb(255, 255, 255);">(parted)&nbsp;mklabel</span></p><p><span style="font-size: 11pt; color: rgb(255, 255, 255);">gpt</span></p><p><span style="font-size: 11pt; color: rgb(255, 255, 255);"><br></span></p><p><font color="#ffffff"><span style="font-size: 14.6667px;">인식된 하드는 5TB. 즉 gpt로 라벨링 된 하드이다. 그래서&nbsp;gpt 라고 라벨을 만들어준다.</span></font></p><p><font color="#ffffff"><span style="font-size: 14.6667px;"><br></span></font></p><p><font color="#ffffff"><span style="font-size: 14.6667px;">(parted) mkpart</span></font></p><p><font color="#ffffff"><span style="font-size: 14.6667px;"><br></span></font></p><p><font color="#ffffff"><span style="font-size: 14.6667px;">여기서 파티션을 만든다. 파티션 이름과 파일시스템 형식, 시작, 끝 위치를 지정해주면 끝.</span></font></p><p><font color="#ffffff"><span style="font-size: 14.6667px;"><br></span></font></p><p><font color="#ffffff"><span style="font-size: 14.6667px;">Start? 1</span></font></p><p><font color="#ffffff"><span style="font-size: 14.6667px;">End? 60%</span></font></p><p><font color="#ffffff"><span style="font-size: 14.6667px;"><br></span></font></p><p><font color="#ffffff"><span style="font-size: 14.6667px;">1은 하드의 시작지점을 말하고 -1 은 끝지점을 뜻한다. 60% 라 하면 시작부터 60% 지점까지를 파티션으로 만들겠다는 뜻이다.</span></font></p><p><font color="#ffffff"><span style="font-size: 14.6667px;"><br></span></font></p><p><span style="color: rgb(255, 255, 255); font-size: 14.6667px;">그리고 /mnt/tmp 같은 임시 폴더를 만들고 마운트를 해보자.</span></p><p><span style="color: rgb(255, 255, 255); font-size: 14.6667px;"><br></span></p><p><span style="color: rgb(255, 255, 255); font-size: 14.6667px;">마운트에 superblock 어쩌구 하면서 오류가 나면 쉘에서</span><br></p><p><font color="#ffffff"><span style="font-size: 14.6667px;"><br></span></font></p><p><font color="#ffffff"><span style="font-size: 14.6667px;"># mkfs.ext4 /dev/sda1</span></font></p><p><font color="#ffffff"><span style="font-size: 14.6667px;"><br></span></font></p><p><font color="#ffffff"><span style="font-size: 14.6667px;">과 같이 만들어준 하드를 한번 더 ext4 로 포맷해주면 오류가 사라질 것이다.</span></font></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>수동으로 /nfsroot /tftpboot 마운트하기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">수동으로 /nfsroot /tftpboot 마운트하기</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/데비안 서버 구축</p>
+                                    <p class="date">2017-07-05 16:05:58</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>설치과정에서 /nfsroot /tftpboot 파티션을 만들지 못했을 수도 있다. 이 경우는 어떡할까.<br><br>요즘 대용량 하드는 기본적으로 3 tb 이상이므로 gpt 파티션 기준으로 설명한다.<br><br>gpt 파티션은 cfdisk 나 fdisk 명령어로는 보이지 않는다. 이 앱들은 MBR 방식의 예전 하드만 인식할 수 있다.<br><br>/nfsroot 와 /tftpboot 폴더를 넣을 새 하드를 리눅스에 연결시키고 부팅한다. <br><br>제대로 인식이 됐는지는 확인해보자.<br><br># fdisk /dev/sdb</p><p><br></p><p>or</p><p><br></p><p># fdisk -l<br><br>새로 추가한 하드가 두 번째면 sdb, 세 번째면 sdc ... 등등 이다.<br><br>인식이 된다면 이제 parted 를 이용해 파티션을 만들자.<br><br># parted /dev/sdb<br><br>(parted) mklabel gpt<br><br>만들면 이제 파티션을 나눠주자<br><br>(parted) mkpart<br><br>쭉쭉 따라가서 만들어주면 된다.</p><p><br></p><p>파티션 만들면 포맷한다.</p><p><br></p><p># mkfs.ext4 /dev/sdb1</p><p># mkfs.ext4 /dev/sdb2<br><br>그 다음 마운트 하자. 리눅스는 이런 디바이스들은 전부 /mnt 안에 마운트 한다.<br><br># mkdir /mnt/nfsroot<br># mkdir /mnt/tftpboot<br><br>마운트 하려면 /etc/fstab 을 수정한다.</p><p><span style="font-size: 9pt;"><br></span></p><p><span style="font-size: 9pt;">/dev/sdb2 &nbsp; &nbsp;/tftpboot &nbsp; &nbsp;ext4 &nbsp; &nbsp;defaults &nbsp; &nbsp;1 &nbsp; &nbsp;1</span></p><p><span style="font-size: 9pt;">/dev/sdb3 &nbsp; &nbsp;/nfsroot &nbsp; &nbsp;ext4 &nbsp; &nbsp;defaults &nbsp; &nbsp;1 &nbsp; &nbsp;1</span></p><p><span style="font-size: 9pt;"><br></span></p><p># init 6</p><p><br></p><p>재부팅하고 확인하자.</p><p><br></p><p># cat /proc/mounts</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

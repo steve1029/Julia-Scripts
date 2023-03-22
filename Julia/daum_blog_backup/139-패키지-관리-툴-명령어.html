@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>패키지 관리 툴 명령어</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">패키지 관리 툴 명령어</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/리눅스 일반</p>
+                                    <p class="date">2017-02-02 09:42:35</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p><span style="font-size: 9pt;">출처 :&nbsp;http://www.songtory.com/post/001003/1/245</span><br></p><p><br></p><p>패키지관리 3가지 명령어. apt/dpkg/atitude 사용법</p><p><br></p><p><br></p><p><br></p><p>1.APT&nbsp;</p><p><br></p><p><br></p><p><br></p><p>실질적으로 APT는 dpkg와 함께 동작한다.&nbsp;</p><p><br></p><p>하지만, 필요한 소프트웨어의 검색, 다운로드, 설치, 업그레이드, 검사 등&nbsp;</p><p><br></p><p>대부분의 패키지 관리작업을 APT단독으로 가능하다. 그럼 일반적 사용법을살펴보자</p><p><br></p><p><br></p><p><br></p><p>*주의: 다음 명령압에 sudo가 붙는데 sudo의 경우 우분투에서 사용하는 명령어에 관리자 권한을 주는 명령이다.&nbsp;</p><p><br></p><p>이는 우분투의 경우 기본적으로 root로 로그인을 막아 놓앗고 또 계정을 활성화 시켜놓지 않고 sudo 명령으로</p><p><br></p><p>root권한을 실행할 수 있도록만 만들어 놓았다.&nbsp;</p><p><br></p><p>그러므로써, 안전성을 확보하고 필요시 쉽게 root권한에 접근할 수 있도록 하고 있다.&nbsp;</p><p><br></p><p>- 덫붙여 우분투를 사용할 때 꼭 필요한 경우가 아니면 root계정을 활성화하지 않는게 보안에 좋다.&nbsp;</p><p><br></p><p>다르게 말해 설치후 추가적으로root 패스워드를 지정해주지 않는게 &nbsp;보안에 좋다는 것이다.</p><p><br></p><p><br></p><p><br></p><p>sudo apt-get update</p><p><br></p><p>: &nbsp;/etc/apt/sources.list를 참조로 사용할 수 있는 패키지 DB를 업데이트 한다.&nbsp;</p><p><br></p><p><br></p><p><br></p><p>apt-cache search 키워드</p><p><br></p><p>: 패키지 데이터베이스 중 주어진 키워드를 대소문자 구분 없이 검색하여 키워드를 포함하는 패키지명과 해당 설명을 출력한다.</p><p><br></p><p><br></p><p><br></p><p>sudo apt-get install 패키지명</p><p><br></p><p>: 패키지명을 데이터베이스에서 찾아보고 해당패키지를 다운로드 받아 설치한다. 이때, 패키지의 신뢰성을 gpg키를 사용 검증한다.</p><p><br></p><p><br></p><p><br></p><p>sudo apt-get -d install 패키지명</p><p><br></p><p>: 패키지를 설치는 하지 않고 /var/cache/apt/archives/ 디랙토리에 다운로드 받는다.</p><p><br></p><p><br></p><p><br></p><p>apt-cache show 패키지명</p><p><br></p><p>: 주어진 패키지명에 해당하는 소프트웨어에 대한 정보를 본다.</p><p><br></p><p><br></p><p><br></p><p>sudo apt-get upgrade</p><p><br></p><p>: 설치 되어있는 모든 프로그램 패키지에 대한 최신 업데이트를 검사한 후, 다운로드 받아 설치한다.</p><p><br></p><p><br></p><p><br></p><p>sudo apt-get dist-upgrade</p><p><br></p><p>: 전체 시스템을 새로운 버젼으로 업그레이드 한다. 이때 패키지 삭제도 실시된다.&nbsp;</p><p><br></p><p>단, 일반적으로 사용되는 업그레이드 방법은 아님!</p><p><br></p><p><br></p><p><br></p><p>sudo apt-get autoclean</p><p><br></p><p>: 불안전하게 다운로드된 패키지나 오래된 패키지의 삭제.</p><p><br></p><p><br></p><p><br></p><p>sudo apt-get clean</p><p><br></p><p>: 디스크 공간 확보를 위해 /var/cache/apt/archives/ 에 캐쉬된 모든 패키지 삭제</p><p><br></p><p><br></p><p><br></p><p>sudo apt-get 옵션 remove 패키지명</p><p><br></p><p>: 해당 패키지와 그 설정파일을 삭제한다. ( 옵션에 --purge 를 넣으면 설정파일을 재외하고 삭제. 옵션없을시 전부 삭제)</p><p><br></p><p><br></p><p><br></p><p>sudo apt-get -f install&nbsp;</p><p><br></p><p>: 깨어진 패키지를 위해 정상여부를 확인</p><p><br></p><p><br></p><p><br></p><p>apt-config -V</p><p><br></p><p>: 설치된 APT툴의 버전을 출력</p><p><br></p><p><br></p><p><br></p><p>sudo apt-key list</p><p><br></p><p>: APT가 알고 있는 gpg키 목록의 출력</p><p><br></p><p><br></p><p><br></p><p>apt-cache stats</p><p><br></p><p>: 설치된 모든 패키지에 대한 상태정보를 출력</p><p><br></p><p><br></p><p><br></p><p>apt-cache depends</p><p><br></p><p>: 패키지가 설치되어 있는지 여부에 관계 없이 그 의존성을 출력한다.</p><p><br></p><p><br></p><p><br></p><p>apt-cache pkgnames</p><p><br></p><p>: 시스템에 설치되어 있는 모든 패키지 목록을 보여준다.</p><p><br></p><p><br></p><p><br></p><p>이상으로 APT사용법을 대충 익혀보았다. 이제 dpkg를 알아보자</p><p><br></p><p><br></p><p><br></p><p>2.dpkg</p><p><br></p><p>이 툴의 경우 APT보다는 낮은 수준에서 작업이 수행된다.&nbsp;</p><p><br></p><p>APT는 우분투의 소프트웨어를 관리하기 위해 내부적으로 이 dpkg를 이용한다.&nbsp;</p><p><br></p><p>보통 APT명령 만으로 충분하지만... 시스템에 있는 특정 파일이 어떤 패키지에 포함되는지 등의 확인 작업을&nbsp;</p><p><br></p><p>수행하기위해 dpkg 명령이 필요한 것이다.</p><p><br></p><p><br></p><p><br></p><p>dpkg -C &nbsp;.deb파일</p><p><br></p><p>: 주어진 .deb파일이 설치한 파일의 목록을 본다.(해당 파일이 있는 곳에서 실행하거나 파일명앞에 절대 경로를 붙여준다.)</p><p><br></p><p><br></p><p><br></p><p>dpkg -I &nbsp;.deb파일</p><p><br></p><p>: 주어진 .deb파일에 대한 정보를 본다.</p><p><br></p><p><br></p><p><br></p><p>dpkg -P &nbsp;패키지명</p><p><br></p><p>: 패키지에 대한 정보를 보여준다.</p><p><br></p><p><br></p><p><br></p><p>dpkg -S &nbsp;파일명</p><p><br></p><p>: 파일명 또는 경로가 포함된 패키지들을 검색한다.</p><p><br></p><p><br></p><p><br></p><p>dpkg -l&nbsp;</p><p><br></p><p>: 설치된 패키지 목록을 보여준다.&nbsp;</p><p><br></p><p><br></p><p><br></p><p>dpkg -L &nbsp;패키지명</p><p><br></p><p>: 이 패키지로부터 설치된 모든 파일목록을 볼수 있다.</p><p><br></p><p><br></p><p><br></p><p>dpkg -s &nbsp;패키지명</p><p><br></p><p>: 주어진 패키지의 상태를 본다</p><p><br></p><p><br></p><p><br></p><p>sudo dpkg -i &nbsp;.deb파일</p><p><br></p><p>: 주어진 파일을 설치한다.</p><p><br></p><p><br></p><p><br></p><p>sudo dpkg -r &nbsp;패키지명</p><p><br></p><p>: 시스템에서 해당 패키지를 상제한다. (단, 삭제시 파일들은 남겨둔다.)</p><p><br></p><p><br></p><p><br></p><p>sudo dpkg -P &nbsp;패키지명</p><p><br></p><p>: 해당 패키지와 해당 패키지의 설정파일을 모두 삭제한다.</p><p><br></p><p><br></p><p><br></p><p>sudo dpkg -x &nbsp;.deb파일 &nbsp;디랙토리</p><p><br></p><p>: 파일에 포함되어있는 파일들을 지정된 디렉토리에 풀어놓는다. 단, 주의 할점은 이명령시 해당 디렉토리를 초기화 시켜버리므로 주의하여야 한다!</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p>3. aptitude</p><p><br></p><p>앞에서 배운 dpkg와 APT의 경우 제대로 사용하기 위해서는 좀더 많은 지식을 요구한다. 그에 비하여 aptitude의 경우 주요 패키지 작업 과정을 자동화하여 가능한 쉽게 작업할 수 있도록 해주므로 보다 쉽게 할 수 있다. 고로 보다 많이 사용하게 될 것이... 옳지만... 아직은 인터넷 상에서 APT나 dpkg를 사용한 패키지 설치 정보가 많다는 점에서... 장래에 많이 사용하게 될 듯하다^^</p><p><br></p><p><br></p><p><br></p><p>sudo aptitude</p><p><br></p><p>: 실행시 curses인터패이스로 시작된다. Ctrl+t를 사용하면 메뉴에 접근할 수 있으며, q키로 프로그램을 종료 시킬 수 있다.</p><p><br></p><p><br></p><p><br></p><p>aptitude help</p><p><br></p><p>: 도움말 보기</p><p><br></p><p><br></p><p><br></p><p>aptitude search 키워드</p><p><br></p><p>: 해당 키워드와 일치하는 패키지를 보여준다.</p><p><br></p><p><br></p><p><br></p><p>sudo aptitude update</p><p><br></p><p>: APT리포지트로들로부터 사용 가능한 패키지를 업데이트 한다.</p><p><br></p><p><br></p><p><br></p><p>sudo aptitude upgrade</p><p><br></p><p>: 모든 패키지를 최신으로 업그레이드 한다.</p><p><br></p><p><br></p><p><br></p><p>aptitude show 패키지명</p><p><br></p><p>: 해당 패키지의 설치 여부에 관계 없이 주어진 패키지에 대한 정보를 보여준다.</p><p><br></p><p><br></p><p><br></p><p>sudo aptitude download 패키지명</p><p><br></p><p>: 해당 패키지를 설치하지는 않고 다운로드만 받는다</p><p><br></p><p><br></p><p><br></p><p>sudo aptitude clean&nbsp;</p><p><br></p><p>: /var/cache/apt/archives디렉토리에 다운로드되어 있는 모든 .deb파일을 삭제한다.</p><p><br></p><p><br></p><p><br></p><p>sudo aptitude autoclean</p><p><br></p><p>: /var/cache/apt/archives디렉토리에 있는 오래된 .deb파일을 전부 삭제한다.</p><p><br></p><p><br></p><p><br></p><p>sudo aptitude install 패키지명</p><p><br></p><p>: 해당 패키지를 시스템에 설치한다.&nbsp;</p><p><br></p><p><br></p><p><br></p><p>sudo aptitude remove 패키지명</p><p><br></p><p>: 시스템으로부터 주어진 패키지를 삭제 한다.</p><p><br></p><p><br></p><p><br></p><p>sudo aptitude dist-upgrade</p><p><br></p><p>: 모든 패키지를 가장 최신 버전으로 업그레이드 시킨다. 이때, 필요한 경우 패키지를 삭제하거나 추가 한다.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

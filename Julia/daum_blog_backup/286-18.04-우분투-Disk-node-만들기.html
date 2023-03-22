@@ -1,0 +1,431 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>18.04 우분투 Disk node 만들기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">18.04 우분투 Disk node 만들기</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/우분투 서버 구축</p>
+                                    <p class="date">2020-08-13 20:00:09</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>두 번째 논문을 쓰기 위해 19-10940X, 256GB, NVIDIA RTX, 1TB SSD 로 구성된 disk node를 4대 구매했다.</p>
+<p>기존의 yboot를 DHCP 및 HOME 서버로 두고 anaconda 와 cuda, cupy, pycuda, openmpi 를 설치하는 방법을 다시 정리해둔다.</p>
+<p>각 디스크 노드는 y201</p>
+<p><del>y204 로 이름이 지어졌으며 학교 인터넷 ip 주소는 168.152.40.92</del></p>
+<p>95 가 되었다.</p>
+<p><figure class="imageblock alignCenter" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent">
+    <span data-lightbox="lightbox">
+        <img src="./img/img.png" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent" />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<h1>우분투 18.04 설치</h1>
+<p>먼저 우분투 usb 를 만들어야 하는데, 이때 절대로 ubuntu live server image 를 받으면 안된다는 post가 있었다.</p>
+<p>참조 : [installation guide][<a href="https://www.pugetsystems.com/labs/hpc/The-Best-Way-To-Install-Ubuntu-18-04-with-NVIDIA-Drivers-and-any-Desktop-Flavor-1178/%5D">https://www.pugetsystems.com/labs/hpc/The-Best-Way-To-Install-Ubuntu-18-04-with-NVIDIA-Drivers-and-any-Desktop-Flavor-1178/]</a></p>
+<p><strong>The default Ubuntu 18.04 server download is for a cloud based install! It installs the Ubuntu cloud image and cloud configuration without any option to change that. It is not suitable for a &quot;normal&quot; install on your own hardware. What you want is called &quot;Basic Ubuntu Server&quot; and it is not available with this installer.</strong></p>
+<p>즉 그냥 ubuntu server download 검색해서 들어가면 젤 첫 페이지에 보이는 default installer 는 뻥카인셈.</p>
+<p>반드시 alternative download 를 이용해야한다고 말하지만 나는 그냥 해도 잘 되던데?</p>
+<p>또한, nvidia driver 는 메인보드 UEFI에서 secure boot가 켜져있으면 이상한 에러를 막 뱉어내니깐 반드시 끈다.</p>
+<p>각 노드는 디스크가 있으므로 일일이 따로 우분투를 설치해줘야 한다. USB로 부팅 설치가 가능하다.</p>
+<p>설치 순서에 따른 답은 다음과 같다</p>
+<p>언어 설정 &gt;&gt;&gt; 영어(US)로 한다.</p>
+<p>키보드 설정 &gt;&gt;&gt; 둘 다 영어(US)로 한다.</p>
+<p>인터넷 설정 &gt;&gt;&gt; 희한하게 학교 ip 로 설정하면 안된다. 그러니 일단 그냥 안하고 넘어가자.</p>
+<p>프록시 설정 &gt;&gt;&gt; 할 거 없다.</p>
+<p>archive 설정 &gt;&gt;&gt; us.archive 로 바꿔주자.</p>
+<p>파티션 설정 &gt;&gt;&gt; 그냥 전체 다 쓰자. 어짜피 반에 반도 안 쓴다.</p>
+<p>name 설정 &gt;&gt;&gt; yourname, server name, username 등을 설정한다. ldg, y201~y204 등으로 설정.</p>
+<p>openssh 설치? &gt;&gt;&gt; 굳! 인터넷 설정 안해놨으니 나중에 따로 받으려면 짜증난다. 무조건 지금 설치!</p>
+<p>다 하고 나면 설치가 끝나있다. 설치 속도가 어마어마하게 빠르다. Reboot? 라고 물어보는데 ㅇㅋ! 한 다음 USB를 빼자.</p>
+<h1>Root 설정하기</h1>
+<p>먼저 ldg 로 접속하면 root 설정을 해야지.</p>
+<pre><code>$ sudo passwd root</code></pre><p>root 비번 설정했으면 root 권한을 획득하자.</p>
+<pre><code>$ su root</code></pre><h1>인터넷 설정하기</h1>
+<p>18.04부터는 인터넷 설정이 더 편하다. 먼저 랜카드를 확인하자.</p>
+<pre><code># ifconfig -a</code></pre><p><figure class="imageblock alignCenter" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent">
+    <span data-lightbox="lightbox">
+        <img src="./img/img_1.png" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent" />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p>메인보드에 랜포트가 2개라서 랜카드도 두개가 잡힌다. (이 스샷은 이미 인터넷 설정이 끝난 것임.)</p>
+<p>이때 나는 eno1을 인터넷에, enp2s0 를 내부네트워크에 쓰려고 한다. 다음을 입력하자.</p>
+<pre><code># vi /etc/netplan/50어쩌구저쩌구</code></pre><p>y202의 내용은 다음과 같다.</p>
+<p><figure class="imageblock alignCenter" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent">
+    <span data-lightbox="lightbox">
+        <img src="./img/img_2.png" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent" />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p>yboot의 netplan 내용은 다음과 같다.</p>
+<p><figure class="imageblock alignCenter" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent">
+    <span data-lightbox="lightbox">
+        <img src="./img/img_3.png" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent" />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p>만약 bonding 까지 하고 싶다면 다음처럼 입력하자. 이건 4포트 랜카드를 쓰던 당시의 yboot의 netplan 내용이다.</p>
+<pre><code>network:  
+ethernets:  
+eno2:  
+addresses: \[163.152.45.250/24\]  
+gateway4: 163.152.45.1  
+nameservers:  
+addresses: \[163.152.1.1\]  
+dhcp4: no
+
+    enp1s0f0:  
+        dhcp4: no    
+
+    enp1s0f1:  
+        dhcp4: no    
+
+    enp1s0f2:  
+        dhcp4: no  
+
+    enp1s0f3:
+
+        dhcp4: no     
+
+bonds:  
+    bond-conntrack:  
+        interfaces: \[enp1s0f0, enp1s0f1, enp1s0f2, enp1s0f3\]  
+        addresses: \[192.168.100.1/24\]  
+        parameters:  
+            mode: balance-rr  
+            mii-monitor-interval: 1  
+version: 2</code></pre><p>이제 변경사항을 적용하자.</p>
+<pre><code># netplan apply</code></pre><p>이 것은 기존의 /etc/init.d/networking restart 와 역할이 같다.</p>
+<p>인터넷이 잘되는지 확인해보자.</p>
+<pre><code># apt-get update</code></pre><p>그 다음 yboot의 /etc/dhcp/dhcpd.conf 의 내용을 수정하자. 다음은 y202와 y203만 수정한 yboot의 dhcpd.conf 의 내용이다.</p>
+<p><figure class="imageblock alignCenter" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent">
+    <span data-lightbox="lightbox">
+        <img src="./img/img_4.png" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent" />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p>이제 yboot에서 다음을 실행한다.</p>
+<pre><code># /etc/init.d/isc-dhcp-server restart</code></pre><p>노드에서는 다음을 실행한다.</p>
+<pre><code># netplan apply</code></pre><p>이게 안되면 재부팅하자.</p>
+<h1>SSH 접속 설정</h1>
+<p>다음의 패키지가 필요하다.</p>
+<pre><code># aptitude install -y openssh-server sshpass</code></pre><p>ssh를 가능하게 해주는 패키지를 설치한 다음 설정 파일을 수정해주자.</p>
+<pre><code># vi /etc/ssh/sshd\_config</code></pre><p>sshd_config 의 내용 윗줄 쯤에</p>
+<p>Port 22 가</p>
+<pre><code>#Port 22</code></pre><p>이렇게 주석 처리 되어 있다면 해제해주기 바란다. ssh의 기본 포트이다. 또한</p>
+<pre><code>PermitRootLogin = yes</code></pre><p>로 바꿔준다.</p>
+<p>또한 다음부분을 찾아 고치거나 없으면 새로 입력해 넣어주자.</p>
+<pre><code>IgnoreRhosts no
+
+HostbasedAuthentication yes</code></pre><p>저장하고 종료한 뒤 다음 파일을 수정하자.</p>
+<pre><code># vi /etc/ssh/ssh\_config</code></pre><p>다음 부분을 찾아 바꾸거나 없으면 추가하자.</p>
+<pre><code>ForwardX11 yes
+
+HostbasedAuthentication yes
+
+EnableSSHKeysign yes</code></pre><p>이 파일에서 Port 22 가 주석처리 되어 있는데, 해제할 필요 없다. 시키는 것만 하자.</p>
+<pre><code># /etc/init.d/ssh restart</code></pre><p>추가로, /etc/hosts.allow 에서는 ssh 접속을 특정 ip에만 허용하게 하는 설정을 할 수 있다.</p>
+<pre><code># vi /etc/host.allow</code></pre><p>sshd : 192.168.</p>
+<p>sshd : 127.0.0.1</p>
+<p>이런식으로 해주면 된다.</p>
+<p>ssh 가 이용하는 22번 포트가 열려있는 걸 확인하고 싶다면 다음의 명령어를 입력한다.</p>
+<pre><code># netstat -ntl</code></pre><p>나오는 리스트에서 22번포트가 열려있음을 확인할 수 있다.</p>
+<p>ssh 설정이 다 끝나고 root 로 접속했는데</p>
+<pre><code>/usr/bin/xauth: file /root/.Xauthority does not exist</code></pre><p>이런 오류 메세지가 보인다면 x11 forwarding 설정 문제이다. 다음 과정을 실행하자.</p>
+<pre><code># aptitude install xauth</code></pre><p>그리고 x11 forwarding 설정이 잘 됐는지 확인하자.</p>
+<pre><code># grep -i forward /etc/ssh/sshd\_config</code></pre><h1>hosts 설정 및 hostname 삭제</h1>
+<p>무언가를 하기에 앞서 노드들에게 ip주소에 따른 호스트 이름들을 설정해 준다. 노드에서 다음을 실행.</p>
+<pre><code># vi /etc/hosts</code></pre><p>다음처럼 입력한다.</p>
+<p><figure class="imageblock alignCenter" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent">
+    <span data-lightbox="lightbox">
+        <img src="./img/img_5.png" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent" />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p>다 했으면 노드의 /etc/hostname 을 삭제한다. 노드들은 hostname 을 dhcp 서버로부터 받기 때문.</p>
+<pre><code># rm /etc/hostname</code></pre><h1>비번 없는 SSH 설정</h1>
+<p>다음 제타위키 글이 아주 훌륭하다.</p>
+<p><a href="https://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4_SSH_%ED%8C%A8%EC%8A%A4%EC%9B%8C%EB%93%9C_%EC%97%86%EC%9D%B4_%EC%9E%90%EB%8F%99_%EB%A1%9C%EA%B7%B8%EC%9D%B8">비번없는 SSH 설정</a></p>
+<p>다음은 위 글 내용이 사라질까봐 복사한 것이다.</p>
+<p>사이트가 사라질 것을 대비하여 과정을 적어놓겠다.</p>
+<h2>개요</h2>
+<p>리눅스 SSH 자동 로그인암호 없이 SSH 접속SSH 패스워드 없이 접속</p>
+<p>-클라이언트에서 서버로 SSH 접속을 패스워드 요구 없이 할 수 있음<br>-클라이언트 측에서 키 생성(ssh-keygen)하여 서버로 배포(ssh-copy-id)하면 됨<br>-아래 예시에서, 클라이언트는 123.45.67.89(zetawiki), 서버는 123.45.67.102(zetawiki02)</p>
+<h2>사전작업</h2>
+<pre><code>root@zetawiki:~# apt-get install sshpass</code></pre><h2>개인키, 공개키 생성</h2>
+<pre><code>root@zetawiki:~# ssh-keygen</code></pre><h2>서버 로그인 테스트</h2>
+<pre><code>sshpass -p &quot;서버패스워드&quot; ssh root@서버주소
+
+root@zetawiki:~# sshpass -p &quot;P@ssw0rd&quot; ssh 123.45.67.102</code></pre><h2>공개키를 원격서버에 배포</h2>
+<pre><code>sshpass -p &quot;서버패스워드&quot; ssh-copy-id root@서버주소
+
+root@zetawiki:~# sshpass -p&quot;P@ssw0rd&quot; ssh-copy-id [root@123.45.67.102](mailto:root@123.45.67.102)</code></pre><h2>로그인 테스트</h2>
+<pre><code>root@zetawiki:~# ssh 123.45.67.102</code></pre><p>여기서 나온 과정을 이해하고, Diskless node의 경우 다음의 두 가지 방법 중 하나만 하자.</p>
+<p>Disk node의 경우 2번을 수행하자.</p>
+<h2>노드들의 전원이 모두 꺼져있을 경우(이게 좀더 편함)</h2>
+<p>y101 만 켠다.</p>
+<p>먼저 root 로 yboot 에 접속한 다음, 위 제타 위키 내용을 그대로 실행하자.</p>
+<p>target 은 y101 이다. yboot 에서 y101 로 비번없이 ssh 접속에 성공하는지 확인!</p>
+<p>그리고 y101에서 yboot 로도 테스트해보자.</p>
+<p>ssh-keygen 을 하면 /root/.ssh/{id_rsa, id_rsa.pub} 가 생기며, 이는 각각 개인키, 공개키이다.</p>
+<p>이 공개키만 내가 접속하고 싶은 컴퓨터에 모두 뿌리면 끝.</p>
+<p>한번만 뿌리면 서버-&gt;노드, 노드-&gt;노드, 노드-&gt;서버 모두 비번없이 ssh 접속이 가능하다.</p>
+<p>성공했다면 y101 의 전원을 내리고 rsync 를 이용하여 y101의 루트파일시스템을 y102~y120 으로 복사</p>
+<p>해주면 끝이다.</p>
+<p>물론, 이는 root 에 대한 것만 한 것이고, 다른 사용자들도 모두 같은 방법을 해주면 된다.</p>
+<h2>노드들의 전원이 모두 켜져있을 경우</h2>
+<p>일단 해당 노드 혹은 서버에서 ssh-keygen을 한번 실행한다.</p>
+<p>그 뒤 ssh.nopasswd.py 파일을 실행하면 된다.</p>
+<p>root@yboot:</p>
+<pre><code># python3 /tftpboot/ssh.nopasswd.py &lt;루트비번&gt;  </code></pre><p>ldg@yboot:</p>
+<pre><code>$ python3 /tftpboot/ssh.nopasswd.py &lt;ldg비번&gt;</code></pre><h1>사용자 정보 및 동기화</h1>
+<p>yboot의 사용자 정보를 y201~y204까지 복사해넣는다.</p>
+<pre><code># scp /etc/{passwd,shadow,group,gshadow} root@y201:/etc/</code></pre><h1>NFS 마운트 설정</h1>
+<p>먼저 NFS server (여기선 yboot)의 설정부터 해보자.</p>
+<h2>설치</h2>
+<p># aptitude install -y nfs-kernel-server</p>
+<h2>/etc/exports 에서 공유할 디렉토리와 공유 옵션 설정</h2>
+<pre><code># vi /etc/exports</code></pre><pre><code>/home| 192.168.100.0/24(rw,no\_root\_squash,no\_subtree\_check, sync)  
+/root 192.168.100.0/24(rw,no\_root\_squash,no\_subtree\_check,async)  
+/nfsroot/yhome1 192.168.100.0/24(rw,no\_root\_squash,no\_subtree\_check,async)  
+/nfsroot/yhome2 192.168.100.52/24(rw,no\_root\_squash,no\_subtree\_check,async)  
+/nfsroot/yhome3 192.168.100.53/24(rw,no\_root\_squash,no\_subtree\_check,async)  
+/nfsroot/y101 192.168.100.0/24(rw,no\_root\_squash,no\_subtree\_check,async)</code></pre><p>다음은 20.08.14 의 yboot:/etc/export 의 내용 일부이다.</p>
+<p><figure class="imageblock alignCenter" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent">
+    <span data-lightbox="lightbox">
+        <img src="./img/img_6.png" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent" />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p>34번 줄 이후로 쭉 /nfsroot/y*** 의 내용이므로 여기까지만 스샷을 첨부한다.</p>
+<p>이제 NFS 서버의 설정이 끝났다. NFS 서버는 192.168.100.xxx /nfsroot 와 /home /root /mnt 마운트하고자 하는</p>
+<p>클라이언트들에게 제공할 것이다.</p>
+<h2>설정 적용</h2>
+<pre><code># exportfs -rv
+# /etc/init.d/nfs-kernel-server restart</code></pre><h2>테스트</h2>
+<pre><code># mkdir /root/this.is.yboot.root
+# cd /mnt
+# mkdir tmp
+# mount -t nfs 192.168.100.1:/root ./tmp</code></pre><p>/mnt 는 리눅스에서 removable device 가 마운트 되는 자리이다. 가령 cdrom 이나 usb 같은 경우 마운트 되면 /mnt 에 위치한다.</p>
+<p>그 설정은 /etc/fstab 에서 조절할 수 있다. 하여튼 지금 하고자 하는 것은 서버의 /home 을 /mnt/tmp 에 nfs 로 마운트 시키는 것이다.</p>
+<p>하드디스크의 파티션을 마운트 시키는 것이라면, nfs 가 아닌 ext4 가 되어야겠지.</p>
+<p>하지만 지금은 서버가 네트워크 파일 시스템으로 제공하는 폴더를 마운트 시키고자함이므로</p>
+<p>파일 시스템의 타입은 nfs 가 된다. 마운트 한 것이 확인 되었다면 해제해주자.</p>
+<pre><code># umount ./tmp
+# rm -r ./tmp</code></pre><p>그리고 192.168.100.1 은 내부 네트워크에서 nfs 서버의 아이피 주소이다.</p>
+<pre><code># vi /etc/dhcp/dhcpd.conf  </code></pre><p>여기에서 dns nameserver 란에 192.168.100.1 이라 설정해준 것이 보일 것이다. 여기서 dhcp 서버의 내부 ip 주소를 설정 했다는 것을 잊지 말자.</p>
+<p>매우 큰 클러스터에서는 nfs 서버와 부팅 서버(=tftp 서버), dhcp 서버가 서로 다르겠지만,</p>
+<p>우리 연구실에서는 yggboot 가 dhcp, tftp, nfs 서버를 모두 담당하고 있다는 것을 명심하자.</p>
+<p>이 테스트는 한마디로 서버가 자신의 /home 을 자신의 /mnt/tmp에게 nfs 로 제공한 것이다.</p>
+<p>즉 서버는 자신의 폴더를 nfs로잘 제공하고 있다. 노드에서 받는 것만 잘하면 되는 것이다. 이제 그 설정을 하러 가자.</p>
+<p>각 노드는 다음을 설치한다.</p>
+<pre><code># apt-get install nfs-common</code></pre><p>이 것은 nfs 로 클라이언트 쪽에 설치하는 패키지이다. 서버는 nfs-kernel-server 를 설치했었던 것을 기억하자.</p>
+<p>그 다음 노드의 fstab 을 수정하자.</p>
+<pre><code># vi /etc/fstab</code></pre><p>다음은 y202의 fstab 내용이다. 17, 19번째 줄만 보면 된다. 이대로 다른 것들도 수정하자.</p>
+<p><figure class="imageblock alignCenter" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent">
+    <span data-lightbox="lightbox">
+        <img src="./img/img_7.png" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent" />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p>이 때 평소와는 달리 yboot의 /root 를 y202의 /root 에 마운트 시키지 않는다. 이 것은 anaconda 및 cuda 를 설치하고 나서 해야한다.</p>
+<p>혹은 안해도 된다. Disk node는 굳이 /root 를 공유할 필요가 없다.</p>
+<p>설정을 적용하자.</p>
+<pre><code># /etc/init.d/nfs-common restart
+# mount -av</code></pre><p>mount -a 는 fstab에 기록된 마운트 설정을 죄다 적용하는 명령어이며 -v 는 세부사항을 보여주는 옵션이다.</p>
+<h1>필수 프로그램 설치</h1>
+<p>이건 다른 포스트를 참조하자. 아주 골치아파서 시행착오가 많았다. 반드시 이 단계를 거칠 것!</p>
+<h1>bash 설정</h1>
+<p>각 사용자와 root 계정은 각 홈폴더에 ~/.bashrc 파일을 갖고 있다.</p>
+<p>그래서 사용자 각각의 bash 설정을 해줄 수 있는데, 모든 사용자에게 동일한 bashrc 설정을 해주려면</p>
+<p>/etc/bash.bashrc 를 건드리면 된다.</p>
+<p>허나!</p>
+<p>~/.bashrc 는 /etc/bash.bashrc 보다 우선권이 있으며 특히 export 구문의 경우 ~/.bashrc 가</p>
+<p>/etc/bash.bashrc 를 override 해버린다. 그리고 /etc/bash.bashrc 에 export 구문을 쓰면 잘 적용되지 않는다!</p>
+<p>귀찮지만 사용자마다 ~/.bashrc 를 수정하는 것이 맞다.</p>
+<p>다음 내용들을 ~/.bashrc 에 적용하면 ubuntu를 쉽게 쓸 수 있다. 물론 이 내용들은 export 구문이 없기 때문에</p>
+<p>/etc/bash.bashrc 에 써도 잘 적용된다. 모든 사용자에게 적용하기 편리함.</p>
+<h2>shell을 알록달록하게 보려면 다음을 추가한다.</h2>
+<pre><code># uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+force_color_prompt=yes
+
+if [ -n &quot;$force_color_prompt&quot; ]; then
+    if [ -x /usr/bin/tput ] &amp;&amp; tput setaf 1 &gt;&amp;/dev/null; then
+    # We have color support; assume it&#39;s compliant with Ecma-48
+    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+    # a case would tend to support setf rather than setaf.)
+    color_prompt=yes
+    else
+    color_prompt=
+    fi  
+fi
+
+if [ &quot;$color_prompt&quot; = yes ]; then
+    PS1=&#39;${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ &#39;
+else
+    PS1=&#39;${debian_chroot:+($debian_chroot)}\u@\h:\w\$ &#39;
+fi
+unset color_prompt force_color_prompt</code></pre><h2>ls 명령어에서 폴더와 파일명에 색을 입히려면 /etc/bash.bashrc 에 다음을 추가한다.</h2>
+<pre><code># enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;
+    alias ls=&#39;ls --color=auto&#39;
+    #alias dir=&#39;dir --color=auto&#39;
+    #alias vdir=&#39;vdir --color=auto&#39;
+
+    alias grep=&#39;grep --color=auto&#39;
+    alias fgrep=&#39;fgrep --color=auto&#39;
+    alias egrep=&#39;egrep --color=auto&#39;
+fi
+
+# some more ls aliases
+alias ll=&#39;ls -alF&#39;
+alias la=&#39;ls -A&#39;
+alias l=&#39;ls -CF&#39;</code></pre><p>이건 ls 명령어를 사용했을 때 색을 보여주거나, ll, la, l 명령어를 사용할때 redirection 시켜주는 내용이다.</p>
+<h2>vim 의 개인/공통 설정은 다음과 같다.</h2>
+<pre><code>&quot; All system-wide defaults are set in $VIMRUNTIME/debian.vim and sourced by  
+&quot; the call to :runtime you can find below. If you wish to change any of those  
+&quot; settings, you should do it in this file (/etc/vim/vimrc), since debian.vim  
+&quot; will be overwritten everytime an upgrade of the vim packages is performed.  
+&quot; It is recommended to make changes after sourcing debian.vim since it alters  
+&quot; the value of the &#39;compatible&#39; option.
+
+&quot; This line should not be removed as it ensures that various options are  
+&quot; properly set to work with the Vim-related packages available in Debian.  
+runtime! debian.vim
+
+&quot; Vim will load $VIMRUNTIME/defaults.vim if the user does not have a vimrc.  
+&quot; This happens after /etc/vim/vimrc(.local) are loaded, so it will override  
+&quot; any settings in these files.  
+&quot; If you don&#39;t want that to happen, uncomment the below line to prevent  
+&quot; defaults.vim from being loaded.  
+&quot; let g:skip\_defaults\_vim = 1
+
+&quot; Uncomment the next line to make Vim more Vi-compatible  
+&quot; NOTE: debian.vim sets &#39;nocompatible&#39;. Setting &#39;compatible&#39; changes numerous  
+&quot; options, so any other options should be set AFTER setting &#39;compatible&#39;.  
+&quot;set compatible
+
+&quot; Vim5 and later versions support syntax highlighting. Uncommenting the next  
+&quot; line enables syntax highlighting by default.
+
+&quot; If using a dark background within the editing area and syntax highlighting  
+&quot; turn on this option as well  
+set background=dark
+
+&quot; Uncomment the following to have Vim jump to the last position when  
+&quot; reopening a file  
+if has(&quot;autocmd&quot;)  
+au BufReadPost \* if line(&quot;&#39;&quot;&quot;) &gt; 1 &amp;&amp; line(&quot;&#39;&quot;&quot;) &lt;= line(&quot;$&quot;) | exe &quot;normal! g&#39;&quot;&quot; | endif  
+endif
+
+&quot; Uncomment the following to have Vim load indentation rules and plugins  
+&quot; according to the detected filetype.  
+if has(&quot;autocmd&quot;)  
+filetype plugin indent on  
+endif
+
+&quot; The following are commented out as they cause vim to behave a lot  
+&quot; differently from regular Vi. They are highly recommended though.  
+set showcmd &quot; Show (partial) command in status line.  
+&quot;set showmatch &quot; Show matching brackets.  
+&quot;set ignorecase &quot; Do case insensitive matching  
+&quot;set smartcase &quot; Do smart case matching  
+&quot;set incsearch &quot; Incremental search  
+&quot;set autowrite &quot; Automatically save before commands like :next and :make  
+&quot;set hidden &quot; Hide buffers when they are abandoned  
+&quot;set mouse=a &quot; Enable mouse usage (all modes)
+
+&quot; Source a global configuration file if available  
+if filereadable(&quot;/etc/vim/vimrc.local&quot;)  
+source /etc/vim/vimrc.local  
+endif
+
+&quot; Uncomment the following to have Vim load indentation rules and plugins  
+&quot; according to the detected filetype.  
+if has(&quot;autocmd&quot;)  
+filetype plugin indent on  
+endif
+
+&quot; The following are commented out as they cause vim to behave a lot  
+&quot; differently from regular Vi. They are highly recommended though.  
+set showcmd &quot; Show (partial) command in status line.  
+&quot;set showmatch &quot; Show matching brackets.  
+&quot;set ignorecase &quot; Do case insensitive matching  
+&quot;set smartcase &quot; Do smart case matching  
+&quot;set incsearch &quot; Incremental search  
+&quot;set autowrite &quot; Automatically save before commands like :next and :make  
+&quot;set hidden &quot; Hide buffers when they are abandoned  
+&quot;set mouse=a &quot; Enable mouse usage (all modes)
+
+&quot; Source a global configuration file if available  
+if filereadable(&quot;/etc/vim/vimrc.local&quot;)  
+source /etc/vim/vimrc.local  
+endif
+
+set hlsearch &quot; 검색어 하이라이팅  
+set nu &quot; 줄번호  
+set autoindent &quot; 자동 들여쓰기  
+set scrolloff=2  
+set wildmode=longest,list  
+set ts=4 &quot;tag select  
+set sts=4 &quot;st select  
+set sw=1 &quot; 스크롤바 너비  
+set autowrite &quot; 다른 파일로 넘어갈 때 자동 저장  
+set autoread &quot; 작업 중인 파일 외부에서 변경됬을 경우 자동으로 불러옴  
+set cindent &quot; C언어 자동 들여쓰기  
+set bs=eol,start,indent  
+set history=256  
+set laststatus=2 &quot; 상태바 표시 항상  
+set paste &quot; 붙여넣기 계단현상 없애기  
+set shiftwidth=4 &quot; 자동 들여쓰기 너비 설정  
+set showmatch &quot; 일치하는 괄호 하이라이팅  
+set smartcase &quot; 검색시 대소문자 구별  
+set smarttab  
+set smartindent  
+set softtabstop=4  
+set tabstop=4  
+set ruler &quot; 현재 커서 위치 표시  
+set incsearch  
+set statusline=\\ %&lt;%l:%v\\ \[%P\]%=%a\\ %h%m%r\\ %F  
+&quot; 파일 인코딩을 한국어로  
+if $LANG\[0\]==&#39;k&#39; &amp;&amp; $LANG\[1\]==&#39;o&#39;  
+set fileencoding=korea  
+endif  
+&quot; 구문 강조 사용  
+syntax on  
+&quot; 컬러 스킴 사용  
+colo elflord</code></pre>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

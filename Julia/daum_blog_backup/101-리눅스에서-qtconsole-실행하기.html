@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>리눅스에서 qtconsole 실행하기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">리눅스에서 qtconsole 실행하기</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/Python</p>
+                                    <p class="date">2016-11-03 11:43:56</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>ssh 로 리눅스 원격 접속을 한 뒤에, qtconsole을 사용하고 싶다고 하자.</p><p><br></p><p>먼저 리눅스 컴에 ipython-qtconsole 과 python-sympy 를 설치한다.</p><p><br></p><p># aptitude install -y ipython-qtconsole python-sympy</p><p><br></p><p>그 다음 윈도우 컴에서 Xming 을 켜고, xshell 에서 x11 포워딩을 x display 로 바꿔준다.</p><p><br></p><p>그리고 리눅스 컴에서 다음의 파일을 수정해줘야한다.</p><p><br></p><p># vi ~/.bashrc</p><p><br></p><p>마지막 줄에 다음을 추가하자.</p><p><br></p><p>export $(dbus-launch)</p><p><br></p><p>이제 ssh 재접속을 한뒤 리눅스에서 실행하자</p><p><br></p><p># ipython qtconsole</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>새로운 노드를 추가하는 방법</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">새로운 노드를 추가하는 방법</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/리눅스 일반</p>
+                                    <p class="date">2017-04-07 11:12:51</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>기존의 리눅스 서버를 갈아 엎지 않고 새로 노드만 추가하는 방법을 정리한다.</p><p><br></p><p>AMD Ryzen 7 1800X 를 y221 로 추가하면서 겪은 문제를 같이 기술 하겠다.</p><p><br></p><p>1. 추가할 노드의 맥주소 따기</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">새로 난 노드를 조립하고 하드는 필요없이 파워, 메인보드, 시피유, GPU 만 연결하여 전원과 랜선을 꼽는다.</p><p style="margin-left: 2em;">랜카드가 두 개 라면 하나는 메인 랜이고 나머지는 서브랜이다. 기가바이트의 경우 오른쪽 랜카드가 메인 랜이다.</p><p style="margin-left: 2em;">여기에 랜선을 꼽는다.</p><p><br></p><p>2. yboot 의 /tftpboot/ 로 이동</p><p><br></p><p style="margin-left: 2em;">네트워크 부팅에 필요한 3 가지 파일을 y101 로부터 복사하였다. 왜냐? cpu 노드이기 때문에 y101 과 다른게 없다.</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">root@yboot:~#&nbsp;<span style="font-size: 9pt;">cp -a ./config.pxelinux.y101 ./config.pxelinux.y201</span></p><p style="margin-left: 2em;"><span style="font-size: 9pt;">root@yboot:~# cp -a ./initrd.img.y101 ./initrd.img.y221</span></p><p style="margin-left: 2em;"><span style="font-size: 9pt;">root@yboot:~# cp -a ./vmlinuz.y101 ./vmlinuz.y221</span></p><p style="margin-left: 2em;"><span style="font-size: 9pt;"><br></span></p><p><span style="font-size: 9pt;">3. DHCP 설정</span></p><p><span style="font-size: 9pt;"><br></span></p><p style="margin-left: 2em;"># vi /etc/dhcp/dhcpd.conf 에 다음의 내용을 추가한다.</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">subnet 192.168.100.0 netmask 255.255.255.0 {</p><p style="margin-left: 2em;">&nbsp; &nbsp; &nbsp;option pxelinux.configfile "config.pxelinux.y221";</p><p style="margin-left: 2em;">&nbsp; &nbsp; &nbsp;host y221 {</p><p style="margin-left: 2em;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;hardware ethernet 1C:1B:0D:9D:69:FF;</p><p style="margin-left: 2em;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;fixed-address 192.168.100.221;</p><p style="margin-left: 2em;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;option host-name "y221";</p><p style="margin-left: 2em;">&nbsp; &nbsp; &nbsp;}</p><p style="margin-left: 2em;">}</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;"># /etc/init.d/isc-dhcp-server restart</p><div><br></div><p>4. config.pxelinux.y221 파일 수정</p><p><br></p><p style="margin-left: 2em;"># vi /tftpboot/config.pxelinux.y221</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">y101 로 복사한 것이므로 내용에서 y101 부분을 모두 y221 로 바꾼다.</p><p style="margin-left: 2em;">이제 노드가 부팅되면서 dhcp 서버를 찾고, dhcp 서버는 맥주소를 확인하고 vmlnuz.y221 과 initrd.img.y221 을 보내 줄 것이다.</p><p style="margin-left: 2em;"><br></p><p>5. yboot 의 exports 설정</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">노드의 리눅스가 부팅이 됐는데 루트파일시스템을 불러올 수 없다면?! 결국 부팅이 안되겠지. yboot 의 nfsroot 에 접근할 수 있도록</p><p style="margin-left: 2em;">서버가 새로운 노드의 접근을 허용해주어야 한다.</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;"># vi /etc/exports</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">맨 마지막에 다음 줄을&nbsp;추가한다.</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">/nfsroot/y221 &nbsp; 192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)</p><div style="margin-left: 2em;"><br></div><div style="margin-left: 2em;">이제 노드는 yboot 의 /nfsroot/y221 로 접근할 수 있다.</div><div style="margin-left: 2em;"><br></div><div>6. yboot 의 fstab 설정</div><div><br></div><div style="margin-left: 2em;">chroot 를 yboot에서 항상 사용할 수 있어야 하므로 설정해준다.</div><div style="margin-left: 2em;"><br></div><div style="margin-left: 2em;"># vi /etc/fstab</div><div style="margin-left: 2em;"><br></div><div style="margin-left: 2em;">여기에 다음 두 줄을 추가.</div><div style="margin-left: 2em;"><span style="font-size: 9pt;">none &nbsp; &nbsp;/nfsroot/y221/proc &nbsp;proc &nbsp; &nbsp;defaults,nosuid,nodev &nbsp; 0 &nbsp; 0</span></div><div style="margin-left: 2em;"><span style="font-size: 9pt;">devpts &nbsp;/nfsroot/y221/dev/pts &nbsp; devpts &nbsp;defaults,nosuid,noexec &nbsp;0 &nbsp; 0</span></div><div><span style="font-size: 9pt;"><br></span></div><div><span style="font-size: 9pt;">7. yboot 의 hosts 설정</span></div><div><span style="font-size: 9pt;"><br></span></div><div style="margin-left: 2em;">비번없이 새로운 노드에 접속하기 위해서는 당연히 keyscan 을 해주어야 한다. ssh-keyscan 명령어는 /etc/hosts 에 있는</div><div style="margin-left: 2em;">목록을 참조하므로, 이를 수정해 줘야한다.</div><div style="margin-left: 2em;"><br></div><div style="margin-left: 2em;">여기에&nbsp;</div><div style="margin-left: 2em;"><br></div><div style="margin-left: 2em;">192.168.100.221 y221 이 이미 추가되어 있을 것이니 한 번 확인해보자.</div><div style="margin-left: 2em;"><br></div><div style="margin-left: 2em;"># vi /etc/hosts</div><div style="margin-left: 2em;"><br></div><div style="margin-left: 2em;">복사해온 y101이 이미 잘 작동한다는 가정하에, y101 에 이미 ssh 관련 설정을 다 수행해놔서 이미 있는 것이다.</div><div style="margin-left: 2em;">따라서 /etc/ssh/sshd_config 나 /etc/ssh/ssh_config 를 수정하지 않아도 된다. 만약 어떻게 수정하는지 다시</div><div style="margin-left: 2em;">알고 싶다면 '데비안 서버 구축' 의 'ssh 설정하기'&nbsp;챕터를 참고하자.</div><div style="margin-left: 2em;"><br></div><div>8. yboot 에서 ssh.keyscan.py 실행하기</div><div><br></div><div style="margin-left: 2em;"># vi /root/ssh.keyscan.py</div><div style="margin-left: 2em;"><br></div><div style="margin-left: 2em;">여기서 y221 을 포함하도록 스크립트를 수정해준다. 그리고 실행한다.</div><div><br></div><div style="margin-left: 2em;"># python ~/ssh.keyscan.py</div><div style="margin-left: 2em;"><br></div><div style="margin-left: 2em;">그러면 ~/ssh_known_hosts 가 새로 생기거나, 수정이 될 것이다. 이제 이를 각 서버에 뿌려주거나 서버에서 각각</div><div style="margin-left: 2em;"><br></div><div style="margin-left: 2em;">ssh.keyscan.py 를 실행하자.</div><div style="margin-left: 2em;"><br></div><div style="margin-left: 2em;">ssh.keyscan.py 를 잘 보면 마지막에 각 노드의 루트파일 시스템에 ssh_known_hosts 를 뿌려주는 코드가 있다.</div><div style="margin-left: 2em;">따라서 노드에는 일일이 복사해주지 않아도 된다.</div><div style="margin-left: 2em;"><br></div><p><br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>pycuda.compiler 모듈</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">pycuda.compiler 모듈</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/CUDA</p>
+                                    <p class="date">2016-10-07 22:24:44</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>from pycuda.compiler import SourceModule 이라고 하면</p><p><br></p><p>해당 코드를 컴파일 하는데에 SourceModule 이라는 방법을 이용하겠다는 뜻이다.</p><p><br></p><p>GPU에서 돌아갈 커널 함수를 pycuda 에서 이용하는 방법은 여러가지가 있는데 그 중에 하나는</p><p><br></p><p>이미 다른 스크립트 파일로 만들어진 커널 함수를 불러와서 쓰는 방법과,</p><p><br></p><p>해당 스크립트 내에 string 으로 커널 함수를 써주고, 그걸 알아서 모듈화하여 이용하도록 명령을 내리는 방법이 있다. SourceModule 은 그 중</p><p><br></p><p>후자에 해당한다.</p><p><br></p><p>mod = SourceModule("""</p><p><span class="Apple-tab-span" style="white-space:pre">	</span>__global__ void doublify(float *a)</p><p><span class="Apple-tab-span" style="white-space:pre">	</span>{</p><p><span class="Apple-tab-span" style="white-space:pre">		</span>int idx = threadIdx.x + threadIdx.y*blockDim.x;</p><p><span class="Apple-tab-span" style="white-space:pre">		</span>a[idx] *= 2;</p><p><span class="Apple-tab-span" style="white-space:pre">		</span></p><p><span class="Apple-tab-span" style="white-space:pre">	</span>}</p><p><span class="Apple-tab-span" style="white-space:pre">	</span>""")</p><p><br></p><p>string 안의 내용들이 커널함수로 컴파일 되어 GPU 에서 작동할 것이다.</p><p><br></p><p>반면 외부의 cuda 스크립트에서 불러올 경우 pycuda.driver 의 Module 기능을 이용하면 된다.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

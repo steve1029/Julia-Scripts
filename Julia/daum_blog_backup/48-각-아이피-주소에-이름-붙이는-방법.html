@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>각 아이피 주소에 이름 붙이는 방법</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">각 아이피 주소에 이름 붙이는 방법</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/리눅스 일반</p>
+                                    <p class="date">2016-09-27 00:16:55</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>dhcp 서버의 경우 설정 파일에서 192.168.100.101 같이 아이피를 매번 입력하는 것은 번거로운 일이다.<br><br>이 때 이 아이피에 이름을 붙여주면 아이피 대신 이름으로 불러도 된다.<br><br># vi /etc/hosts<br><br>163.152.45.250    yboot<br>192.168.100.101    y101<br><br>등등 닉네임을 설정해주면 된다.<br></p><p><br></p><p>다음은 인터넷에서 퍼온 글</p><p><br></p><hr style="display:block; border: black 0 none; border-top: black 1px solid; height: 1px"><p><b style="color: rgb(255, 153, 0); font-family: 굴림체; font-size: 9pt;">::/etc/hosts</b><br></p><font face="굴림체" color="#ded7d6" style="background-color: rgb(32, 36, 40);">이 파일은 자체 forward zone 파일이라고 생각해도 된다. 이 파일에 특정 아이피에 대해 호스트 네임을 설정하고 닉 네임을 설정해서 사용하면 되는데 다음의 설정예를 보면서 이해하도록 하자.<br></font><font face="굴림체" color="#a0ffff" style="background-color: rgb(32, 36, 40);"># /etc/hosts<br>203.241.205.97 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rootman.co.kr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rootman<br>203.241.205.91 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;telnet &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font face="굴림체" color="#ded7d6" style="background-color: rgb(32, 36, 40);"><br><br>첫번째 필드에 IP 주소를 설정하고 두번째 필드에는 호스트 네임을 설정하는데 본인 마음대로 설정하면 된다. 세번째 필드는 호스트 네임에 대한 닉네임을 설정하는 부분인데 설정 안해도 된다. 이 설정에서 중요한 것은 IP 주소이다. 특정 아이피에 대해 마음대로 호스트 네임을 정하고 닉네임을 붙일 수 있다. 위의 경우 IP 주소 203.241.205.91의 호스트 네임을 telnet 이라고 설정했기 때문에 웹 브라우저에서 telnet 이라고 적고 엔터를 치면 IP 주소 203.241.205.91의 웹 사이트가 열리게 된다. 위와 같이 /etc/hosts를 설정하면 telnet이라는 호스트 네임에 대해 IP 주소 203.241.205.91로 해석하게 된다.<br>이런 설정은 회사내, 또는 학교내에서 여러 아이피를 외우고 있기가 불편할 때 사용하면 아주 편리하다.<br>예를 들어 IP를 203.241.205.95를 friend 라고 설정하면 friend라는 호스트 네임을 이용해서 203.241.205.95에 접근할 수 있게 된다. 또 203.241.205.94를 yahoo.com으로 설정하면 이 시스템에서만큼은 yahoo.com을 IP 주소 203.241.205.94로 인식하게 된다. 잘만 이용하면 여러모로 편리할 것이다.&nbsp;<br>그런데 이런것이 어떻게 성립이 되는지 궁금할 것이다. 바로 그 답은 /etc/host.conf 파일에 있다.&nbsp;<br>일반적으로 /etc/host.conf 파일을 열어 보면 다음과 같이 설정 되어 있을 것이다.<br></font><font face="굴림체" color="#a0ffff" style="background-color: rgb(32, 36, 40);"># /etc/host.conf<br>order hosts,bind<br></font><font face="굴림체" color="#ded7d6" style="background-color: rgb(32, 36, 40);"><br>위의 설정이 의미하는 것은 도메인에 대해 질의할 때 hosts 파일을 먼저 참고하고 답을 찾지 못하면 bind 즉 DNS에 질의하라는 의미이다. 그렇기 때문에 우리가 특정 아이피를 /etc/hosts에 yahoo.com으로 등록시켜 놓으면 yahoo.com이라는 호스트 네임은 그 아이피를 가리키게 되는 것이다. 시스템에서 hosts 파일부터 참고 하기 때문에...<br>위의 순서를 변경할 수도 있는데 그냥 그대로 두고 사용하는 것을 추천하는 바이다....</font><div><font color="#ded7d6" face="굴림체"><br></font></div><div><font color="#ded7d6" face="굴림체">출처 :&nbsp;https://www.linux.co.kr/home/lecture/?leccode=163<br></font><div><font color="#ded7d6" face="굴림체"></font><font color="#ded7d6" face="굴림체"><hr style="display:block; border: black 0 none; border-top: black 1px solid; height: 1px"><p><br></p><br></font><p><br></p></div><p><br></p></div><p><br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

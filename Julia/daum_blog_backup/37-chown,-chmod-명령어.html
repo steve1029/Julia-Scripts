@@ -1,0 +1,59 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>chown, chmod 명령어</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">chown, chmod 명령어</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/리눅스 일반</p>
+                                    <p class="date">2016-09-26 11:18:21</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <h1>chown</h1>
+<p>파일이나 폴더의 소유권을 바꾼다.</p>
+<pre><code>chown -R ldg:ldg ./\*</code></pre><p>현재 폴더 내 모든 파일 및 폴더, 그리고 그 하위 디렉토리의 모든 파일과 폴더의 소유권을 [소유자명]:[그룹명] 으로 바꾼다.</p>
+<p>즉 소유권자는 ldg, 소유 그룹은 ldg 가 되는 것.</p>
+<p>-R 옵션은 하위디렉토리까지 포함한다는 뜻</p>
+<hr>
+<h1>chmod</h1>
+<p>changemod 의 약자.</p>
+<p>파일의 모드를 바꿈. </p>
+<p>rwx 권한을 누구에게 어떻게 줄지 결정할 수 있다. </p>
+<p>2진법으로 on off를 표기한 후 10진법으로 바꾸면 된다.</p>
+<p>소유자/ 소유자가 속한 그룹/ 전체 사용자 순으로 rwx 권한을 줄 수 있다.</p>
+<p>r : 읽기 권한<br>w : 쓰기 권한<br>x : 실행 권한 ( 이 파일을 이용해 다른 프로그램을 실행할 수 있는 권한을 주는 것)</p>
+<pre><code>chmod 755 Filename</code></pre><p>Filename 이라는 파일의 모드를 755로 바꿈. 755를 7/5/5 로 보고 2진법으로 바꾸면 111/101/101 인데</p>
+<p>소유자에게 rwx 권한을 111로 주고, 소유자가 속한 그룹에는 101로, 전체 사용자는 101로 권한을 준다는 얘기.</p>
+<p>소유자는 rwx 권한인 모두 있지만 소유자가 속한 그룹은 rx 권한만 있고, 전체 사용자 또한 rx 권한만 있다는 얘기다.</p>
+<pre><code>chmod-R 775 ./\*</code></pre><p>현재 모든 폴더 및 파일의 권한을 775 로 바꿈. 하위 디렉토리까지. 이 때 숨김 파일 (.*) 은 바뀌지 않는다.</p>
+
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>qtconsole 설정하기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">qtconsole 설정하기</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/Python</p>
+                                    <p class="date">2016-11-04 10:57:26</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>http://ipython.readthedocs.io/en/stable/index.html<br></p><p><br></p><p>여기가 ipython 공식 Documentation 사이트이다. 여기서 본 내용을 간단히 정리한다.</p><p><br></p><p>윈도우의 경우 qtconsole 의 설정파일은 다음 위치에 있다.<br><br>C:\Documents and Settings\컴퓨터이름\.ipython\profile_default</p><p><br></p><p>혹은 powershell 에서 다음을 입력하면 위치를 알려준다.</p><p><br></p><p>&gt;&gt;&gt; ipython locate<br><br></p><p>하지만 처음에는 아무 config 파일이 없으므로 만들어줘야 한다.</p><p><br></p><p>powershell을 열고 다음 명령을 입력하자.<br><br>자신의 파이썬 버전에 따라 둘 중 아무거나 입력하면 된다.<br><br>&gt;&gt;&gt;ipython2 profile create [profilename]<br><br>&gt;&gt;&gt; ipython3 profile create [profilename]</p><p><br></p><p>[profilename] 이 부분을 blank 로 두면 default 값으로 파일이 생성된다. 그러니 아무것도 입력 안하는게 제일 속편하다.<br><br>그러면 위의 디렉토리에 config 파일이 형성될 것이다.&nbsp;</p><p><br></p><p>공식 홈페이지에서 제공하는 example 은 다음과 같다.<br><br></p><pre style="box-sizing: border-box; font-family: Consolas, &quot;Andale Mono WT&quot;, &quot;Andale Mono&quot;, &quot;Lucida Console&quot;, &quot;Lucida Sans Typewriter&quot;, &quot;DejaVu Sans Mono&quot;, &quot;Bitstream Vera Sans Mono&quot;, &quot;Liberation Mono&quot;, &quot;Nimbus Mono L&quot;, Monaco, &quot;Courier New&quot;, Courier, monospace; margin-top: 0px; margin-bottom: 0px; padding: 12px; line-height: 1.5; overflow: auto; color: rgb(64, 64, 64); background-color: rgb(255, 255, 255);"><span class="c1" style="box-sizing: border-box; color: rgb(153, 153, 136); font-style: italic;"># sample ipython_config.py</span>
+<span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">c</span> <span class="o" style="box-sizing: border-box; font-weight: bold;">=</span> <span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">get_config</span><span class="p" style="box-sizing: border-box;">()</span>
+
+<span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">c</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">TerminalIPythonApp</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">display_banner</span> <span class="o" style="box-sizing: border-box; font-weight: bold;">=</span> <span class="bp" style="box-sizing: border-box; color: rgb(153, 153, 153);">True</span>
+<span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">c</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">InteractiveShellApp</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">log_level</span> <span class="o" style="box-sizing: border-box; font-weight: bold;">=</span> <span class="mi" style="box-sizing: border-box; color: rgb(0, 153, 153);">20</span>
+<span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">c</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">InteractiveShellApp</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">extensions</span> <span class="o" style="box-sizing: border-box; font-weight: bold;">=</span> <span class="p" style="box-sizing: border-box;">[</span>
+    <span class="s1" style="box-sizing: border-box; color: rgb(221, 17, 68);">'myextension'</span>
+<span class="p" style="box-sizing: border-box;">]</span>
+<span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">c</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">InteractiveShellApp</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">exec_lines</span> <span class="o" style="box-sizing: border-box; font-weight: bold;">=</span> <span class="p" style="box-sizing: border-box;">[</span>
+    <span class="s1" style="box-sizing: border-box; color: rgb(221, 17, 68);">'import numpy'</span><span class="p" style="box-sizing: border-box;">,</span>
+    <span class="s1" style="box-sizing: border-box; color: rgb(221, 17, 68);">'import scipy'</span>
+<span class="p" style="box-sizing: border-box;">]</span>
+<span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">c</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">InteractiveShellApp</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">exec_files</span> <span class="o" style="box-sizing: border-box; font-weight: bold;">=</span> <span class="p" style="box-sizing: border-box;">[</span>
+    <span class="s1" style="box-sizing: border-box; color: rgb(221, 17, 68);">'mycode.py'</span><span class="p" style="box-sizing: border-box;">,</span>
+    <span class="s1" style="box-sizing: border-box; color: rgb(221, 17, 68);">'fancy.ipy'</span>
+<span class="p" style="box-sizing: border-box;">]</span>
+<span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">c</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">InteractiveShell</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">autoindent</span> <span class="o" style="box-sizing: border-box; font-weight: bold;">=</span> <span class="bp" style="box-sizing: border-box; color: rgb(153, 153, 153);">True</span>
+<span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">c</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">InteractiveShell</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">colors</span> <span class="o" style="box-sizing: border-box; font-weight: bold;">=</span> <span class="s1" style="box-sizing: border-box; color: rgb(221, 17, 68);">'LightBG'</span>
+<span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">c</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">InteractiveShell</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">confirm_exit</span> <span class="o" style="box-sizing: border-box; font-weight: bold;">=</span> <span class="bp" style="box-sizing: border-box; color: rgb(153, 153, 153);">False</span>
+<span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">c</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">InteractiveShell</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">editor</span> <span class="o" style="box-sizing: border-box; font-weight: bold;">=</span> <span class="s1" style="box-sizing: border-box; color: rgb(221, 17, 68);">'nano'</span>
+<span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">c</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">InteractiveShell</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">xmode</span> <span class="o" style="box-sizing: border-box; font-weight: bold;">=</span> <span class="s1" style="box-sizing: border-box; color: rgb(221, 17, 68);">'Context'</span>
+
+<span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">c</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">PrefilterManager</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">multi_line_specials</span> <span class="o" style="box-sizing: border-box; font-weight: bold;">=</span> <span class="bp" style="box-sizing: border-box; color: rgb(153, 153, 153);">True</span>
+
+<span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">c</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">AliasManager</span><span class="o" style="box-sizing: border-box; font-weight: bold;">.</span><span class="n" style="box-sizing: border-box; color: rgb(51, 51, 51);">user_aliases</span> <span class="o" style="box-sizing: border-box; font-weight: bold;">=</span> <span class="p" style="box-sizing: border-box;">[</span>
+ <span class="p" style="box-sizing: border-box;">(</span><span class="s1" style="box-sizing: border-box; color: rgb(221, 17, 68);">'la'</span><span class="p" style="box-sizing: border-box;">,</span> <span class="s1" style="box-sizing: border-box; color: rgb(221, 17, 68);">'ls -al'</span><span class="p" style="box-sizing: border-box;">)</span>
+<span class="p" style="box-sizing: border-box;">]</span></pre><p><br></p><p><br></p><p>각 항목에 대한 설명은 다음 사이트에 잘 나와 있다.&nbsp;</p><p><br></p><p>http://ipython.readthedocs.io/en/stable/config/options/index.html<br></p><p><br></p><p>Terminal IPython options 은 ipython_config.py 에 적용되는 항목이다.</p><p>IPython kernel options 은 ipython_kernel_config.py 에 적용되는 항목이다.</p><p>ipython kernel 에는&nbsp;<span style="font-size: 9pt;">ipython_config.py</span><span style="font-size: 9pt;">&nbsp;에 적용된 설정 또한 적용된다.</span></p><p><span style="font-size: 9pt;"><br></span></p><p><span style="font-size: 9pt;">그리고 ipython_config.py 파일 내에도 설명이 잘 나와 있으니 읽어보고 바꾸면 된다.</span></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

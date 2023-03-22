@@ -1,0 +1,59 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>ubuntu 18.04 LTS 서버의 export</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">ubuntu 18.04 LTS 서버의 export</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/우분투 서버 구축</p>
+                                    <p class="date">2018-10-23 16:04:59</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>20.08.13</p>
+<p>다음은 yboot:/etc/export 의 일부이다.</p>
+<p>&nbsp;</p>
+<p>/home&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,sync) <br />/root&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async) <br />/mnt&nbsp;&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,sync) <br /><br />/mnt/hdd6tb_1&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,sync) <br />/mnt/hdd6tb_2&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,sync) <br />/mnt/hdd6tb_3&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,sync) <br />/mnt/hdd6tb_4&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,sync) <br /><br />/nfsroot/yhome1&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async) <br />/nfsroot/yhome2&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async) <br />/nfsroot/yhome3&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async) <br /><br />/nfsroot/y101&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async) <br />/nfsroot/y102&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async) <br />/nfsroot/y103&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async) <br />/nfsroot/y104&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async) <br />/nfsroot/y105&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async) <br />/nfsroot/y106&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async) <br />/nfsroot/y107&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async) <br />/nfsroot/y108&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async) <br />/nfsroot/y109&nbsp;&nbsp;&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)</p>
+<p><span style="color: #333333;">/nfsroot/y110&nbsp; &nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<span>&nbsp;</span></span></p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p># /etc/exports: the access control list for filesystems which may be exported<br />#&nbsp;&nbsp;to NFS clients.&nbsp; See exports(5).<br />#<br /># Example for NFSv2 and NFSv3:<br /># /srv/homes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hostname1(rw,sync,no_subtree_check) hostname2(ro,sync,no_subtree_check)<br />#<br /># Example for NFSv4:<br /># /srv/nfs4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gss/krb5i(rw,sync,fsid=0,crossmnt,no_subtree_check)<br /># /srv/nfs4/homes&nbsp; gss/krb5i(rw,sync,no_subtree_check)<br />#</p>
+<p>/home&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,sync)<br />/root&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)</p>
+<p>/nfsroot/yhome1&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/yhome2&nbsp;192.168.100.52/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/yhome3&nbsp;192.168.100.53/24(rw,no_root_squash,no_subtree_check,async)</p>
+<p>/nfsroot/y101&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y102&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y103&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y104&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y105&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y106&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y107&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y108&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y109&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)</p>
+<p>/nfsroot/y110&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y111&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y112&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y113&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y114&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y115&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y116&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y117&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y118&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y119&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)</p>
+<p>/nfsroot/y120&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y121&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y122&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y123&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y124&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y125&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y126&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y127&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y128&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y129&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)</p>
+<p>/nfsroot/y130&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y131&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y132&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y133&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y134&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y135&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y136&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y137&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y138&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y139&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)</p>
+<p>/nfsroot/y140&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y141&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y142&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y143&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y144&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y145&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y146&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y147&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y148&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y149&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)</p>
+<p>/nfsroot/y150&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y151&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y152&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y153&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y154&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y155&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y156&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y157&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y158&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y159&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)</p>
+<p>/nfsroot/y160&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y161&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y162&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y163&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y164&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y165&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y166&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y167&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y168&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y169&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y170&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)</p>
+<p>/nfsroot/y201&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y202&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y203&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y204&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y205&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y206&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y207&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y208&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y209&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)</p>
+<p>/nfsroot/y210&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y211&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y212&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br />/nfsroot/y213&nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br /><br /></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

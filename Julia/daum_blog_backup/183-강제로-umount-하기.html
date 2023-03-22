@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>강제로 umount 하기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">강제로 umount 하기</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/리눅스 일반</p>
+                                    <p class="date">2017-06-22 17:02:47</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p><a class="tx-link" target="_blank" href="https://stackoverflow.com/questions/7878707/umount-a-busy-device&lt;br&gt;&lt;br&gt;&lt;br&gt;Yes">https://stackoverflow.com/questions/7878707/umount-a-busy-device<br><br><br>Yes</a> there is a way to detach a busy device immediately (even if it is busy and cannot be unmounted forcefully). You may cleanup all later:<br><br>umount -l /PATH/OF/BUSY-DEVICE<br>umount -f /PATH/OF/BUSY-NFS(NETWORK-FILE-SYSTEM)<br>NOTE: These commands can disrupt a running process, cause data loss OR corrupt open files. Programs accessing target DEVICE/NFS files may throw errors OR could not work properly after force unmount.<br></p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line06.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p>http://faq.hostway.co.kr/Linux_ETC/4209<br></p><p><span style="font-size: 9pt;"><br></span></p><p><span style="font-size: 9pt;">mount된 디렉토리를 umount 하고자 할 때, 만약 특정 사용자 & 프로세스가 해당 디렉토리를 사용하고 있으면</span></p><p>"device is busy" 메세지가 발생하며 umount 가 되지 않습니다.&nbsp;</p><p>이 경우 umount를 위해 해당 프로세스를 강제로 kill 하는 방법은 아래와 같습니다.</p><p># fuser -ck 마운트디렉토리</p><p>ex) fuser -ck /home/hostway</p><p>위 명령으로 프로세스를 kill 하고 umount를 재시도하면 정상적으로 mount가 해제 됩니다.</p><p>&nbsp;</p><p>* 해당 디렉토리를 사용하는 사용자가 누구인지 확인하고 싶을 때</p><p># fuser -cu /home/hostway</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

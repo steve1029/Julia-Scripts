@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>pycuda 리눅스 설치법</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">pycuda 리눅스 설치법</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/CUDA</p>
+                                    <p class="date">2017-01-23 10:42:22</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>aptitude 를 이용하여 설치하면 옛날버전의 nvidia toolkit 이 적용되므로 쓸 수 없다.</p><p><br></p><p>먼저 nvidia toolkit 을 공식홈페이지에서 다운 받는다.</p><p><br></p><p>여기서 리눅스 버전을 다운 받게 되면 데비안은 없고 우분투만 있다. 난 데비안 stable 을 쓰므로,</p><p><br></p><p>우분투의 14.04 버전을 다운받아야 한다. 물론 네트워크 버전을 받도록 하자.</p><p><br></p><p>그리고 xftp 로 파일을 옮긴 뒤 다음의 과정을 따라하자.</p><p><br></p><p># dpkg -i [filename]</p><p># aptitude update</p><p># aptitude install -y cuda</p><p><br></p><p>이러면 끝난다. 편리하고 좋다. 여기서 dpkg 는 aptitude 의 앱 src 에 엔비디아의 사이트를 참조하도록 추가하는 명령인듯 보인다.</p><p><br></p><p>그리고 conda 를 이용해 pip 을 설치한다.</p><p><br></p><p># conda install pip</p><p># pip install pycuda</p><p><br></p><p>conda install 을 하면 아나콘다에서 제공하는 파이썬 패키지를 받는 것. 하지만 pycuda 는 아나콘다에서 제공하지 않는다.</p><p><br></p><p>pip 은 파이썬 공식 홈페이지에서 가져오는 듯. 그래서 웬만한건 다 있다.&nbsp;</p><p><br></p><p>마지막으로 하나 박아주자.</p><p><br></p><p># pip install reikna</p><p><br></p><p>기환형이 코멘트를 정리해주셨다.</p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line06.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p><span style="font-size: 9pt;">1. ubuntu에서 deb 패키지를 제공할 때</span></p><p>&nbsp; # apt-get install reikna</p><p><br></p><p>2. ubuntu에서 deb 패키지가 없을 때</p><p>&nbsp; # pip install reikna</p><p><br></p><p>3. anaconda가 패키지를 제공할 때</p><p>&nbsp; $ conda install reikna</p><p><br></p><p>4. anaconda가 패키지가 없을 때</p><p>&nbsp; $ conda install pip</p><p>&nbsp; $ pip install reikna</p><p><br></p><p>1번은 리눅스 시스템에 설치되고,</p><p>2~4번은 anaconda/ 디렉토리 밑에 설치되는 것이 차이</p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line06.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p><br></p><p><strike><br></strike></p><p><strike><br></strike></p><p><strike>aptitude를 이용하여 python-pycuda 를 설치하면 nvidia toolkit 이 자동으로 같이 설치된다.<br><br>cuda toolkit 과 cuda compiler 가 제대로 설치되었는지 확인하기 위해서 다음 명령을 입력해보자<br><br># nvcc --version</strike><br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

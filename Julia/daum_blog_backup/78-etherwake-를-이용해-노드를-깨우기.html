@@ -1,0 +1,52 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>etherwake 를 이용해 노드를 깨우기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">etherwake 를 이용해 노드를 깨우기</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/리눅스 일반</p>
+                                    <p class="date">2016-10-06 20:04:46</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>노드가 절전모드 등으로 잠잘 경우에 서버에서 네트워크로 깨울 수 있어야 한다.<br><br>Wake-on-LAN 은 이더넷 네트워크의 표준으로, 네트워크 메세지를 통해 호스트가 깰 수 있게 해준다. 어떤 매세지 패킷을 보내면 대상 메인보드와 이더넷이 깨어난다. 즉 메인보드와 이더넷이 둘 다 WOL 기능을 쓸 수 있도록 설정을 바꿔야 한다.<br><br>먼저 메인보드에서 WOL 기능을 켜보자. 노드에서 일일히 BIOS 설정을 해주어야 한다.<br><br>이제 각 노드마다 이더넷 디바이스의 wol 기능을 켜주어야 한다. 다음 명령을 실행하자.<br><br># ethtool -s eth0 wol g<br><br>eth0 는 각 노드에 맞게 내부네트워크로 연결된 이더넷 디바이스로 바꿔준다.<br>wol g 란 해당 이더넷 디바이스가 wol 기능을 사용한다 라는 뜻이다.<br><br>노드의 BIOS 설정을 끝냈으면 서버에 다음 앱을 설치한다.<br><br># aptitude install -y etherwake<br><br>이제 서버에서 노드들을 깨워보자. 다양한 명령어가 가능하다.<br><br># etherwake MAC-Address-Here<br># etherwake -D MAC-Address-Here<br># wakeonlan MAX-Address-Here<br><br>예를 들어 맥주소가 11:22:33:44:55:66 이라면<br><br># etherwake 11:22:33:44:55:66<br></p><p><br></p><p>노드의 개수가 많으므로 파이썬 코드로 한번에 처리하자. 명수형이 짜 놓은 코드가 있다.</p><p><br></p><p><A href="https://t1.daumcdn.net/cfile/blog/2503A04F57F6324808?download" target="_blank"><img src="//i1.daumcdn.net/icon/editor/p_etc_s.gif"/> wakeonlan.py</a></p><p><br></p><figure class="fileblock" data-ke-align="alignCenter">
+    <a href="./file/wakeonlan.py" class="">
+        <div class="image"></div>
+        <div class="desc">
+            <div class="filename">
+                <span class="name">wakeonlan.py</span>
+            </div>
+            <div class="size">0.0MB</div>
+        </div>
+    </a>
+</figure>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

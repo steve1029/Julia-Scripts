@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>리눅스에 아나콘다(Anaconda) 파이썬 설치하기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">리눅스에 아나콘다(Anaconda) 파이썬 설치하기</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/리눅스 일반</p>
+                                    <p class="date">2017-06-22 11:54:46</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>https://docs.continuum.io/anaconda/install/linux<br></p><p><br></p><p>아나콘다 공식 홈페이지에서 리눅스용 아나콘다 설치파일을 yboot 로 다운 받는다.</p><p><br></p><p>윈도우에 받아서 xftp 로 yboot의 /nfsroot/y101/root 로 전달하자.</p><p><br></p><p>우리는 각 노드의 루트 파일과 홈 서버에 anaconda 를 설치해줄 것이다.</p><p><br></p><p># chroot /nfsroot/y101</p><p><br></p><p>그리고 설치파일을 실행하자.</p><p><br></p><p># bash /root/Anaconda2 어쩌구저쩌구.sh</p><p><br></p><p>엔터를 치다보면 설치 경로를 물어본다.</p><p><br></p><p># /ananconda2 에 설치하자. /root 에 설치하는 것은 안된다. yboot 의 /root 는 모든 노드가 공유하지만,</p><p><br></p><p>그 말인즉 yboot 의 아나콘다를 이용해서 계산한다는 뜻이기 때문에 매우 위험하다.</p><p><br></p><p>설치를 다 마치면 마지막에 질문을 한다.</p><p><br></p><p>“Do you wish the installer to prepend the Anaconda&lt;2 or 3&gt; install location to PATH in your /home/&lt;user&gt;/.bashrc ?”<br></p><p><br></p><p>우린 당당하게 no 라고 한다.</p><p><br></p><p>설치를 마쳤으면 다음 파일을 수정해야한다.</p><p><br></p><p># vi /etc/bash.bashrc</p><p><br></p><p>여기에 다음 항목을 추가한다.</p><p><br></p><p>export PATH="/anaconda&lt;2 or 3&gt;/bin:$PATH"</p><p>export LD_LIBRARY_PATH=/usr/local/lib</p><p><br></p><p><span style="font-size: 9pt;">이는 환경변수에 아나콘다의 라이브러리를 추가해주는 작업이다. 각 사용자의 ~/.bashrc 에 등록해도 되지만,</span><br></p><p><br></p><p>우린 모든 사용자가 아나콘다를 쓰게 하고 싶으므로 이렇게 한다.</p><p><br></p><p>그리고 다음을 실행해주자.</p><p><br></p><p># source /etc/bash.bashrc</p><p><br></p><p>새로운 설정을 적용하는 방법이다.</p><p><br></p><p>이제 chroot 환경을 나오자</p><p><br></p><p># exit</p><p><br></p><p>다른 모든 노드의 루트파일에 같은 작업을 해주어야 하므로</p><p><br></p><p># rsync -aHv --delete /nfsroot/y101/ /nfsroot/y102</p><p><br></p><p>명령어를 모든 노드에 대해 실행해주자.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

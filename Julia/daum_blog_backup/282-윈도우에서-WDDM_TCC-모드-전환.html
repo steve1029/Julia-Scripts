@@ -1,0 +1,69 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>윈도우에서 WDDM/TCC 모드 전환</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">윈도우에서 WDDM/TCC 모드 전환</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/CUDA</p>
+                                    <p class="date">2020-06-29 17:23:37</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>엔비디아 그래픽 카드의 드라이버는 윈도우에서 두 가지 모드를 가지고 있다.</p>
+<p>&nbsp;</p>
+<p>Windows Display Driver Model</p>
+<p>&nbsp;</p>
+<p>Tesla Compute Cluster</p>
+<p>&nbsp;</p>
+<p>WDDM은 디스플레이를 연결했을 때 자동으로 활성화 된다. 즉 주로 게임용이다.</p>
+<p>&nbsp;</p>
+<p>Geforce card 들은 모두 WDDM 모드만 지원한다.</p>
+<p>&nbsp;</p>
+<p>반면 TCC는 모니터 연결없이 계산용으로만 사용할 때의 모드이다.</p>
+<p>&nbsp;</p>
+<p>Tesla 나 Titan model 에서 지원한다.</p>
+<p>&nbsp;</p>
+<p>즉 GPU를 계산용으로 쓰려고 하면 TCC 모드로 활성화 해야한다.</p>
+<p>&nbsp;</p>
+<p>윈도우에선 nvidia-smi 가 C:\Program Files\NVIDIA Corporation\NVSMI 에 위치한다.</p>
+<p>&nbsp;</p>
+<p>여기서 nvidia-smi를 실행하여, 내가 연결한 모든 GPU에 대한 연결 상태, cuda version 등을 확인할 수 있다.</p>
+<p>&nbsp;</p>
+<p>WDDM 모드를 TCC 모드로 바꾸고 싶다면, WDDM 모드로 사용할 gpu를 하나 연결해 준 다음</p>
+<p>&nbsp;</p>
+<p>명령어를 입력하면 된다. TCC 모드로 쓸 GPU의 번호가 1번이라 하자. 다음을 cmd 창에 입력한다.</p>
+<p>&nbsp;</p>
+<p>nvidia-smi -i 1 -dm 1 </p>
+<p>&nbsp;</p>
+<p>그리고 재부팅한다. 해당 내용은 여기서 참조하였다.</p>
+<p><span style="color: #000000;"><a href="https://www.mathworks.com/matlabcentral/answers/376561-why-is-titan-v-training-performance-so-poor" target="_blank" rel="noopener">www.mathworks.com/matlabcentral/answers/376561-why-is-titan-v-training-performance-so-poor</a></span></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

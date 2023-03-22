@@ -1,0 +1,73 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>우분투 업그레이드 방법 및 upgrade / dist-upgrade / do-release-upgrade 차이</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">우분투 업그레이드 방법 및 upgrade / dist-upgrade / do-release-upgrade 차이</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/우분투 서버 구축</p>
+                                    <p class="date">2020-08-12 18:25:14</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>우분투를 업그레이드 하는 방법은 3가지가 있다</p>
+<p>&nbsp;</p>
+<p>upgrade / dist-upgrade / do-release-upgrade</p>
+<p>&nbsp;</p>
+<p>여기서 현재 코드네임을 유지하면서 (예를들어 18.04의 코드네임은 bionic beaver 이다.)</p>
+<p>&nbsp;</p>
+<p>패키지만 최신으로 업그레이드 하고 싶다면</p>
+<p>&nbsp;</p>
+<p>$&nbsp;sudo&nbsp;apt&nbsp;update&nbsp; <br />$&nbsp;sudo&nbsp;apt&nbsp;upgrade <br />$&nbsp;sudo&nbsp;apt&nbsp;dist-upgrade</p>
+<p>&nbsp;</p>
+<p>를 수행한다.</p>
+<p>&nbsp;</p>
+<p>나는 이 방법을 매우 선호하지만, 릴리즈 업그레이드까지 해야한다면 다음을 하자.</p>
+<p>&nbsp;</p>
+<p>$&nbsp;sudo&nbsp;apt&nbsp;install&nbsp;update-manager-core <br />$&nbsp;sudo&nbsp;do-release-upgrade</p>
+<p>&nbsp;</p>
+<p>만약 No new release found 라는 에러 메세지가 나온다면 다음을 실행하자.</p>
+<p>&nbsp;</p>
+<p><span>$</span><span> sudo <span>do</span>-release-upgrade -d</span></p>
+<p>&nbsp;</p>
+<p>위 명령어를 실행하면 업그레이드가 시작되는데, 무슨 무슨 메세지가 여러번 나온다. 전부 y 를 하면 됨.</p>
+<p>&nbsp;</p>
+<p><a href="https://hiseon.me/linux/ubuntu/upgrade-ubuntu-18-04/" target="_blank" rel="noopener">hiseon.me/linux/ubuntu/upgrade-ubuntu-18-04/</a></p>
+<figure id="og_1597224085594" contenteditable="false" data-ke-type="opengraph" data-og-type="article" data-og-title="우분투 18.04 업그레이드 방법 - HiSEON" data-og-description="우분투 18.04 업그레이드 방법 우분투 16.04에서 우분투 18.04 LTS 버전으로 업그레이드 하는 방법을 설명드립니다. 아직 Ubuntu 18.04 LTS Bionic Beave 버전이 배포된지 오래되지 않아 호스팅 서버등에서 직" data-og-host="hiseon.me" data-og-source-url="https://hiseon.me/linux/ubuntu/upgrade-ubuntu-18-04/" data-og-url="https://hiseon.me/linux/ubuntu/upgrade-ubuntu-18-04/" data-og-image="https://scrap.kakaocdn.net/dn/bWSng1/hyG74liZ4V/PnufbbykfAkhkVUp93Btfk/img.png?width=300&amp;height=300&amp;face=0_0_300_300,https://scrap.kakaocdn.net/dn/iG8Ep/hyG5D3XOJZ/9Z2Zpz2R1KNIbllPZofK11/img.png?width=300&amp;height=300&amp;face=0_0_300_300"><a href="https://hiseon.me/linux/ubuntu/upgrade-ubuntu-18-04/" target="_blank" rel="noopener" data-source-url="https://hiseon.me/linux/ubuntu/upgrade-ubuntu-18-04/">
+<div class="og-image" style="background-image: url('https://scrap.kakaocdn.net/dn/bWSng1/hyG74liZ4V/PnufbbykfAkhkVUp93Btfk/img.png?width=300&amp;height=300&amp;face=0_0_300_300,https://scrap.kakaocdn.net/dn/iG8Ep/hyG5D3XOJZ/9Z2Zpz2R1KNIbllPZofK11/img.png?width=300&amp;height=300&amp;face=0_0_300_300');">&nbsp;</div>
+<div class="og-text">
+<p class="og-title">우분투 18.04 업그레이드 방법 - HiSEON</p>
+<p class="og-desc">우분투 18.04 업그레이드 방법 우분투 16.04에서 우분투 18.04 LTS 버전으로 업그레이드 하는 방법을 설명드립니다. 아직 Ubuntu 18.04 LTS Bionic Beave 버전이 배포된지 오래되지 않아 호스팅 서버등에서 직</p>
+<p class="og-host">hiseon.me</p>
+</div>
+</a></figure>
+<p><a href="https://www.techrepublic.com/article/how-to-tell-the-difference-between-apt-get-upgrade-apt-get-dist-upgrade-and-do-release-upgrade/" target="_blank" rel="noopener">www.techrepublic.com/article/how-to-tell-the-difference-between-apt-get-upgrade-apt-get-dist-upgrade-and-do-release-upgrade/</a></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

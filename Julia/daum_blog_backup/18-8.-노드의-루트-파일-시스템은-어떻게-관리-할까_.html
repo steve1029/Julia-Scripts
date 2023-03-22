@@ -1,0 +1,172 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>8. 노드의 루트 파일 시스템은 어떻게 관리 할까?</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">8. 노드의 루트 파일 시스템은 어떻게 관리 할까?</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/데비안 서버 구축</p>
+                                    <p class="date">2016-09-25 22:25:50</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p><span style="color: rgb(191, 219, 232); font-size: 10pt;">이전 6,7번 과정에서 노드의 부팅 준비를 마쳤다. 하지만 이것만으로 노드가 리눅스로 부팅할 수 있는 것은 아니다.&nbsp;</span></p><p><br></p><p><span style="color: rgb(191, 219, 232); font-size: 10pt;">리눅스 시스템이 구동되기 위해서는 커널 뿐아니라 루트 파일 시스템 또한 구비되어 있어야한다.</span></p><p><br></p><p><span style="color: rgb(191, 219, 232); font-size: 10pt;">루트 파일 시스템에는 리눅스 시스템이 구동되기 위한 필수적인 파일들이 모아져 있기 때문이다.</span><br></p><p><br></p><p><span style="color: rgb(191, 219, 232); font-size: 10pt;">루트 파일 시스템의 기본 구조를 메뉴얼에서 따왔다.</span></p><p><span style="font-size: 9pt;"><br></span></p><hr style="border-width: 1px 0px 0px; border-style: solid none none; border-color: black; border-image: none; height: 1px; display: block;"><p><br></p><div align="center"><span style="color: rgb(191, 219, 232); font-size: 10pt;">
+
+</span><table class="MsoTableGrid" style="border: currentColor; border-image: none; border-collapse: collapse; mso-border-alt: solid windowtext .5pt; mso-yfti-tbllook: 1184; mso-padding-alt: 0cm 5.4pt 0cm 5.4pt;" border="1" cellspacing="0" cellpadding="0">
+ <tbody><tr>
+  <td width="141" style="padding: 0cm 5.4pt; border: 1pt solid windowtext; border-image: none; width: 106.1pt; mso-border-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p align="center" style="text-align: center; line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">디렉토리</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">이름</span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+  <td width="387" style="border-width: 1pt 1pt 1pt medium; border-style: solid solid solid none; border-color: windowtext windowtext windowtext currentColor; padding: 0cm 5.4pt; border-image: none; width: 290.55pt; mso-border-alt: solid windowtext .5pt; mso-border-left-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p style="line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">디렉토리</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">내용</span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+ </tr>
+ <tr>
+  <td width="141" style="border-width: medium 1pt 1pt; border-style: none solid solid; border-color: currentColor windowtext windowtext; padding: 0cm 5.4pt; border-image: none; width: 106.1pt; mso-border-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p align="center" style="text-align: center; line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">bin</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+  <td width="387" style="border-width: medium 1pt 1pt medium; border-style: none solid solid none; border-color: currentColor windowtext windowtext currentColor; padding: 0cm 5.4pt; width: 290.55pt; mso-border-alt: solid windowtext .5pt; mso-border-left-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p style="line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">필수</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">사용자</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">명령어들</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">(ls, cp, mv,
+  …)</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+ </tr>
+ <tr>
+  <td width="141" style="border-width: medium 1pt 1pt; border-style: none solid solid; border-color: currentColor windowtext windowtext; padding: 0cm 5.4pt; border-image: none; width: 106.1pt; mso-border-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p align="center" style="text-align: center; line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">dev</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+  <td width="387" style="border-width: medium 1pt 1pt medium; border-style: none solid solid none; border-color: currentColor windowtext windowtext currentColor; padding: 0cm 5.4pt; width: 290.55pt; mso-border-alt: solid windowtext .5pt; mso-border-left-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p style="line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">장치</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">, </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">특수</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">파일들</span><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> (null, zero, tty,
+  sda, …)</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+ </tr>
+ <tr>
+  <td width="141" style="border-width: medium 1pt 1pt; border-style: none solid solid; border-color: currentColor windowtext windowtext; padding: 0cm 5.4pt; border-image: none; width: 106.1pt; mso-border-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p align="center" style="text-align: center; line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">etc</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+  <td width="387" style="border-width: medium 1pt 1pt medium; border-style: none solid solid none; border-color: currentColor windowtext windowtext currentColor; padding: 0cm 5.4pt; width: 290.55pt; mso-border-alt: solid windowtext .5pt; mso-border-left-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p style="line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">각종</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">환경설정</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">파일들</span><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">(fstab, profile,
+  hosts, …)</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+ </tr>
+ <tr>
+  <td width="141" style="border-width: medium 1pt 1pt; border-style: none solid solid; border-color: currentColor windowtext windowtext; padding: 0cm 5.4pt; border-image: none; width: 106.1pt; mso-border-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p align="center" style="text-align: center; line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">home</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+  <td width="387" style="border-width: medium 1pt 1pt medium; border-style: none solid solid none; border-color: currentColor windowtext windowtext currentColor; padding: 0cm 5.4pt; width: 290.55pt; mso-border-alt: solid windowtext .5pt; mso-border-left-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p style="line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">각</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">사용자</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">계정에</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">할당된</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">홈디렉토리</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">(</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">데이터</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">저장</span><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">)</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+ </tr>
+ <tr>
+  <td width="141" style="border-width: medium 1pt 1pt; border-style: none solid solid; border-color: currentColor windowtext windowtext; padding: 0cm 5.4pt; border-image: none; width: 106.1pt; mso-border-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p align="center" style="text-align: center; line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">lib</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+  <td width="387" style="border-width: medium 1pt 1pt medium; border-style: none solid solid none; border-color: currentColor windowtext windowtext currentColor; padding: 0cm 5.4pt; width: 290.55pt; mso-border-alt: solid windowtext .5pt; mso-border-left-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p style="line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">시스템에</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">사용되는</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">기본</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">라이브러리들</span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+ </tr>
+ <tr>
+  <td width="141" style="border-width: medium 1pt 1pt; border-style: none solid solid; border-color: currentColor windowtext windowtext; padding: 0cm 5.4pt; border-image: none; width: 106.1pt; mso-border-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p align="center" style="text-align: center; line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">proc</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+  <td width="387" style="border-width: medium 1pt 1pt medium; border-style: none solid solid none; border-color: currentColor windowtext windowtext currentColor; padding: 0cm 5.4pt; width: 290.55pt; mso-border-alt: solid windowtext .5pt; mso-border-left-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p style="line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">커널과</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">프로세스의</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">정보를</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">저장하는</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">가상파일시스템</span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+ </tr>
+ <tr>
+  <td width="141" style="border-width: medium 1pt 1pt; border-style: none solid solid; border-color: currentColor windowtext windowtext; padding: 0cm 5.4pt; border-image: none; width: 106.1pt; mso-border-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p align="center" style="text-align: center; line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">root</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+  <td width="387" style="border-width: medium 1pt 1pt medium; border-style: none solid solid none; border-color: currentColor windowtext windowtext currentColor; padding: 0cm 5.4pt; width: 290.55pt; mso-border-alt: solid windowtext .5pt; mso-border-left-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p style="line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">슈퍼유저의</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">홈디렉토리</span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+ </tr>
+ <tr>
+  <td width="141" style="border-width: medium 1pt 1pt; border-style: none solid solid; border-color: currentColor windowtext windowtext; padding: 0cm 5.4pt; border-image: none; width: 106.1pt; mso-border-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p align="center" style="text-align: center; line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">sbin</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+  <td width="387" style="border-width: medium 1pt 1pt medium; border-style: none solid solid none; border-color: currentColor windowtext windowtext currentColor; padding: 0cm 5.4pt; width: 290.55pt; mso-border-alt: solid windowtext .5pt; mso-border-left-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p style="line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">필수</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">시스템</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">명령어들</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">(mkfs,
+  ldconfig, reboot, …)</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+ </tr>
+ <tr>
+  <td width="141" style="border-width: medium 1pt 1pt; border-style: none solid solid; border-color: currentColor windowtext windowtext; padding: 0cm 5.4pt; border-image: none; width: 106.1pt; mso-border-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p align="center" style="text-align: center; line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">sys</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+  <td width="387" style="border-width: medium 1pt 1pt medium; border-style: none solid solid none; border-color: currentColor windowtext windowtext currentColor; padding: 0cm 5.4pt; width: 290.55pt; mso-border-alt: solid windowtext .5pt; mso-border-left-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p style="line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">udev</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">에</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">사용되는</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">장치</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">정보</span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+ </tr>
+ <tr>
+  <td width="141" style="border-width: medium 1pt 1pt; border-style: none solid solid; border-color: currentColor windowtext windowtext; padding: 0cm 5.4pt; width: 106.1pt; height: 21px;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p align="center" style="text-align: center; line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">tmp</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+  <td width="387" style="border-width: medium 1pt 1pt medium; border-style: none solid solid none; border-color: currentColor windowtext windowtext currentColor; padding: 0cm 5.4pt; width: 290.55pt; height: 21px;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p style="line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">임시</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">파일들</span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+ </tr>
+ <tr style="height: 8.05pt; mso-yfti-irow: 11;">
+  <td width="141" style="border-width: medium 1pt 1pt; border-style: none solid solid; border-color: currentColor windowtext windowtext; padding: 0cm 5.4pt; border-image: none; width: 106.1pt; height: 8.05pt; mso-border-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p align="center" style="text-align: center; line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">usr</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+  <td width="387" style="border-width: medium 1pt 1pt medium; border-style: none solid solid none; border-color: currentColor windowtext windowtext currentColor; padding: 0cm 5.4pt; width: 290.55pt; height: 8.05pt; mso-border-alt: solid windowtext .5pt; mso-border-left-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p style="line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">사용자</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">애플리케이션에서</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">사용되는</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">공유</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">, </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">읽기</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">전용</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">데이터</span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+ </tr>
+ <tr style="height: 3pt; mso-yfti-irow: 12; mso-yfti-lastrow: yes;">
+  <td width="141" style="border-width: medium 1pt 1pt; border-style: none solid solid; border-color: currentColor windowtext windowtext; padding: 0cm 5.4pt; width: 106.1pt; height: 21px;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p align="center" style="text-align: center; line-height: 170%; margin-bottom: 0pt; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">var</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+  <td width="387" style="border-width: medium 1pt 1pt medium; border-style: none solid solid none; border-color: currentColor windowtext windowtext currentColor; padding: 0cm 5.4pt; width: 290.55pt; height: 21px;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><p style="line-height: 170%; margin-bottom: 0pt; page-break-after: avoid; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">다양한</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">데이터</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">파일들</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">(cache, log,
+  spool, mail, tmp)</span></span></p><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+  </span></td>
+ </tr>
+</tbody></table><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+
+</span></div><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">
+
+</span><p align="center" class="MsoCaption" style="text-align: center;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">Table
+</span><!--[if supportFields]><span ><span
+style='mso-spacerun:yes'> </span>SEQ Table \* ARABIC </span><![endif]--><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">1</span><!--[if supportFields]><![endif]--><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">리눅스</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">루트파일시스템</span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;"> </span><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">개요</span></p><p align="center" class="MsoCaption" style="text-align: center;"><br></p><div style="text-align: left;"><hr align="left" style="border-width: 1px 0px 0px; border-style: solid none none; border-color: black; border-image: none; height: 1px; display: block;"></div><p class="MsoCaption" style="text-align: left;"><span style="color: rgb(31, 218, 17); font-family: Dotum;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">노드에 하드디스크가 없으므로 이 루트파일 시스템 또한 네트워크로서 제공 되어야 한다. 즉 노드가 사용하는 루트 파일 시스템은 노드에 있지 않고 서버에 있다. 노드는 네트워크를 통해 자신의 루트 파일 시스템에 접근하며, 이 때 사용하는 접근 방법이 NFS 이다.</span><br></span></p><p class="MsoCaption" style="text-align: left;"><span style="color: rgb(31, 218, 17); font-family: Dotum;"><span style="color: rgb(255, 255, 255); font-family: Dotum;"><br></span></span></p><p class="MsoCaption" style="text-align: left;"><span style="color: rgb(31, 218, 17); font-family: Dotum;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">노드의 루트 파일 시스템을 제공하고 관리하는 방법은 두가지가 있다.</span></span></p><p class="MsoCaption" style="text-align: left;"><span style="color: rgb(31, 218, 17); font-family: Dotum;"><span style="color: rgb(255, 255, 255); font-family: Dotum;"><br></span></span></p><p class="MsoCaption" style="text-align: left;"><span style="color: rgb(31, 218, 17); font-family: Dotum;"><span style="color: rgb(191, 219, 232); font-family: Dotum; font-size: 10pt;">(1) 노드의 루트 파일 시스템을 하나만 만들고 관리하는 방법</span></span></p><p class="MsoCaption" style="text-align: left;"><span style="color: rgb(31, 218, 17); font-family: Dotum;"><span style="color: rgb(255, 255, 255); font-family: Dotum;"><br></span></span></p><p class="MsoCaption" style="text-align: left; margin-left: 2em;"><font color="#ffffff"><span style="color: rgb(191, 219, 232); font-size: 10pt;">이 경우 관리는 편하지만 각 노드가 자신의 루트 파일 시스템을 '읽기 권한' 으로 접근하기 때문에 각종 오류가 발생한다.&nbsp;</span></font></p><p class="MsoCaption" style="text-align: left; margin-left: 2em;"><font color="#ffffff"><br></font></p><p class="MsoCaption" style="text-align: left; margin-left: 2em;"><font color="#ffffff"><span style="color: rgb(191, 219, 232); font-size: 10pt;">가령 부팅이 안된다던지... 비추.</span></font></p><p class="MsoCaption" style="text-align: left; margin-left: 2em;"><font color="#ffffff"><br></font></p><p class="MsoCaption" style="text-align: left;"><font color="#ffffff"><span style="color: rgb(191, 219, 232); font-size: 10pt;">(2) 각 노드마다 루트 파일 시스템을 만들고 관리하는 방법</span></font></p><p class="MsoCaption" style="text-align: left;"><font color="#ffffff"><br></font></p><p class="MsoCaption" style="text-align: left; margin-left: 2em;"><font color="#ffffff"><span style="color: rgb(191, 219, 232); font-size: 10pt;">관리는 매우 불편하지만 각 노드가 자신의 루트 파일 시스템에 쓰기 &nbsp;실행 권한이 있으므로 오류가 발생하지 않는다.</span></font></p><p class="MsoCaption" style="text-align: left; margin-left: 2em;"><font color="#ffffff"><br></font></p><p class="MsoCaption" style="text-align: left;"><font color="#ffffff"><span style="color: rgb(191, 219, 232); font-size: 10pt;">(1)번이든 (2)번이든 어느 방향으로나 분명 서버를 구축할 수 있다. 그러나 우리 나노광학연구실은 (2) 방법을 이용한다.</span></font></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

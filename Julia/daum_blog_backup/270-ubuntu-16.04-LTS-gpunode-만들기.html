@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>ubuntu 16.04 LTS gpunode 만들기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">ubuntu 16.04 LTS gpunode 만들기</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/우분투 cuda 환경 구축</p>
+                                    <p class="date">2019-03-13 17:18:10</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>1. ubuntu 를 설치한다.</p><p>2. 인터넷에 연결한다. 이때,랜카드 선택이 중요하다. 너무 최신 랜카드는 openmpi 1.10.2 버전에서 인식이 안될 수 있으니 무엇을 인터넷에 연결하고 무엇을 내부네트워크에 연결할지 잘 선택해야한다.</p><p>3. SSH 설정을 한다.</p><p><br></p><p># apt install -y openssh-server sshpass</p><p><br></p><p>4. nvidia driver 를 설치한다.</p><p>5. pycuda 를 사용할 수 있도록 공식 홈페이지를 따라 설치한다.</p><p><br></p><p><span style="font-family: 돋움, dotum, verdana, sans-serif;"># apt install nvidia-cuda-toolkit nvidia-cuda-dev python3-pycuda python3-numpy python-numpy</span><br></p><p><br></p><p>6. 서버의 사용자 정보를 노드에 복사한다.</p><p>7. 서버의 hosts 를 노드의 hosts 로 복사한다.</p><p>8. 서버의 dhcpd.conf 에 새노드에게 할당할 ip 를 설정한다. 그리고 /etc/init.d/isc-dhcp-server restart</p><p>9. 노드에 nfs-common 을 설치한다.</p><p>10. 노드의 /etc/fstab 에 다음 내용을 추가하여&nbsp;서버의 /home 과 /root 를 마운트한다.</p><p><br></p><p><span style="font-size: 9pt;">gpucluster:/root&nbsp; &nbsp; /root&nbsp; &nbsp;nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768&nbsp; 0&nbsp; &nbsp;0</span><br></p><p>gpucluster:/home&nbsp; &nbsp; /home&nbsp; &nbsp;nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768&nbsp; 0&nbsp; &nbsp;0</p><p>gpucluster:/home/ldg&nbsp; &nbsp; /home/ldg&nbsp; &nbsp;nfs defaults&nbsp; &nbsp; 0&nbsp; &nbsp;0</p><p>gpucluster:/home/cris123&nbsp; &nbsp; /home/cris123&nbsp; &nbsp;nfs defaults&nbsp; &nbsp; 0&nbsp; &nbsp;0</p><div><br></div><div>마지막 두 줄은 사실 없어도 된다.</div><div><br></div><p>11. mount -a 로 마운트하자.</p><p>12. 제대로 마운트 됐다면 test code 를 돌려보자.</p><p>13. mpi4py 를 설치한다.</p><p><br></p><p>#&nbsp;apt install -y openmpi-bin openssh-client openssh-server&nbsp;<span style="font-size: 9pt;">libopenmpi-dev</span><br></p><p># apt install -y python-mpi4py python3-mpi4py</p><p><br></p><p>14. test code 를 돌려본다.</p><p>15. 그 외 나머지 파이썬 모듈 및 C 언어용 library 들을 설치한다.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

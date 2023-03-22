@@ -1,0 +1,133 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>2. ssh 설정하기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">2. ssh 설정하기</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/데비안 서버 구축</p>
+                                    <p class="date">2016-09-25 19:59:40</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p style="text-align: left;" data-ke-size="size18"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">윈도우 상에서 Xshell, xftp 등의 프로그램을 이용해 원격으로 리눅스를 조종할 수 있다.</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">ssh login 을 활성화하는 방법을 소개한다. 다음의 패키지가 필요하다.&nbsp;</span></p>
+<p style="text-align: left;" data-ke-size="size18"><br /><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 9pt;"> # aptitude install -y openssh-server</span><span style="font-size: 9pt;">&nbsp;sshpass</span></span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">Debian 9 stretch 이후로 openssh-server 를 설치하면 대부분의 옵션들이 주석 처리 되어있다.</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">당황하지 말고 아래의 과정들에 해당하는 옵션만 주석 해제 하거나 추가해 준다면</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">문제없이 ssh 접속이 가능해진다.</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">ssh를 가능하게 해주는 패키지를 설치한 다음 설정 파일을 수정해주자.</span><br /><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"> # vi /etc/ssh/sshd_config</span><br /><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">sshd_config 의 내용 윗줄 쯤에</span><br /><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">Port 22 가</span><br /><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">#Port 22</span><br /><br /><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 9pt;"> 이렇게 주석 처리 되어 있다면 해제해주기 바란다. ssh의 기본 포트이다. 또한</span><span style="font-size: 9pt;">&nbsp;</span></span><br /><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"> PermitRootLogin = yes</span><br /><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"> 로 바꿔준다.</span><br /><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">또한 다음부분을 찾아 고치거나 없으면 새로 입력해 넣어주자.</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">IgnoreRhosts no</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">HostbasedAuthentication yes</span><br /><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">저장하고 종료한 뒤 다음 파일을 수정하자.</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"># vi /etc/ssh/ssh_config</span></p>
+<p style="text-align: left;" data-ke-size="size18"><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">다음 부분을 찾아 바꾸거나 없으면 추가하자.</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">ForwardX11 yes</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">HostbasedAuthentication yes</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">EnableSSHKeysign yes</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">이 파일에서 Port 22 가 주석처리 되어 있는데, 해제할 필요 없다. 시키는 것만 하자.</span></p>
+<p style="text-align: left;" data-ke-size="size18"><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;# /etc/init.d/ssh restart</span><br /><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"> 추가로, /etc/hosts.allow 에서는 ssh 접속을 특정 ip에만 허용하게 하는 설정을 할 수 있다.</span><br /><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"> # vi /etc/host.allow</span><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"> </span><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"> sshd : 192.168.</span><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"> sshd : 127.0.0.1</span><br /><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"> 이런식으로 해주면 된다.</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">ssh 가 이용하는 22번 포트가 열려있는 걸 확인하고 싶다면 다음의 명령어를 입력한다.</span><br /><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"> # netstat -ntl</span><br /><br /><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"> 나오는 리스트에서 22번포트가 열려있음을 확인할 수 있다.</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">만약 열려 있지 않다면 어떻게 해야할까? 원격 접속이 일단 불가능 할 것인데...</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">16년 9월 27일 분명 정상설치된 openssh-server 가 정상 작동하지 않았다.</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"># service ssh status</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">하니까 Active : failed</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 9pt;">로 떴었는데,&nbsp;</span><span style="font-size: 9pt;">다시 지웠다가 설치하니까 되더라.</span></span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">왜일까? 잘 살펴보니 ufw 와 관계있는거 같다. 설치할 때 올라가는 log에 ufw 가 얼핏 보였다. ufw 는 포트를 열고 닫는 것을 도와주는 앱이다.</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">이게 먼저 설치되고 openssh-server 를 설치해야하는 거 같다.</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 11pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 9pt;">ssh 설정이 다 끝나고 root 로 접속했는데</span><br /></span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 11pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size18"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 9pt;">/usr/bin/xauth: &nbsp;file /root/.Xauthority does not exist</span><span style="font-size: 14.66px;"><br /></span><span style="font-size: 9pt;">이런 오류 메세지가 보인다면 x11 forwarding 설정 문제이다. 다음 과정을 실행하자.</span></span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"># aptitude install xauth</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">그리고 x11 forwarding 설정이 잘 됐는지 확인하자.</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"># grep -i forward /etc/ssh/sshd_config</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 11pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 11pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><b><span style="font-size: 9pt;">모든 유저 계정을 서버에서 만들고</span><span style="font-size: 9pt;">&nbsp;유저 정보( /etc/{passwd, shadow, gshadow, }를&nbsp;</span><span style="font-size: 9pt;">각서버와 노드의 루트파일시스템에 등록 시킨 다음, 밑의 과정을 따라하길 바란다.</span></b></span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 11pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">비밀번호 없이 모든 유저가 원격으로 접속이 가능하도록 만드는 방법을 기술한다.</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 11pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">yboot, yhome1, yhome2, yhome3 의 설정 파일을 위 방법과 똑같이 수정한다.</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">그리고 나중에 노드의 루트 파일시스템에도 위 설정을 꼭 해주어야 함을 잊지말자.</span></p>
+<p style="text-align: left;" data-ke-size="size18">&nbsp;</p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">쉽게 설정하는 방법은 /nfsroot/y101 의 설정만 바꾼 뒤 나머지 전 노드의 루트파일 시스템으로 rsync 하면 된다.</span></p>
+<p data-ke-size="size18"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 14.66px;"><br /></span><span style="font-size: 9pt;"># vi /nfsroot/y101/etc/ssh/sshd_config</span><span style="font-size: 9pt;"># vi /nfsroot/y101/etc/ssh/ssh_config</span><span style="font-size: 14.66px;"><br /></span><span style="font-size: 9pt;">모든 노드에 대해 다 해주어야 한다. 근데 노드의 개수가 많으므로 스크립트도 처리 하자.</span><span style="font-size: 14.66px;"><br /></span><span style="font-size: 9pt;">더 자세한 설명은 nll.korea.ac.kr 에 나와 있다. 다음은 그 내용을 옮겨 놓은 것.</span><span style="font-size: 14.66px;"><br /></span><span style="font-size: 9pt;">그리고 새로운 설정파일을 만들어주어야 한다.</span><span style="font-size: 14.66px;"><br /></span><span style="font-size: 9pt;"># vi /etc/ssh/shosts.equiv</span></span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"># vi /root/.shosts</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"># vi /nfsroot/y101/ssh/shosts.equiv</span></p>
+<p data-ke-size="size18"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 14.66px;"><br /></span><span style="font-size: 9pt;"># vi /nfsroot/y101</span></span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">/root/.shosts</span></p>
+<p data-ke-size="size18"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 14.66px;"><br /></span><span style="font-size: 9pt;">여기에 전체 서버와 노드의 공개키를 등록해놔야 한다.</span><span style="font-size: 14.66px;"><br /></span><span style="font-size: 9pt;">root@yboot:~# seq 255 | sed -e 's/^/192.168.100./' &gt; /etc/ssh/shosts.equiv</span><span style="font-size: 9pt;">root@</span></span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 9pt;">yboot</span><span style="font-size: 9pt;">:~# seq 255 | sed -e 's/^/</span><span style="font-size: 9pt;">192.168.100.</span><span style="font-size: 9pt;">/' &gt; /nfsroot/y101/etc/ssh/shosts.equiv</span></span></p>
+<p data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">root@</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 9pt;">yboot</span><span style="font-size: 9pt;">:~# seq 255 | sed -e 's/^/</span><span style="font-size: 9pt;">192.168.100.</span><span style="font-size: 9pt;">/' &gt; /root/.shosts</span></span></p>
+<p data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">root@</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 9pt;">yboot</span><span style="font-size: 9pt;">:~# seq 255 | sed -e 's/^/</span><span style="font-size: 9pt;">192.168.100.</span><span style="font-size: 9pt;">/' &gt; /nfsroot/y101/root/.shosts</span></span></p>
+<p data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">root@</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 9pt;">yboot</span><span style="font-size: 9pt;">:~# chmod 600 /root/.shosts /nfsroot/y101/root/.shosts</span></span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 14.66px; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">위 코드에 대해 설명을 추가한다.</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 14.66px; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">seq 란 0부터 255 까지 모든 수를 말한다.</span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 14.66px; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size18"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 9pt;">위 과정들을 모두&nbsp;파이썬 스크립트로 한 방에 할 수 있게 만든 것이 ssh.keyscan.py 이다.</span><span style="font-size: 14.66px;"><br /></span><span style="font-size: 9pt;">그리고 keyscan 을 통해 모든 서버와 노드의 host key 를 모든 서버와 노드의 ssh_known_hosts 에 등록하기 위해</span><span style="font-size: 9pt;">ssh.keyscan.py 를 실행한다. 노드가 추가 될 때마다 이를 실행해주어야 한다. 설정이 끝나면 확인해본다.</span><span style="font-size: 14.66px;"><br /></span></span></p>
+<p style="text-align: left;" data-ke-size="size18"><span style="font-size: 9pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">root@yboot:~# ssh yhome1</span></p>
+<p data-ke-size="size18"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 14.66px;"><br /></span><span style="font-size: 9pt;">root@yboot:~# ssh y101</span></span></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

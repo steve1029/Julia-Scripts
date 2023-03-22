@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>모듈 사용법</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">모듈 사용법</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/Python</p>
+                                    <p class="date">2016-10-07 14:08:59</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>파이썬은 기본적으로 많은 모듈을 가지고 있다.<br><br>모듈을 import 하면 파이썬은 어떻게 그 모듈을 불러오는가?<br><br>1. 현재 Script가 포함된 디렉토리<br><br>2. 환경변수 PYTHONPATH 에 지정된 경로<br><br>3. Python이 설치된 경로 및 그 밑의 라이브러리 경로<br><br>이 순서대로 모듈을 찾아서 불러온다.<br><br>더 정확히 알고 싶다면 ipython을 열고<br><br>	In[1]:import sys<br><br>	In[2]:sys.path<br><br>라고 친다면 모듈을 불러오는 다양한 경로들을 확인 할 수 있다.<br><br><br>용어 설명<br><br>	1. 패키지란?<br><br>		패키지는 많은 모듈들을 모아놓은 폴더이다.<br><br>		가령 numpy scipy matplotlib은 모두 패키지들이며, 그 안에 많은 모듈이 들어 있다.<br><br>		패키지는 기본적으로 폴더이며, 모듈은 다 파이썬 스크립트이다.<br><br>		'모듈을 불러온다' 라고 함은 다른 파이썬 스크립트의 내용을 불러와서 쓰겠다는 뜻이다.<br><br>		다시 말해 '모듈로써 불러온다' 라고 해야 정확한 표현이다.<br><br>		import scipy.constants<br><br>		라고 하면 scipy 패키지 안의 constants 폴더의 모든 내용을 import 하겠다는 뜻이다.<br><br>		먼저 파이썬 인터프리터는 위 세가지 경로를 통해 scipy 라는 폴더를 찾을 것이며<br><br>		그 안의 constants 폴더를 찾아서 그 안의 모든 스크립트 파일들을 불러올것이다.<br><br><br>	2. __init__.py<br><br>		그 폴더를 모듈로서 import 할 때, 파이썬 인터프리터는 __int__.py의 내용을 자동으로 실행한다.<br><br>		어떤 스크립트가 모듈로서 import 될 수 있도록 설정하려면 반드시 그 폴더 내에 __init__.py가 <br><br>		있어야 한다. 또한 그 폴더가 모듈로 import 될 때 뭔가가 자동적으로 실행 되길 원한다면 <br><br>		__init__.py 내용 안에 몇가지를 추가해주면 된다. 가령 matplotlib 은 import 될 때 numpy를 자동으로<br><br>		import 하도록 되어 있다.<br><br>		import matplotlib<br><br>		이 내용이 numpy의 __init__.py 에 들어 있을 것임을 알 수 있다.<br><br>	3. __all__ = []<br><br>		__init__.py <br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

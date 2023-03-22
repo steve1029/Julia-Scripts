@@ -1,0 +1,148 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>18.04 ubuntu server 인터넷 설정하기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">18.04 ubuntu server 인터넷 설정하기</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/우분투 서버 구축</p>
+                                    <p class="date">2018-10-20 14:44:34</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>20.08.13</p>
+<p>&nbsp;</p>
+<p>yboot의 메인보드에는 랜카드가 1개 뿐이라, ipTime PX2500 을 하나 사서 달고 내부 네트워크를 구성했다.</p>
+<p>&nbsp;</p>
+<p>PX2500이 우분투 18.04 에서 자동으로 인식되지 않았다. 드라이버가 없기 때문이다.</p>
+<p>&nbsp;</p>
+<p>ipTime의 공식홈페이지에서 px2500의 리눅스용 드라이버를 /root 에 다운 받아 포함된 README 를 읽고</p>
+<p>&nbsp;</p>
+<p>설치 순서를 따라하여 설치를 완료했더니 잘 인식되었다.</p>
+<p>&nbsp;</p>
+<p>그 다음 /etc/netplan/50-cloud-init.yaml 을 수정하여 내부네트워크와 인터넷 설정을 완료하였다.</p>
+<p>&nbsp;</p>
+<p>다음은 그 스크립트이다.</p>
+<p>&nbsp;</p>
+<p>network: <br />&nbsp;&nbsp;&nbsp;&nbsp;renderer:&nbsp;networkd <br />&nbsp;&nbsp;&nbsp;&nbsp;ethernets: <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eno2: <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses:&nbsp;[163.152.45.250/24] <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gateway4:&nbsp;163.152.45.1 <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nameservers: <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses:&nbsp;[163.152.1.1] <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp4:&nbsp;no <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enp5s0: <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp4: no</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; addresses: [192.168.100.1/24]</p>
+<p>&nbsp; &nbsp; version: 2</p>
+<p>&nbsp;</p>
+<p>여기서 주의할 것은 18.04는 16.04와는 달리</p>
+<p>&nbsp;</p>
+<p>내부네트워크에서 더이상 subnetmask(netmask) 나 gateway, network 등을 설정할 필요가 없다는 것이다.</p>
+<p>&nbsp;</p>
+<p>왜냐? 뻔하거든.</p>
+<p>&nbsp;</p>
+<p>저렇게 하면 자동으로 subnetmask 는 255.255.255.0 등으로 다 설정되기 때문에 이젠 사라진 것이다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p>이제 /etc/network/interface 와 /etc/init.d/networking 은 사라졌다.<br /><br />/etc/netplan/50-cloud-init.yaml<br />에서 설정하고,<br />netplan apply<br />로 설정을 적용하면 된다. 스크립트는 더 간단해졌다.</p>
+<p>&nbsp;</p>
+<p>다음의 예시를 보자.</p>
+<p>&nbsp;</p>
+<p>* 2020-02-05</p>
+<p>/etc/netplan/50-cloud-init.yaml</p>
+<p>&nbsp;</p>
+<p>has changes to</p>
+<p><br />/etc/netplan/01-network-manager-all.yaml </p>
+<p>&nbsp;</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p>&nbsp;</p>
+<p># This file is generated from information provided by</p>
+<p># the datasource.&nbsp; Changes to it will not persist across an instance.</p>
+<p># To disable cloud-init's network configuration capabilities, write a file</p>
+<p># /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg with the following:</p>
+<p># network: {config: disabled}</p>
+<p>network:</p>
+<p>&nbsp; &nbsp; ethernets:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; enp0s3:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; addresses: [192.168.1.2/24]</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; gateway4: 192.168.1.1</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; nameservers:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; addresses: [8.8.8.8,8.8.4.4]</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; dhcp4: no</p>
+<p>&nbsp; &nbsp; version: 2</p>
+<p>&nbsp;</p>
+<p>출처: https://websiteforstudents.com/configure-static-ip-addresses-on-ubuntu-18-04-beta/</p>
+<p>&nbsp;</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p>&nbsp;</p>
+<p>Bonding 에 대해서는 여기를 참고하자.</p>
+<p>출처:&nbsp;https://netplan.io/examples</p>
+<p>&nbsp;</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p>&nbsp;</p>
+<p>이렇게 같은 방식으로 넣어준다. 다음은 내가 입력한 스크립트.</p>
+<p>&nbsp;</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p>network:</p>
+<p>&nbsp; &nbsp; ethernets:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; eno2:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; addresses: [163.152.45.250/24]</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; gateway4: 163.152.45.1</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; nameservers:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; addresses: [163.152.1.1]</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; dhcp4: no</p>
+<p>&nbsp;</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; enp1s0f0:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; dhcp4: no</p>
+<p>&nbsp;</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; enp1s0f1:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; dhcp4: no</p>
+<p>&nbsp;</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; enp1s0f2:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; dhcp4: no</p>
+<p>&nbsp;</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; enp1s0f3:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; dhcp4: no</p>
+<p>&nbsp;</p>
+<p>&nbsp; &nbsp; bonds:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; bond-conntrack:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; interfaces: [enp1s0f0, enp1s0f1, enp1s0f2, enp1s0f3]</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; addresses: [192.168.100.1/24]</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; parameters:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; mode: balance-rr</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; mii-monitor-interval: 1</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp; &nbsp; version: 2</p>
+<div>&nbsp;</div>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p># netplan apply</p>
+<p>&nbsp;</p>
+<p>로 적용한뒤</p>
+<p>&nbsp;</p>
+<p># apt-get update</p>
+<p>&nbsp;</p>
+<p>로 인터넷이 되는지 확인하자.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>ubuntu에 openmpi, nvidia, cuda, cupy 제대로 설치법</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">ubuntu에 openmpi, nvidia, cuda, cupy 제대로 설치법</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/우분투 cuda 환경 구축</p>
+                                    <p class="date">2020-09-16 17:23:31</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>Anaconda 쓰지 말자! 이상한 에러 뜬다 갑자기.</p>
+<p>cuda도 설치할때 nvidia driver 같이 설치하면 안된다! 따로 설치하자.</p>
+<p>nvidia driver 와 cuda compiler는 서로의 존재를 모른다. 독립적인 존재다.</p>
+<p>그래서 nvidia-smi 했을 때 나오는 cuda 버전은 nvidia driver에서 지원하는 버전을 말하는 것이지</p>
+<p>현재 ubuntu 에 설치된 cuda의 버전을 말하는 것이 아니다.</p>
+<p>반드시 nvidia driver 설치하고 cuda 따로 설치하고</p>
+<p>python 은 apt로 설치하자.</p>
+<h1>Nvidia driver 설치법</h1>
+<p>apt 이용해서 설치하는게 무조건 최고다. 기본 source list에는 nvidia가 없으니</p>
+<p>새로운 리스트를 추가하고 설치하자. 다음을 따라하면 된다.</p>
+<pre><code>sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo apt update
+sudo apt install ubuntu-drivers-common
+ubuntu-drivers devices
+== /sys/devices/pci0000:00/0000:00:01.0/0000:01:00.0 ==
+modalias : pci:v000010DEd00001E02sv000010DEsd000012A3bc03sc00i00
+vendor   : NVIDIA Corporation
+model    : TU102 [TITAN RTX]
+driver   : nvidia-driver-440 - distro non-free
+driver   : nvidia-driver-418-server - distro non-free
+driver   : nvidia-driver-440-server - distro non-free
+driver   : nvidia-driver-435 - distro non-free
+driver   : nvidia-driver-450 - third-party free recommended
+driver   : xserver-xorg-video-nouveau - distro free builtin
+sudo apt install nvidia-driver-450 
+sudo reboot</code></pre><h1>cuda 설치법</h1>
+<p>이건 nvidia 홈페이지에서 .run 파일을 받아 설치해도 된다. 이 때, nvidia driver가 이미 설치되어 있으면</p>
+<p>nvidia driver를 지우던가 새로 설치하던가 하라고 경고문구가 뜨는데,</p>
+<p>상콤히 무시해주고 진행한 뒤 driver만 빼고 설치해주면 된다.</p>
+<p>nvidia driver 의 version 을 확인하는 방법은 다음과 같다.</p>
+<pre><code># nvidia-smi</code></pre><p>cuda driver 의 version 을 확인하는 방법은 다음과 같다.</p>
+<pre><code># nvcc --version</code></pre><p>참고로, nvidia-smi 에서 나오는 cuda version은 nvidia-driver에서 호환되는 최대 cuda version 을 말하는 것이지<br>실제 설치된 cuda driver의 version을 말하는 것이 아니다!!<br>즉 nvidia-smi 에서 나오는 cuda version 이하를 설치해야 한다는 뜻이다.</p>
+<h1>openmpi 설치법</h1>
+<p>이것도 그냥 python3-mpi4py 설치하면 필요 패키지가 알아서 자동 설치된다. 더 할 것이 없다.</p>
+
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

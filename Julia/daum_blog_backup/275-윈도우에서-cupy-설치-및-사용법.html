@@ -1,0 +1,56 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>윈도우에서 cupy 설치 및 사용법</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">윈도우에서 cupy 설치 및 사용법</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/CUDA</p>
+                                    <p class="date">2019-07-03 14:54:32</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>윈도우에서 CuPy 설치 및 사용법.</p>
+<p>설치 조건: 윈도우 10이상, Nvidia GPU 가 반드시 있어야하며, 활성화 되어 있어야 한다. GPU를 활성화 하는 방법은 모니터 케이블을 GPU 에 연결하고 부팅하기만 하면 된다. GPU 의 spec 은 윈도우 검색창에 dxdiag 를 입력하면 &lt;디스플레이&gt; 탭에서 확인할 수 있다.</p>
+<p>&nbsp;</p>
+<p>1. VS 설치. 2019 버전도 잘 됨. 마소 홈피에서 Community 2019 를 받은 다음 실행. 설치할 패키지들을 선택해야하는데, C++를 사용한 데스트톱 개발 어쩌구저쩌구만 체크한다. 나머지는 절대 설치하지 않는다.</p>
+<p>&nbsp;</p>
+<p>2. VS 설치가 끝나면 Nvidia cuda toolkit 공식 홈페이지에서 다운 받아 설치하는데, 반드시 설치 마지막에 'Lauch Samples' 를 체크할 것. 만약 Nvidia cuda toolkit 이 VS 를 설치하기 전에 이미 설치되어 있었다면, 지우고 1번부터 다시 시작할 것. 만약 'Lauch Samples' 를 체크하지 않고 설치 과정을 마쳤다면, 당황하지 않고 'C:\ProgramData\NVIDIA Coparation\CUDA samples\' 로 들어가서 Sample 파일을 실행하면 된다. ProgramData 폴더는 숨김 폴더이므로, 탐색기 창의 &lt;보기&gt; 에서 숨김항목 보기를 체크해야한다.</p>
+<p>&nbsp;</p>
+<p>3. Sample 이 들어있는 폴더가 열리면 2019 용 샘플들을 더블 클릭하여 실행. VS 가 뜨면서 Visual C++ 를 설치해야한다고 뜸. 설치할 것.</p>
+<p>&nbsp;</p>
+<p>4. 설치가 끝나면 아무것도 건드리지 말고 VS 를 끈 뒤 Anaconda Python 3.7 이상 설치. 이 때 Anaconda 공식 홈페이지에서 받아서 설치할 것. 즉 VS 내의 anaconda python 통합설치를 하지 말라는 뜻이다. Anaconda 가 이미 설치되어 있다면 건너뛰어도 됨.</p>
+<p>&nbsp;</p>
+<p>5. 윈도우 cmd 창을 열어서 nvcc --version 입력. 설치되어 있는 cuda driver 의 버전을 확인한다. 최신 버전은 10.1 이다.</p>
+<p>Anaconda Prompt 로 pip install -U setuptools pip 을 입력한 뒤 pip install cupy-cuda101 를 입력.</p>
+<p>&nbsp;</p>
+<p>6. 끝.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

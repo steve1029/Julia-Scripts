@@ -1,0 +1,47 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>atexit 모듈</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">atexit 모듈</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/Python</p>
+                                    <p class="date">2016-10-17 10:10:45</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>Doing Something before program exit.</p><p><br></p><pre class="lang-py prettyprint prettyprinted" style="margin-top: 0px; margin-bottom: 1em; padding: 5px; border: 0px; font-size: 13px; width: auto; max-height: 600px; overflow: auto; font-family: Consolas, Menlo, Monaco, &quot;Lucida Console&quot;, &quot;Liberation Mono&quot;, &quot;DejaVu Sans Mono&quot;, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, monospace, sans-serif; background-color: rgb(239, 240, 241); color: rgb(57, 51, 24); word-wrap: normal;"><code style="margin: 0px; padding: 0px; border: 0px; font-family: Consolas, Menlo, Monaco, &quot;Lucida Console&quot;, &quot;Liberation Mono&quot;, &quot;DejaVu Sans Mono&quot;, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, monospace, sans-serif; white-space: inherit;"><span class="kwd" style="margin: 0px; padding: 0px; border: 0px; color: rgb(16, 16, 148); font-family: Dotum;">import</span><span class="pln" style="margin: 0px; padding: 0px; border: 0px; color: rgb(48, 51, 54); font-family: Dotum;"> atexit
+
+</span><span class="kwd" style="margin: 0px; padding: 0px; border: 0px; color: rgb(16, 16, 148); font-family: Dotum;">def</span><span class="pln" style="margin: 0px; padding: 0px; border: 0px; color: rgb(48, 51, 54); font-family: Dotum;"> exit_handler</span><span class="pun" style="margin: 0px; padding: 0px; border: 0px; color: rgb(48, 51, 54); font-family: Dotum;">():</span><span class="pln" style="margin: 0px; padding: 0px; border: 0px; color: rgb(48, 51, 54); font-family: Dotum;">
+    </span><span class="kwd" style="margin: 0px; padding: 0px; border: 0px; color: rgb(16, 16, 148); font-family: Dotum;">print</span><span class="pln" style="margin: 0px; padding: 0px; border: 0px; color: rgb(48, 51, 54); font-family: Dotum;"> </span><span class="str" style="margin: 0px; padding: 0px; border: 0px; color: rgb(125, 39, 39); font-family: Dotum;">'My application is ending!'</span><span class="pln" style="margin: 0px; padding: 0px; border: 0px; color: rgb(48, 51, 54); font-family: Dotum;">
+
+atexit</span><span class="pun" style="margin: 0px; padding: 0px; border: 0px; color: rgb(48, 51, 54); font-family: Dotum;">.</span><span class="pln" style="margin: 0px; padding: 0px; border: 0px; color: rgb(48, 51, 54); font-family: Dotum;">register</span><span class="pun" style="margin: 0px; padding: 0px; border: 0px; color: rgb(48, 51, 54); font-family: Dotum;">(</span><span class="pln" style="margin: 0px; padding: 0px; border: 0px; color: rgb(48, 51, 54); font-family: Dotum;">exit_handler</span><span class="pun" style="margin: 0px; padding: 0px; border: 0px; color: rgb(48, 51, 54); font-family: Dotum;">)</span></code></pre><p><br></p><p>파이썬의 기본 내장 모듈로, 프로그램이 닫히기 전에 뭔가를 수행하도록 만들 수 있다.</p><p><br></p><p>at exit 의 준말로, atexit.register() 라 하면 프로그램이 닫힐 때 실행할 함수를 등록하는 것이다.</p><p><br></p><p>소스코드는 Lib/atexit.py 에 있다.</p><p><br></p><p>axexit.register()</p><p>atexit.sys()</p><p><br></p><p>두 가지 메쏘드가 있다.</p><p><br></p><p>atexit.register 로 함수들을 등록하면, 등록된 순서의 반대 순서로 수행하고 프로그램을 마친다.</p><p><br></p><p>sys.exitfunc() 이라는 비슷한 함수가 있지만, 그 것보다는 atexit 를 사용하도록 권장하고 있다.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

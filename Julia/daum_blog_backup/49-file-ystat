@@ -1,0 +1,80 @@
+#!/usr/bin/env python
+
+from datetime import datetime as dt
+import subprocess as sp
+import psutil as ps
+import numpy as np
+import os
+import sys
+import time
+
+def ext_exec_wait(cmd):
+    out, err = sp.Popen(cmd.split(), stdout=sp.PIPE, stderr=sp.PIPE).communicate()
+    if err != '': print err
+    return out
+
+def ext_exec_nowait(cmd):
+    sp.Popen(cmd.split(), stdout=sp.PIPE, stderr=sp.PIPE)
+
+def reconstruct(string):
+    strlist = string.split()
+    rst = ''
+    for st in strlist:
+        rst += st
+        rst += ' '
+    rst = rst.rstrip(' ')
+    return rst
+
+homedir = os.path.expanduser('~')
+#if not os.path.exists('%s/.ystat/' % homedir):
+#    os.mkdir('%s/.ystat' % homedir)
+
+if not os.path.exists('/root/.ystat/'):
+    os.mkdir('/root/.ystat')
+
+myname = ext_exec_wait('hostname').rstrip('\n')
+
+#ylist = os.listdir('%s/.ystat/' % homedir)
+flist = os.listdir('/root/.ystat/')
+flist.sort()
+
+ylist = []
+ulist = []
+pidlist = []
+prclist = []
+prtlist = []
+
+print_form = '%6s\t%10s\t%20s\t%20s\t%10s\t%9s / %9s\t%15s\t%s'
+print print_form % ('Node', 'CPU model', 'Process      ', 'USER     ', 'CPU Usage', 'MEM Usage', 'MEM Total', 'Last Updated', 'Note')
+for i, fname in enumerate(flist):
+    try:
+#       infof = file('%s/.ystat/%s' % (homedir, yname), 'r')
+        infof = file('/root/.ystat/%s' % fname, 'r')
+        info  = infof.read()
+        infof.close()
+
+        infos = info.split('\t')
+        name, cpun, cpup, user, ppid, proc, cpct, memt, memu, memp, nowy, tprc = infos
+#	if user == 'lsy':
+#           user = 'lsy \'the traitor\''
+        cpun = cpun.split()[2]
+        now = dt.now()
+        nowt = ((now.day*24 + now.hour)*60 + now.minute)*60 + now.second
+        delt = int(nowt) - int(nowy)
+        strt = '%02d s ago' % delt
+        mem0 = '%2.2fGiB' % (float(memu)/(1024**3))
+        mem1 = '%2.2fGiB' % (float(memt)/(1024**3))
+        mem2 = '(%2.2f%%)' % float(memp)
+        if int(tprc) == 0: warn = ''
+        else: warn = '%s Procs' % (int(tprc)+1)
+        cpct = '%05.01f' % float(cpct)
+        cpct += '%'; cpup += '%';
+	if user == 'root': user = ''; proc = ''
+        if user != '': user += '(%s)' % cpct
+        ylist.append(fname)
+        ulist.append(user)
+        pidlist.append(ppid)
+        prclist.append(proc)
+        prtlist.append(print_form % (name, cpun, proc, user, cpup, mem0, mem1, strt, warn))
+        print print_form % (name, cpun, proc, user, cpup, mem0, mem1, strt, warn)
+    except ValueError: pass

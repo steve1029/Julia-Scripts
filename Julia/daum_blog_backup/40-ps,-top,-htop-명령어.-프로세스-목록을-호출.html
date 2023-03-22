@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>ps, top, htop 명령어. 프로세스 목록을 호출.</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">ps, top, htop 명령어. 프로세스 목록을 호출.</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/리눅스 일반</p>
+                                    <p class="date">2016-09-26 11:22:17</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>ps, top 은 리눅스 기본 명령어들로, 현재 프로세스 현황을 출력한다. 그런데 둘 다 별로 안 좋다.<br><br>aptitude를 이용해 htop 을 설치하자.<br><br># htop<br><br>프로세스를 훨씬 더 잘 보여준다.<br></p><p><br></p><p lang="ko-KR" style="margin-bottom: 0cm; color: rgb(85, 85, 85); font-family: tahoma, verdana, 돋움, Dotum; background-color: rgb(255, 255, 255);"><font color="#000000"><font size="2" face="돋움"><b>프로세스 정보</b></font></font></p><p lang="ko-KR" style="margin-bottom: 0cm; color: rgb(85, 85, 85); font-family: tahoma, verdana, 돋움, Dotum; background-color: rgb(255, 255, 255);"><font face="돋움"><strong><font size="2">PID</font></strong><strong><font color="#000000"><font size="2"><span style="font-weight: normal;">:&nbsp;</span></font></font></strong><font color="#000000"><font size="2">프로세스의 프로세스&nbsp;</font></font><font color="#000000"><font size="2">ID&nbsp;</font></font><font color="#000000"><font size="2">번호</font></font></font></p><p style="margin-bottom: 0cm; color: rgb(85, 85, 85); font-family: tahoma, verdana, 돋움, Dotum; background-color: rgb(255, 255, 255);"><strong><font color="#000000"><font size="2" face="돋움"><span style="font-weight: normal;">USER:&nbsp;</span></font></font></strong><font color="#000000"><font size="2" face="돋움">프로세스의 소유자</font></font></p><p style="margin-bottom: 0cm; color: rgb(85, 85, 85); font-family: tahoma, verdana, 돋움, Dotum; background-color: rgb(255, 255, 255);"><strong><font color="#000000"><font size="2" face="돋움"><span style="font-weight: normal;">PR:&nbsp;</span></font></font></strong><font color="#000000"><font size="2" face="돋움">프로세스의 우선순위</font></font></p><p style="margin-bottom: 0cm; color: rgb(85, 85, 85); font-family: tahoma, verdana, 돋움, Dotum; background-color: rgb(255, 255, 255);"><strong><font color="#000000"><font size="2" face="돋움"><span style="font-weight: normal;">NI:&nbsp;</span></font></font></strong><font face="돋움"><font color="#000000"><font size="2">우선순위에 영향을 주는 프로세스의&nbsp;</font></font><font color="#000000"><font size="2">nice&nbsp;</font></font><font color="#000000"><font size="2">값</font></font></font></p><p style="margin-bottom: 0cm; color: rgb(85, 85, 85); font-family: tahoma, verdana, 돋움, Dotum; background-color: rgb(255, 255, 255);"><strong><font color="#000000"><font size="2" face="돋움"><span style="font-weight: normal;">VIRT:&nbsp;</span></font></font></strong><font color="#000000"><font size="2" face="돋움">프로세스가 사용 중인 가상 메모리 양</font></font></p><p style="margin-bottom: 0cm; color: rgb(85, 85, 85); font-family: tahoma, verdana, 돋움, Dotum; background-color: rgb(255, 255, 255);"><strong><font color="#000000"><font size="2" face="돋움"><span style="font-weight: normal;">RES:&nbsp;</span></font></font></strong><font face="돋움"><font color="#000000"><font size="2">프로세스가 사용 중인 물리&nbsp;</font></font><font color="#000000"><font size="2">RAM</font></font><font color="#000000"><font size="2">의 양</font></font><font color="#000000"><font size="2">(</font></font><font color="#000000"><font size="2">단위는 킬로바이트</font></font><font color="#000000"><font size="2">)</font></font></font></p><p style="margin-bottom: 0cm; color: rgb(85, 85, 85); font-family: tahoma, verdana, 돋움, Dotum; background-color: rgb(255, 255, 255);"><strong><font color="#000000"><font size="2" face="돋움"><span style="font-weight: normal;">SHR:&nbsp;</span></font></font></strong><font color="#000000"><font size="2" face="돋움">프로세스가 사용 중인 공유 메모리 양</font></font></p><p style="margin-bottom: 0cm; color: rgb(85, 85, 85); font-family: tahoma, verdana, 돋움, Dotum; background-color: rgb(255, 255, 255);"><strong><font color="#000000"><font size="2" face="돋움"><span style="font-weight: normal;">S:&nbsp;</span></font></font></strong><font face="돋움"><font color="#000000"><font size="2">프로세스의 현재 상태</font></font><font color="#000000"><font size="2">(zombied, sleeping, running, uninterruptedly sleeping, traced)</font></font></font></p><p style="margin-bottom: 0cm; color: rgb(85, 85, 85); font-family: tahoma, verdana, 돋움, Dotum; background-color: rgb(255, 255, 255);"><strong><font color="#000000"><font size="2" face="돋움"><span style="font-weight: normal;">%CPU:&nbsp;</span></font></font></strong><font color="#000000"><font size="2" face="돋움">프로세스가 프로세서를 사용한 시간의 백분율</font></font></p><p style="margin-bottom: 0cm; color: rgb(85, 85, 85); font-family: tahoma, verdana, 돋움, Dotum; background-color: rgb(255, 255, 255);"><strong><font color="#000000"><font size="2" face="돋움"><span style="font-weight: normal;">%MEM :&nbsp;</span></font></font></strong><font face="돋움"><font color="#000000"><font size="2">프로세스가 사용 중인 물리&nbsp;</font></font><font color="#000000"><font size="2">RAM</font></font><font color="#000000"><font size="2">의 백분율</font></font></font></p><p style="margin-bottom: 0cm; color: rgb(85, 85, 85); font-family: tahoma, verdana, 돋움, Dotum; background-color: rgb(255, 255, 255);"><strong><font color="#000000"><font size="2" face="돋움"><span style="font-weight: normal;">TIME+:&nbsp;</span></font></font></strong><font color="#000000"><font size="2" face="돋움">프로세스가 프로세서를 사용한 시간</font></font></p><p style="margin-bottom: 0cm; color: rgb(85, 85, 85); font-family: tahoma, verdana, 돋움, Dotum; background-color: rgb(255, 255, 255);"><strong><font color="#000000"><font size="2" face="돋움"><span style="font-weight: normal;">COMMAND:&nbsp;</span></font></font></strong><font color="#000000"><font size="2" face="돋움">프로세스 시작에 사용한 명령어명</font></font></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

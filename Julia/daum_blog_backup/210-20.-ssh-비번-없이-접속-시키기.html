@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>20. ssh 비번 없이 접속 시키기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">20. ssh 비번 없이 접속 시키기</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/데비안 서버 구축</p>
+                                    <p class="date">2017-08-02 18:39:09</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p><br></p><p style="text-align: center;"><span style="color: rgb(255, 255, 255); font-size: 11pt;"><b><span style="color: rgb(70, 70, 70); font-size: 14pt;">모든 유저 계정을 yboot 서버에서 만들고</span><span style="color: rgb(70, 70, 70); font-size: 14pt;">&nbsp;유저 정보( /etc/{passwd, shadow, gshadow, }를&nbsp;</span><span style="color: rgb(70, 70, 70); font-size: 14pt;">각서버와 노드의 루트파일시스템 /etc/ 에 등록 시킨 다음, 밑의 과정을 따라하길 바란다.</span></b></span></p><p><span style="color: rgb(255, 255, 255); font-size: 11pt;"><br></span></p><p><span style="color: rgb(70, 70, 70); font-size: 10pt;">비밀번호 없이 모든 유저가 원격으로 접속이 가능하도록 만드는 방법을 기술한다.</span><br></p><p><br></p><p><span style="color: rgb(70, 70, 70); font-size: 10pt;">쉽게 설정하는 방법은 /nfsroot/y101 의 설정만 바꾼 뒤 나머지 전 노드의 루트파일 시스템으로</span></p><p><span style="color: rgb(232, 211, 192); font-size: 10pt;"><br></span></p><p><span style="color: rgb(70, 70, 70); font-size: 10pt;">rsync 명령을 수행하면 된다.</span></p><p><font color="#ffffff"><span style="font-size: 14.66px;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;"># vi /nfsroot/y101/etc/ssh/sshd_config</span></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;"># vi /nfsroot/y101/etc/ssh/ssh_config</span></font></p><p><font color="#ffffff"><span style="color: rgb(232, 211, 192); font-size: 10pt;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;">위 두 파일을 실행한 뒤에,</span></font></p><p><font color="#ffffff"><span style="color: rgb(232, 211, 192); font-size: 10pt;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;"># vi /tftpboot/rsync.nfsroot.py</span></font></p><p><font color="#ffffff"><span style="color: rgb(232, 211, 192); font-size: 10pt;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;">이 파일을 수정하여 /nfsroot/y101 을 다른 노드의 루트파일들로 rsync 하도록 만든다.</span></font></p><p><font color="#ffffff"><span style="color: rgb(232, 211, 192); font-size: 10pt;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;"># python /tftpboot/rsync.nfsroot.py</span></font></p><p><font color="#ffffff"><span style="color: rgb(232, 211, 192); font-size: 10pt;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;">더 자세한 설명은 nll.korea.ac.kr 에 나와 있다. 다음은 그 내용을 옮겨 놓은 것.</span></font></p><p><font color="#ffffff"></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;"># vi /etc/ssh/shosts.equiv</span></font></p><p><span style="color: rgb(70, 70, 70); font-size: 10pt;"># vi /root/.shosts</span><br></p><p><span style="color: rgb(70, 70, 70); font-size: 10pt;"># vi /nfsroot/y101/ssh/shosts.equiv</span><font color="#ffffff"><span style="font-size: 14.66px;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;"># vi /nfsroot/y101</span></font><span style="color: rgb(70, 70, 70); font-size: 10pt;">/root/.shosts</span></p><p><font color="#ffffff"><span style="font-size: 14.66px;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;">여기에 전체 서버와 노드의 공개키를 등록해놔야 한다.</span></font></p><p><font color="#ffffff"><span style="font-size: 14.66px;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;">root@yboot:~# seq 255 | sed -e 's/^/192.168.100./' &gt; /etc/ssh/shosts.equiv</span></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;">root@</span></font><span style="color: rgb(70, 70, 70); font-size: 10pt;">yboot</span><span style="color: rgb(70, 70, 70); font-size: 10pt;">:~# seq 255 | sed -e 's/^/</span><span style="color: rgb(70, 70, 70); font-size: 10pt;">192.168.100.</span><span style="color: rgb(70, 70, 70); font-size: 10pt;">/' &gt; /nfsroot/y101/etc/ssh/shosts.equiv</span></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;">root@</span></font><span style="color: rgb(70, 70, 70); font-size: 10pt;">yboot</span><span style="color: rgb(70, 70, 70); font-size: 10pt;">:~# seq 255 | sed -e 's/^/</span><span style="color: rgb(70, 70, 70); font-size: 10pt;">192.168.100.</span><span style="color: rgb(70, 70, 70); font-size: 10pt;">/' &gt; /root/.shosts</span></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;">root@</span></font><span style="color: rgb(70, 70, 70); font-size: 10pt;">yboot</span><span style="color: rgb(70, 70, 70); font-size: 10pt;">:~# seq 255 | sed -e 's/^/</span><span style="color: rgb(70, 70, 70); font-size: 10pt;">192.168.100.</span><span style="color: rgb(70, 70, 70); font-size: 10pt;">/' &gt; /nfsroot/y101/root/.shosts</span></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;">root@</span></font><span style="color: rgb(70, 70, 70); font-size: 10pt;">yboot</span><span style="color: rgb(70, 70, 70); font-size: 10pt;">:~# chmod 600 /root/.shosts /nfsroot/y101/root/.shosts</span></p><p><span style="color: rgb(255, 255, 255); font-size: 14.66px;"><br></span></p><p><span style="color: rgb(70, 70, 70); font-size: 10pt;">위 코드에 대해 설명을 추가한다.</span></p><p><span style="color: rgb(255, 255, 255); font-size: 14.66px;"><br></span></p><p><span style="color: rgb(70, 70, 70); font-size: 10pt;">seq 란 0부터 255 까지 모든 수를 말한다.</span></p><p><span style="color: rgb(255, 255, 255); font-size: 14.66px;"><br></span></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;">위 과정들을 모두&nbsp;파이썬 스크립트로 한 방에 할 수 있게 만든 것이 ssh.keyscan.py 이다.</span></font></p><p><font color="#ffffff"><span style="font-size: 14.66px;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;">그리고 keyscan 을 통해 모든 서버와 노드의 host key 를 모든 서버와 노드의 </span></font></p><p><font color="#ffffff"><span style="color: rgb(232, 211, 192); font-size: 10pt;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;">ssh_known_hosts 에 등록하기 위해 </span></font><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;">ssh.keyscan.py 를 실행한다.</span></font></p><p><font color="#ffffff"><span style="color: rgb(232, 211, 192); font-size: 10pt;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;">노드가 추가 될 때마다 이를 실행해주어야 한다. 설정이 끝나면 확인해본다.</span></font></p><p><font color="#ffffff"><span style="font-size: 14.66px;"><br></span></font></p><p><span style="color: rgb(70, 70, 70); font-size: 10pt;">root@yboot:~# ssh yhome1</span><font color="#ffffff"><span style="font-size: 14.66px;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(70, 70, 70); font-size: 10pt;">root@yboot:~# ssh y101</span></font></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

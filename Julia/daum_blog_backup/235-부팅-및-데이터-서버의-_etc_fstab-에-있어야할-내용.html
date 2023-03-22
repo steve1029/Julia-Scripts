@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>부팅 및 데이터 서버의 /etc/fstab 에 있어야할 내용</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">부팅 및 데이터 서버의 /etc/fstab 에 있어야할 내용</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/데비안 서버 구축</p>
+                                    <p class="date">2018-06-27 15:01:38</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>부팅 및 데이터 서버는 사용자의 개인 데이터가 있는 서버이므로</p><p><br></p><p>백업을 할 때 하드를 추가로 연결해야하는 일이 있을 수도 있다.</p><p><br></p><p>그런데 하드를 새로 연결하면 /dev/sda, sdb 등등으로 이름이 붙게 되는데</p><p><br></p><p>이게 SATA 선의 위치에 따라 순서가 매번 바뀐다. 하드를 추가로 꼽고 부팅하는 순간</p><p><br></p><p>리눅스가 설치되거나 /home 에 연결된 하드의 sd* 이름이 바뀌어버려 mount 하지 못하거나 부팅하지</p><p><br></p><p>못하는 상황이 펼쳐질 수 있으니, 하드를 mount 할 때는 반드시 fstab 에 uuid 로 등록하도록 하자.</p><p><br></p><p>그래야 정신 건강에 이롭다.</p><p><br></p><p>마운트된 하드/파티션 들의 uuid 를 확인하는 방법은 다음과 같다.</p><p><br></p><p># ls -l&nbsp;/dev/disk/by-uuid</p><p><br></p><p>다음의 명령어도 같이 사용하면 좋다</p><p><br></p><p># fdisk -l</p><p># cfdisk /dev/sda</p><p><br></p><p>각 하드의 sd* 와 파티션들을 확인할 수 있는 명령어들.</p><p><br></p><hr style="display:block; border: black 0 none; border-top: black 1px solid; border-bottom: black 3px solid; height: 7px"><p>180627 종호형의 home 폴더를 백업하기 위해 하드를 연결했다가 뺏더니 부팅이 안되는 상황 발생.</p><p>알고보니 sd* 가 꼬여서 마운트 포인트를 부팅과정에서 찾지 못했기 때문. /etc/fstab 의 내용을 모두</p><p>uuid 로 바꿔서 기록하였다.</p><p><br></p><p><span style="color: rgb(0, 216, 255);"># /etc/fstab: static file system information.</span></p><p><span style="color: rgb(0, 216, 255);">#</span></p><p><span style="color: rgb(0, 216, 255);"># Use 'blkid' to print the universally unique identifier for a</span></p><p><span style="color: rgb(0, 216, 255);"># device; this may be used with UUID= as a more robust way to name devices</span></p><p><span style="color: rgb(0, 216, 255);"># that works even if disks are added and removed. See fstab(5).</span></p><p><span style="color: rgb(0, 216, 255);">#</span></p><p><span style="color: rgb(0, 216, 255);"># &lt;file system&gt; &lt;mount point&gt;&nbsp; &nbsp;&lt;type&gt;&nbsp; &lt;options&gt;&nbsp; &nbsp; &nbsp; &nbsp;&lt;dump&gt;&nbsp; &lt;pass&gt;</span></p><p><span style="color: rgb(0, 216, 255);"># / was &#111;&#110; /dev/sdc1 during installation</span></p><p><span style="color: rgb(0, 216, 255);">UUID=80bf7376-ed27-4c99-a08c-f934b236535e /&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ext4&nbsp; &nbsp; errors=remount-ro 0&nbsp; &nbsp; &nbsp; &nbsp;1</span></p><p><span style="color: rgb(0, 216, 255);"># swap was &#111;&#110; /dev/sdc2 during installation</span></p><p><span style="color: rgb(0, 216, 255);">UUID=ab1327c1-23e3-491f-a8a7-85d40597d84f none&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; swap&nbsp; &nbsp; sw&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; &nbsp; &nbsp; &nbsp;0</span></p><p><span style="color: rgb(0, 216, 255);">/dev/sr0&nbsp; &nbsp; &nbsp; &nbsp; /media/cdrom0&nbsp; &nbsp;udf,iso9660 user,noauto&nbsp; &nbsp; &nbsp;0&nbsp; &nbsp; &nbsp; &nbsp;0</span></p><p><br></p><p><span style="color: rgb(0, 216, 255);">#/dev/sdd1&nbsp; /local_home/home1&nbsp; &nbsp;ext4&nbsp; &nbsp; defaults&nbsp; &nbsp; 0&nbsp; &nbsp;0</span></p><p><span style="color: rgb(0, 216, 255);">#/dev/sdb1&nbsp; /local_home/home2&nbsp; &nbsp;ext4&nbsp; &nbsp; defaults&nbsp; &nbsp; 0&nbsp; &nbsp;0</span></p><p><span style="color: rgb(0, 216, 255);">&nbsp;</span></p><p><span style="color: rgb(0, 216, 255);">UUID=8bd53672-6218-48b5-a151-57cfd7b42293&nbsp; &nbsp;/local_home/home1&nbsp; &nbsp;ext4&nbsp; &nbsp; defaults&nbsp; &nbsp; 0&nbsp; &nbsp;0</span></p><p><span style="color: rgb(0, 216, 255);">UUID=55ed577c-9989-4a85-9a4a-d0201fbbf9f6&nbsp; &nbsp;/local_home/home2&nbsp; &nbsp;ext4&nbsp; &nbsp; defaults&nbsp; &nbsp; 0&nbsp; &nbsp;0</span></p><p><span style="color: rgb(0, 216, 255); font-size: 9pt;">192.168.100.1:/root /root&nbsp; &nbsp;nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768&nbsp; 0&nbsp; &nbsp;0</span><br></p><div><hr style="display:block; border: black 0 none; border-top: black 1px solid; border-bottom: black 3px solid; height: 7px"><p><br></p></div><p><br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

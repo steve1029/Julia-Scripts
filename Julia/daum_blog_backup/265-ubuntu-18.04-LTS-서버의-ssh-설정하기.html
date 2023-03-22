@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>ubuntu 18.04 LTS 서버의 ssh 설정하기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">ubuntu 18.04 LTS 서버의 ssh 설정하기</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/우분투 서버 구축</p>
+                                    <p class="date">2019-03-08 15:35:38</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>윈도우 상에서 Xshell, xftp 등의 프로그램을 이용해 원격으로 리눅스를 조종할 수 있다.<br><br>ssh login 을 활성화하는 방법을 소개한다. 다음의 패키지가 필요하다. <br><br># aptitude install -y openssh-server sshpass<br><br>Debian 9 stretch 이후로 openssh-server 를 설치하면 대부분의 옵션들이 주석 처리 되어있다.<br><br>당황하지 말고 아래의 과정들에 해당하는 옵션만 주석 해제 하거나 추가해 준다면<br><br>문제없이 ssh 접속이 가능해진다.<br><br>ssh를 가능하게 해주는 패키지를 설치한 다음 설정 파일을 수정해주자.<br><br># vi /etc/ssh/sshd_config<br><br>sshd_config 의 내용 윗줄 쯤에<br><br>Port 22 가<br><br>#Port 22<br><br>이렇게 주석 처리 되어 있다면 해제해주기 바란다. ssh의 기본 포트이다. 또한 <br><br>PermitRootLogin = yes<br><br>로 바꿔준다.<br><br>또한 다음부분을 찾아 고치거나 없으면 새로 입력해 넣어주자.<br><br>IgnoreRhosts no<br>HostbasedAuthentication yes<br><br>저장하고 종료한 뒤 다음 파일을 수정하자.<br><br># vi /etc/ssh/ssh_config<br><br>다음 부분을 찾아 바꾸거나 없으면 추가하자.<br><br>ForwardX11 yes<br>HostbasedAuthentication yes<br>EnableSSHKeysign yes<br><br>이 파일에서 Port 22 가 주석처리 되어 있는데, 해제할 필요 없다. 시키는 것만 하자.<br><br> # /etc/init.d/ssh restart<br><br>추가로, /etc/hosts.allow 에서는 ssh 접속을 특정 ip에만 허용하게 하는 설정을 할 수 있다.<br><br># vi /etc/host.allow<br><br>sshd : 192.168.<br>sshd : 127.0.0.1<br><br>이런식으로 해주면 된다.<br>ssh 가 이용하는 22번 포트가 열려있는 걸 확인하고 싶다면 다음의 명령어를 입력한다.<br><br># netstat -ntl<br><br>나오는 리스트에서 22번포트가 열려있음을 확인할 수 있다.<br>만약 열려 있지 않다면 어떻게 해야할까? 원격 접속이 일단 불가능 할 것인데...<br><br>16년 9월 27일 분명 정상설치된 openssh-server 가 정상 작동하지 않았다.<br><br># service ssh status<br><br>하니까 Active : failed<br><br>로 떴었는데, 다시 지웠다가 설치하니까 되더라.<br><br><br>왜일까? 잘 살펴보니 ufw 와 관계있는거 같다. 설치할 때 올라가는 log에 ufw 가 얼핏 보였다. ufw 는 포트를 열고 닫는 것을 도와주는 앱이다.<br><br><br>이게 먼저 설치되고 openssh-server 를 설치해야하는 거 같다.<br><br>ssh 설정이 다 끝나고 root 로 접속했는데<br><br>/usr/bin/xauth:  file /root/.Xauthority does not exist<br><br>이런 오류 메세지가 보인다면 x11 forwarding 설정 문제이다. 다음 과정을 실행하자.<br><br># aptitude install xauth<br><br>그리고 x11 forwarding 설정이 잘 됐는지 확인하자.<br><br># grep -i forward /etc/ssh/sshd_config<br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

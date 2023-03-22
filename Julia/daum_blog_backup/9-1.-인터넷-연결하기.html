@@ -1,0 +1,215 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>1. 인터넷 연결하기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">1. 인터넷 연결하기</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/데비안 서버 구축</p>
+                                    <p class="date">2016-09-25 19:41:06</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p><span style="color: #9d9d9d; font-size: 9pt;">먼저 연결되어 있는 랜카드의 명칭을 알아야 한다.</span></p>
+<p style="margin-left: 2em;"><br /><span style="color: #9d9d9d;"> # ifconfig -a </span><br /><br /></p>
+<p><span style="color: #9d9d9d;">이렇게 치면 이름과 mac 주소를 확인할 수 있다.</span><br /><br /><span style="color: #9d9d9d;"> 혹은</span><br /><br /></p>
+<p style="margin-left: 2em;"><span style="color: #9d9d9d;"># lspci</span></p>
+<p style="margin-left: 2em;">&nbsp;</p>
+<p><span style="color: #9d9d9d;"><span style="font-size: 9pt;">를 쳐서 pci 로 연결된 모든 디바이스를 확인한다.&nbsp;</span><span style="font-size: 9pt;">&nbsp;랜카드의 MAC 주소와 ip 주소가 다 보이며</span></span></p>
+<p><br /><span style="color: #9d9d9d;"> 컴퓨터 내에서의 랜카드 호칭 또한 나타난다. ex) enp3s0, enp5s1 등등...</span></p>
+<p>&nbsp;</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p><span style="font-size: 9pt; color: #9d9d9d;"><s>이 랜카드 이름들은 규칙이 애매하여 짜증나므로 고쳐주자.</s></span></p>
+<p><span style="color: #9d9d9d;"><s>&nbsp;</s></span></p>
+<p><span style="color: #9d9d9d;"><s>Edit your /etc/default/grub changing the line from</s></span></p>
+<p><span style="color: #9d9d9d;"><s>&nbsp;</s></span></p>
+<p><span style="color: #9d9d9d;"><s>GRUB_CMDLINE_LINUX=""</s></span></p>
+<p><span style="color: #9d9d9d;"><s>&nbsp;</s></span></p>
+<p><span style="color: #9d9d9d;"><s>to</s></span></p>
+<p><span style="color: #9d9d9d;"><s>&nbsp;</s></span></p>
+<p><span style="color: #9d9d9d;"><s>GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"</s></span></p>
+<p><span style="color: #9d9d9d;"><s>&nbsp;</s></span></p>
+<p><span style="color: #9d9d9d;"><s>and, finally run as root:</s></span></p>
+<p><span style="color: #9d9d9d;"><s>&nbsp;</s></span></p>
+<p><span style="color: #9d9d9d;"><s>$ sudo update-grub</s></span></p>
+<p><span style="color: #9d9d9d;"><s>&nbsp;</s></span></p>
+<p><span style="color: #9d9d9d;"><s>and reboot your system.</s></span></p>
+<p><span style="color: #9d9d9d;"><s>&nbsp;</s></span></p>
+<p><span style="color: #9d9d9d;"><s>위 과정을 거치면 vmlinuz 와 initramfs 가 업데이트된다. 이 이미지들이 곧 노드의 이미지가 될 것이므로,</s></span></p>
+<p><span style="color: #9d9d9d;"><s>&nbsp;</s></span></p>
+<p><span style="color: #9d9d9d;"><s>명수형의 코드를 이용해서 모든 노드들의 initramfs.conf , initrd.img.y* 와 vmlinuz.y* 를 업데이트 해주면</s></span></p>
+<p><span style="font-size: 9pt; color: #9d9d9d;"><s>&nbsp;</s></span></p>
+<p><span style="font-size: 9pt; color: #9d9d9d;"><s>모든 노드들의 grub 이 다 업데이트 되는 셈이다.</s></span></p>
+<p>&nbsp;</p>
+<p><span style="color: #9d9d9d;">커널과 grub 을 건드리는 어리석은 짓은 하지 말자.</span></p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p><span style="color: #9d9d9d; font-size: 9pt;">lo 는 localhost 라는 뜻이다. 명칭을 알아냈다면 이제 어느 랜카드에 인터넷을 연결시키고,</span></p>
+<p><br /><span style="color: #9d9d9d;"> 어느 랜카드에는 내부 네트워크를 연결시킬지를 결정 해야한다. 랜포트가 여러 개라면</span><br /><br /><span style="color: #9d9d9d;"> 어느 것들을 본딩시킬지 결정한다. 그리고 설정파일을 수정하여 적용시키자. 다음은 그 코드이다.</span><br /><br /><span style="color: #9d9d9d;"> # vi /etc/network/interfaces</span></p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p>&nbsp;</p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;"># This file describes the network interfaces available on your system</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;"># and how to activate them. For more information, see interfaces(5).</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">&nbsp;</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;"># The loopback network interface</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">auto lo</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">iface lo inet loopback</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">&nbsp;</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;"># The primary network interface</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">auto eth0</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">iface eth0 inet static</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address 163.152.45.250</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; netmask 255.255.255.0</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; network&nbsp;&nbsp; 163.152.45.0</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gateway 163.152.45.1</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dns-nameservers 163.152.1.1</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">auto bond0</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">iface bond0 inet static</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address 192.168.100.1</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; netmask 255.255.255.0</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; network&nbsp;&nbsp; 192.168.100.0</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; slaves eth2 eth3 eth4 eth5</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d; font-family: Dotum; font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bond-mode 0</span></p>
+<p style="margin-left: 6em;"><span style="color: #9d9d9d;"><span style="font-family: Dotum; font-size: 9pt;"> </span><span style="line-height: 107%; font-family: Dotum; font-size: 9pt;">bond-miimon 100</span></span></p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p><span style="color: #9d9d9d;">여기서 붉은 색 부분은 네트워크 본딩 기술을 적용한 것이다. 본딩이란, 랜포트 여러개를 묶어서 하나처럼 쓰는 기술을 말한다.</span></p>
+<p>&nbsp;</p>
+<p><span style="color: #9d9d9d;">그러면 네트워크 속도가 빨라질 수 있다. 가령 4개를 묶으면 4배로 속도가 빨라지는 것이다. 그냥 단순히 묶기만 하면 되는 것이 아니라,</span></p>
+<p>&nbsp;</p>
+<p><span style="color: #9d9d9d;">각 포트의 맥주소가 서로 다 달라야 한다. 그래야 진짜로 '서로 다른' 랜포트인 것이다. 무선 공유기에는 여러 개의 랜포트가 있지만</span></p>
+<p>&nbsp;</p>
+<p><span style="color: #9d9d9d;">각 랜포트의 맥 주소가 서로 다른 것이 아니고 하나의 맥주소를 여러 포트에서 사용하는 것일 뿐이므로 여러 개를 연결할 수록 속도는</span></p>
+<p>&nbsp;</p>
+<p><span style="color: #9d9d9d;">느려지게 된다. 맥 주소를 여러 개 가지고 있는 랜 카드는 보통 추가로 구매해서 pci 슬롯에 꽂아야 하며, 맥 주소의 개수에 따라 그 가격이</span></p>
+<p>&nbsp;</p>
+<p><span style="color: #9d9d9d;">매우 비싸질 수도 있다. 본딩 기술을 쓰기 위해서는 추가적으로 패키지가 필요하다.</span></p>
+<p>&nbsp;</p>
+<p style="margin-left: 2em;"><span style="color: #9d9d9d;"># aptitude update</span></p>
+<p style="margin-left: 2em;"><span style="color: #9d9d9d;"># aptitude -y install ifenslave</span></p>
+<p>&nbsp;</p>
+<p><span style="color: #9d9d9d;">만약 본딩 기술을 쓰지 않을 것이라면 다음과 같이 입력하자.</span></p>
+<p>&nbsp;</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;"># This file describes the network interfaces available on your system</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;"># and how to activate them. For more information, see interfaces(5).</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;">&nbsp;</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;"># The loopback network interface</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;">auto lo</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;">iface lo inet loopback</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;">&nbsp;</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;"># The primary network interface</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;">auto eth0</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;">iface eth0 inet static</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address 163.152.45.250</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; netmask 255.255.255.0</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; network 163.152.45.0</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gateway 163.152.45.1</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dns-nameservers 163.152.1.1</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;">auto eth1</span></p>
+<p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: #9d9d9d;">iface eth1 inet static</span></p>
+<p style="line-height: 170%; margin-left: 8em; -ms-word-break: keep-all;"><span style="color: #9d9d9d; font-size: 9pt;">address 192.168.100.1</span></p>
+<p style="line-height: 170%; margin-left: 8em; -ms-word-break: keep-all;"><span style="color: #9d9d9d; font-size: 9pt;">netmask 255.255.255.0</span></p>
+<p style="line-height: 170%; margin-left: 8em; -ms-word-break: keep-all;"><span style="color: #9d9d9d;"><span style="font-family: 'Times New Roman', serif; font-size: 10pt;">&nbsp;</span><span style="font-family: 'Times New Roman', serif; font-size: 10pt;">network</span><span style="font-family: 'Times New Roman', serif; font-size: 10pt;">&nbsp;&nbsp; </span><span style="font-family: 'Times New Roman', serif; font-size: 10pt;">192.168.100.0</span></span></p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p>&nbsp;</p>
+<p><span style="color: #9d9d9d;"> 이때 auto eth0 밑에 allow-hotplug eth0 같은 항을 추가해줘도 된다.</span><br /><br /><span style="color: #9d9d9d;"> 인터넷에 연결할 랜카드의 호칭과 MAC주소, 인터넷 고정 ip 주소 등등은 해당 컴퓨터에 맞게&nbsp;알아서 고쳐 넣는다.</span><br /><br /><span style="color: #9d9d9d;"> 약간의 코드 설명을 덧붙이자면,</span><br /><span style="color: #9d9d9d;"> </span><br /><span style="color: #9d9d9d;">iface eth0 inet static&nbsp;<span style="font-size: 9pt;">이 줄을 잘 보자.</span></span></p>
+<p><br /><span style="color: #9d9d9d;"> static : 고정 IP를 부여할 때 써야함</span><br /><br /><span style="color: #9d9d9d;"> dhcp : 만약 외부 인터넷 랜선이 공유기에 연결 되어 있다면</span><br /><br /><span style="color: #9d9d9d;"> 이렇게만 써주면 알아서 다 설정됨. 이게 'dhcp'에서 주는 대로 하겠다' 라는 뜻임.</span><br /><br /><span style="color: #9d9d9d;"> 입력이 제대로 되었다면, 인터넷이 잘 연결되어 있는지 확인하자.</span></p>
+<p style="margin-left: 2em;">&nbsp;</p>
+<p style="margin-left: 2em;"><span style="color: #9d9d9d;"># /etc/init.d/networking restart</span></p>
+<p style="margin-left: 2em;">&nbsp;</p>
+<p><span style="color: #9d9d9d;">에러가 나지 않으면 잘 된 것이다.</span></p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p>&nbsp;</p>
+<p><span style="color: #9d9d9d; font-size: 9pt;">% 참고사항.</span></p>
+<p style="margin-left: 2em;"><br /><span style="color: #9d9d9d;"> # vi /etc/hosts</span></p>
+<p style="margin-left: 2em;">&nbsp;</p>
+<p><span style="color: #9d9d9d;">여기로 들어가면 각 ip주소에 이름을 붙여줄 수 있다.&nbsp;</span></p>
+<p><span style="color: #9d9d9d;">이것도 반드시 해줘야 하는 작업이니 나중에 명수형의 코드를 옮겨 심는 방법을 설명하도록 하겠다.</span></p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p><span style="color: #9d9d9d;">&nbsp;</span></p>
+<p><span style="color: #9d9d9d;">이제 인터넷이 연결되었으니 패키지를 설치할 수 있다.</span></p>
+<p><span style="color: #9d9d9d;">그 다음&nbsp;aptitude 설치, 그 다음 vim 설치. 다른거 말고 딱 vim 이라고만 돼 있는 패키지를 설치해야한다.</span><br /><span style="color: #9d9d9d;">다른 어떤 패키지도 설치하면 안된다. 딱 서버로서 필요한 최소한의 패키지만 있어야 제일&nbsp;안정적이다.&nbsp;</span></p>
+<p><span style="color: #9d9d9d;">필요한 것만 설치하고 업데이트 하면 installed packages 의 개수는 약 400개 이하이다.</span><br /><span style="color: #9d9d9d;">그리고 본딩을 하기 위해서는 interfaces 수정 뿐 아니라 다음의 패키지도 필요하다.</span></p>
+<p style="margin-left: 2em;">&nbsp;</p>
+<p style="margin-left: 2em;"><span style="color: #9d9d9d;"># aptitude -y install ifenslave</span></p>
+<p style="margin-left: 2em;">&nbsp;</p>
+<p><span style="color: #9d9d9d; font-size: 9pt;">다시 한 번</span></p>
+<p style="margin-left: 2em;"><br /><span style="color: #9d9d9d;"> # /etc/init.d/networking restart</span></p>
+<p style="margin-left: 2em;"><span style="font-size: 9pt; color: #9d9d9d;">&nbsp;</span></p>
+<p><span style="color: #9d9d9d; font-size: 9pt;">인터넷이 연결되면 이제 sources.list를 수정해줘야 한다.</span></p>
+<p style="text-align: left; margin-left: 2em;"><br /><span style="color: #9d9d9d;"> # vi /etc/apt/sources.list</span></p>
+<p style="text-align: left; margin-left: 2em;"><span style="font-size: 9pt; color: #9d9d9d;">&nbsp;</span></p>
+<p style="text-align: left;"><span style="color: #9d9d9d;">여기에 다음의 내용을 추가해준다. 소스 파일의 위치를 알려주는 코드이다.</span></p>
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left; margin-left: 2em;"><span style="color: #9d9d9d;"><span style="font-size: 9pt;">deb </span><a class="tx-link" style="font-size: 9pt; color: #9d9d9d;" href="http://ftp.us.debian.org/debian/" target="_blank" rel="noopener">http://ftp.us.debian.org/debian/</a><span style="font-size: 9pt;">&nbsp;stable&nbsp;main non-free contrib</span></span></p>
+<p style="text-align: left; margin-left: 2em;"><span style="color: #9d9d9d;"> deb-src <a class="tx-link" style="color: #9d9d9d;" href="http://ftp://kr.debian.org/debian/" target="_blank" rel="noopener">http://ftp.us.debian.org/debian/</a>&nbsp;stable main non-free contrib</span><br /><span style="color: #9d9d9d;"> deb <a class="tx-link" style="color: #9d9d9d;" href="http://security.debian.org/" target="_blank" rel="noopener">http://security.debian.org/</a>&nbsp;stable/updates main</span><br /><span style="color: #9d9d9d;"> deb-src <a class="tx-link" style="color: #9d9d9d;" href="http://security.debian.org/" target="_blank" rel="noopener">http://security.debian.org/</a>&nbsp;stable/updates main</span></p>
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left;"><span style="color: #9d9d9d;">이 때 stable 보다는 지금 설치한 데비안의 코드명을 넣어주는 것이 더 좋다. jessie, stretch 등등.</span></p>
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left;"><span style="color: #9d9d9d;">다 추가했으면 vi 를 닫고 aptitude를 업데이트 해준다.</span></p>
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left; margin-left: 2em;"><span style="color: #9d9d9d;"># apt-get update</span></p>
+<p style="text-align: left; margin-left: 2em;">&nbsp;</p>
+<p style="text-align: left;"><span style="color: #9d9d9d;">만약 여기서 temporary failure resolving 'secutiry debian.org' 혹은&nbsp;temporary failure resolving 'ftp.us.dibian.org' 등등의 오류가 난다면</span></p>
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left; margin-left: 2em;"><span style="color: #9d9d9d;"># vi /etc/resolv.conf</span></p>
+<p style="text-align: left; margin-left: 2em;">&nbsp;</p>
+<p style="text-align: left;"><span style="color: #9d9d9d;">이 파일에&nbsp;nameserver 163.152.1.1 를 추가한다. 만약&nbsp;<span style="font-size: 9pt;">/etc/resolv.conf</span><span style="font-size: 9pt;">&nbsp;파일이 없으면 만들어서 추가해준다.</span></span></p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p style="text-align: left;"><span style="color: #9d9d9d; font-size: 9pt;">&nbsp;</span></p>
+<p style="text-align: left;"><span style="color: #9d9d9d; font-size: 9pt;">또한 여기서 다음과 같은 dpkg 에러가 뜰 수도 있다.</span></p>
+<p><span style="color: #9d9d9d;"><br /># could not get lock /var/lib/dpkg/lock<br /><br />이럴 땐 다음의 방법을 쓴다.</span></p>
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left;"><span style="color: #9d9d9d;"># rm -rf /var/lib/dpkg/lock</span></p>
+<p style="text-align: left;"><span style="color: #9d9d9d;"># apt-get autoclean $$ apt-get clear cache</span></p>
+<p style="text-align: left;"><span style="color: #9d9d9d;"># reboot</span></p>
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left;"><span style="color: #9d9d9d;">이제 잘 될 것이다. 혹은</span></p>
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left;"><span style="color: #9d9d9d;"># rm -rf /var/lib/apt/*</span></p>
+<p style="text-align: left;"><span style="color: #9d9d9d;"># apt-get update</span></p>
+<p style="text-align: left;"><span style="color: #9d9d9d;"># apt-get -f install</span></p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style5" />
+<p style="text-align: left;"><span style="color: #9d9d9d; font-size: 9pt;">이제 aptitude, vim, openssh-server, htop 를 설치한다.</span></p>
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left; margin-left: 2em;"><span style="color: #9d9d9d;"># apt-get install aptitude</span><br /><br /><span style="color: #9d9d9d;"> # aptitude update</span><br /><br /><span style="color: #9d9d9d;"> # aptitude install -y vim openssh-server parted htop</span></p>
+<p style="text-align: left; margin-left: 2em;">&nbsp;</p>
+<p style="text-align: left;"><span style="color: #9d9d9d;">여기서 vim 옵션까지 설정해두면 shell script를 쓸 때 매우 편하겠지. root 계정의 홈폴더 /root 로 가서</span></p>
+<p style="text-align: left;"><span style="color: #9d9d9d;">&nbsp;</span></p>
+<p style="text-align: left;"><span style="color: #9d9d9d;"># vi /root/.vimrc</span></p>
+<p style="text-align: left;"><span style="color: #9d9d9d;">&nbsp;</span></p>
+<p><span style="color: #9d9d9d;">하고 각종 설정 옵션들을 넣어주자.&nbsp;set number&nbsp;set tabstop=4</span></p>
+<p><span style="color: #9d9d9d; font-size: 9pt;">&nbsp;set ruler</span></p>
+<p><span style="color: #9d9d9d;">&nbsp;set showmatch&nbsp;set title&nbsp;set hlsearch&nbsp;set nu</span></p>
+<p><span style="color: #9d9d9d; font-size: 9pt;">&nbsp;colo elflord</span></p>
+<p><span style="color: #9d9d9d;">&nbsp;syntax on<br />이러면 vim의 설정 또한 끝났다.&nbsp; &nbsp; &nbsp;&nbsp;</span></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

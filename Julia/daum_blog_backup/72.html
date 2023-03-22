@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>명령어로 각종 시스템 정보를 보는 법 ( 메인보드, 메모리, 캐시, 시스템 등등)</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">명령어로 각종 시스템 정보를 보는 법 ( 메인보드, 메모리, 캐시, 시스템 등등)</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/리눅스 일반</p>
+                                    <p class="date">2016-10-05 10:28:48</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>출처 :&nbsp;http://db.necoaki.net/94</p><p><br></p><p><span style="font-size: 12pt; color: rgb(255, 228, 0);"><b>리눅스 시스템의 정보가 있는 문서</b></span><br><br>cat 명령을 통해 다음 문서를 쉘 상에 출력해보자.<br><br>/proc/cpuinfo : cpu의 정보<br>/proc/devices : 현재 커널에 설정되어있는 장치의 목록<br>/proc/dma : 현재 사용중인 DMA채널<br>/proc/firesystems : 현재 커널에 설정되어 있는 파일 시스템 목록<br>/proc/interrupts : 현재 사용중인 인터럽트 에 대한 정보<br>/proc/ioports : 현재 사용중인 i/o포트 정보<br>/proc/kmsg : 커널이 출력하는 메세지<br>/proc/loadavg : 시스템의 평균 부하량<br>/proc/meminfo : 메모리정보<br>/proc/modules : 현재 사용되고 있는 커널 모듈 목록<br>/proc/stat : 시스템 상태<br>/proc/uptime : 시스템 켜져 있는시간<br>/proc/version : 현재 커널의 버전<br>/proc/net : 네트워크 관련 정보를 볼수있는 파일들이 있는 디렉토리<br><br><br><span style="font-size: 12pt; color: rgb(255, 228, 0);"><b>Linux System 정보 보기 (BIOS정보)</b></span><br><br>리눅스에서 시스템 정보(하드웨어, 메모리, 현재 하드웨어 설정 사항) 등을 알아보려고 할때 가장 편리하게 보는 방법이 dmidecode 입니다.</p><p>dmidecode 는 BIOS의 시스템 정보를 볼 수 있도록 해주는 프로그램입니다.<br><br>간단하게 root상태에서 dmidecode를 실행 시켜 주면 깔끔하게 볼 수 있습니다. ( user 는 dmidecode 를 실행할 수 없다)<br>표시 해주는 정보는 아래와 같습니다.<br><br>BIOS Information : BIOS 설정 상태 정보입니다.<br>System Information : 시스템 정보입니다. 메인보드 모델 및 제조사 등의 정보를 출력합니다.<br>Base Board Information : 메인보드의 제조사 및 BIOS, S/N등을 표시합니다.<br>Chassis Information : 시스템 구조 정보입니다.<br>Processor Information : 시스템 프로세서 정보입니다.<br>Cache Information : 프로세서 캐시 에 대한 정보입니다.<br>Memory Controller Information : 메모리 컨트롤러 정보입니다.<br>Memory Module Information : 메모리 모듈 정보입니다.<br>Port Connector Information : 시스템 포트 정보입니다.<br>System Slot Information : 확장 슬롯 정보입니다.<br>BIOS Language Information : BIOS 언어 정보입니다.<br>Physical Memory Array : 물리적 (하드웨어) 메모리 정보입니다.<br>Memory Device : 메모리 모듈 정보입니다.<br><br>아래와 같은 상세 정보를 화면에 출력을 해줍니다.</p><p><span style="font-size: 9pt;"><br></span></p><p style="margin-left: 2em;"><span style="font-size: 9pt;"># dmidecode</span></p><p style="margin-left: 2em;"><span style="font-size: 9pt;"><br></span></p><p><span style="font-size: 9pt;">이렇게 하면 엄청나게 많은 정보가 출력되어서 그 중에서 뭘 봐야할지 모르게된다. 필요한 것만 보고 싶으면 -t 옵션을 주면 된다.</span></p><p><span style="font-size: 9pt;"><br></span></p><p style="margin-left: 2em;"><span style="font-size: 9pt;"># dmidecode -t [키워드]</span></p><p style="margin-left: 2em;"><span style="font-size: 9pt;"><br></span></p><p><span style="font-size: 9pt;">[키워드] 에 들어갈 키워드들은 다음과 같다.&nbsp;</span></p><p><span style="font-size: 9pt;"><br></span></p><p>  bios : BIOS정보<br>  system : System 정보<br>  baseboard : Mainboard 정보<br>  chassis : 구조 정보<br>  processor : 프로세서 정보<br>  memory : 메모리 정보<br>  cache : 캐시 정보<br>  connector : 포트 정보<br>  slot : 슬롯 정보<br></p><p><br></p><p>또한 이런 응용도 가능하다.</p><p><br></p><p style="margin-left: 2em;">#&nbsp;dmidecode|grep Name</p><div style="margin-left: 2em;"><span style="font-size: 9pt;">#&nbsp;</span>dmidecode|grep Serial</div><div style="margin-left: 2em;"><br></div><div>리눅스 쉘에서 | 는 두 가지 명령을 한 번에 내릴 때 쓰는 것 같다.</div><p><br></p><p><span style="color: rgb(255, 228, 0); font-size: 12pt;"><b>cpu 정보를 명령어로 확인하기</b></span></p><p><br></p><p><b><span style="font-size: 11pt;">프로세서 전체 개수 확인</span></b></p><p><br></p><p style="margin-left: 2em;">grep -c processor /proc/cpuinfo</p><p><br></p><p style="margin-left: 2em;">하이퍼 쓰레딩 기술로 인해 물리 코어 + 논리 코어 개수가 나타날 것이다.&nbsp;</p><p><br></p><p><b><span style="font-size: 11pt;">물리 cpu 수 확인</span></b></p><p><br></p><div><div style="margin-left: 2em;">grep "physical id" /proc/cpuinfo|sort -u|wc -l</div></div><div style="margin-left: 2em;"><br></div><div style="margin-left: 2em;">보통의 메인보드는 하나의 cpu만 장착할 수 있으므로 1 이라고 뜰 것.</div><div style="margin-left: 2em;"><br></div><div><b><span style="font-size: 11pt;">cpu 당 물리 코어 수 확인</span></b></div><div><div style="margin-left: 2em;"><br></div><div style="margin-left: 2em;">grep "cpu cores" /proc/cpuinfo|tail -1</div></div><div><span style="font-size: 9pt;"><br></span></div><div style="margin-left: 2em;"><span style="font-size: 9pt;">요즘은 쿼드코어는 기본에 옥타코어도 많으니, 그에 따른 숫자가 나올 것.</span></div><p><br></p><p><span style="font-size: 11pt;"><b>cpu 모델 이름 확인</b></span></p><p><span style="font-size: 1.1em; white-space: pre-wrap;"><br></span></p><p style="margin-left: 2em;"><span style="font-size: 1.1em; white-space: pre-wrap;">grep ^</span><span class="s1" style="font-size: 1.1em; white-space: pre-wrap;">'model name'</span><span style="font-size: 1.1em; white-space: pre-wrap;"> /proc/cpuinfo</span></p><p><br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

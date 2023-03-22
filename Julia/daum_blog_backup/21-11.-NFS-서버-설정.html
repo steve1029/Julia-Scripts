@@ -1,0 +1,166 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>11. NFS 서버 설정</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">11. NFS 서버 설정</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/데비안 서버 구축</p>
+                                    <p class="date">2016-09-26 00:14:44</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">서버의 /tftpboot에는 노드에게 제공할 부트로더, 커널, 커널 모듈을,</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">/nfsroot 에는 노드에게 제공할 루트파일 시스템을 구성하였다.</span><br /><br /><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">이제 dhcp + tftp 서버가 nfs 서버로도 동작하도록 서버의 설정 파일을 수정해줄 것이다.</span><br /><br /><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">노드가 아무리 자신의 루트파일시스템에 접근하고 싶어도,</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">서버에서 외부 아이피의 접속을 모두 막는다면, 절대로 접근할 수 없다.</span><br /><br /><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">그래서 서버가 특정 노드가 특정 폴더로 접근할 수 있도록 설정해주어야 한다.</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 10pt;">이렇게 한 컴퓨터가 다른 컴퓨터에게 네트워크를 통한 접근 </span><span style="font-size: 10pt;">권한을 주는 프로토콜이 NFS 방식이다.</span></span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">리눅스의 NFS 에는 커널 버젼과 사용자 버전이 있는데, </span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">성능과 안정성이 더 우수한 커널 버전을 쓸 것이다. yboot 에서 다음을 수행하자.</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">(1) 설치</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"># aptitude install -y nfs-kernel-server</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">(2) /etc/exports 에서 공유할 디렉토리와 공유 옵션 설정</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"># vi /etc/exports</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14">&nbsp;</p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">#/home| 192.168.100.0/24(rw,no_root_squash,no_subtree_check, sync)</span></p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 13.3333px;">/root&nbsp; 192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)</span><span style="font-size: 13.3333px;"><br /></span></span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 13.3333px; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">/nfsroot/yhome1 192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)</span></p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 13.3333px;">/nfsroot/yhome2 192.168.100.52/24(rw,no_root_squash,no_subtree_check,async)</span><span style="font-size: 13.3333px;">/nfsroot/yhome3 192.168.100.53/24(rw,no_root_squash,no_subtree_check,async)</span><span style="font-size: 13.3333px;"><br /></span></span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 13.3333px; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">/nfsroot/y101&nbsp; &nbsp;192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)</span></p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">서버는 192.168.100.xxx 노드들에게 /nfsroot 와 /home 을 제공할 것이다.</span></p>
+<p data-ke-size="size14"><span style="line-height: 107%; font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="line-height: 107%; font-size: 10pt;">&nbsp;</span></span></p>
+<p data-ke-size="size14"><span style="line-height: 107%; font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="line-height: 107%; font-size: 10pt;">(3) 설정 적용</span><br /></span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="line-height: 107%; font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="line-height: 107%; font-size: 10pt;">&nbsp;</span></span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="line-height: 107%; font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="line-height: 107%; font-size: 10pt;"># exportfs -rv</span></span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="line-height: 107%; font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="line-height: 107%; font-size: 10pt;"># /etc/init.d/nfs-kernel-server restart</span></span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="line-height: 107%; font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="line-height: 107%; font-size: 10pt;">&nbsp;</span></span></p>
+<p data-ke-size="size14"><span style="line-height: 107%; font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="line-height: 107%; font-size: 10pt;">(4) 테스트</span></span></p>
+<p data-ke-size="size14"><span style="line-height: 107%; font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="line-height: 107%; font-size: 10pt;">&nbsp;</span></span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="line-height: 107%; font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="line-height: 107%; font-size: 10pt;"># mkdir /root/this.is.yboot.root</span></span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="line-height: 107%; font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="line-height: 107%; font-size: 10pt;"># cd /mnt</span></span></p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 13.33px;"># mkdir tmp</span><span style="font-size: 13.33px;"># mount -t nfs 192.168.100.1:/root ./tmp</span><span style="font-size: 13.33px;"><br /></span><span style="font-size: 13.33px;">/mnt 는 리눅스에서 removable device 가 마운트 되는 자리이다.</span><span style="font-size: 13.33px;"><br /></span><span style="font-size: 13.33px;">가령 cdrom 이나 usb 같은 경우 마운트 되면 /mnt 에 위치한다.</span><span style="font-size: 13.33px;"><br /></span></span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">그 설정은 /etc/fstab 에서 조절할 수 있다.</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14">&nbsp;</p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">하여튼 지금 하고자 하는 것은 서버의 /home 을 /mnt/tmp 에 nfs 로 마운트 시키는 것이다.</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">하드디스크의 파티션을 마운트 시키는 것이라면, nfs 가 아닌 ext4 가 되어야겠지.</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">하지만 지금은 서버가 네트워크 파일 시스템으로 제공하는 폴더를 마운트 시키고자함이므로</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">파일 시스템의 타입은 nfs 가 된다.</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">마운트 한 것이 확인 되었다면 해제해주자.</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"># umount ./tmp</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"># rm -r ./tmp</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">그리고 192.168.100.1 은 내부 네트워크에서 nfs 서버의 아이피 주소이다.&nbsp;</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 13.33px;"># vi /etc/dhcp/dhcpd.conf</span><span style="font-size: 13.33px;"><br /></span><span style="font-size: 13.33px;">여기에서 dns nameserver &nbsp;란에 192.168.100.1 이라 설정해준 것이 보일 것이다. 여기서 dhcp 서버의 내부 ip 주소를 설정 했다는 것을 잊지 말자.</span></span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">매우 큰 클러스터에서는 nfs 서버와 부팅 서버(=tftp 서버), dhcp 서버가 서로 다르겠지만, </span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">우리 연구실에서는 yggboot 가 dhcp, tftp, nfs 서버를 모두 담당하고 있다는 것을 명심하자.</span></p>
+<p data-ke-size="size14">&nbsp;</p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">이 테스트는 한마디로 서버가 자신의 /home 을 자신의 /mnt/tmp에게 nfs 로 제공한 것이다.</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14">&nbsp;</p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 10pt;">즉 서버는 자신의 폴더를 nfs로</span><span style="font-size: 10pt;">&nbsp;</span><span style="font-size: 10pt;">잘 제공하고 있다.</span></span></p>
+<p style="margin-left: 2em;" data-ke-size="size14">&nbsp;</p>
+<p style="margin-left: 2em;" data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">노드에서 받는 것만 잘하면 되는 것이다. 이제 그 설정을 하러 가자.</span></p>
+<p style="margin-left: 2em;" data-ke-size="size14">&nbsp;</p>
+<p style="margin-left: 2em;" data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">내가 추가한 설명 및 시행 착오 설명</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">network file system의 약자.&nbsp;</span></p>
+<p data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">NFS 서버 컴퓨터의 특정 디렉토리를 네트워크를 통해 노드들에게 제공할 수 있다.</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 10pt;">즉 노드에서 서버의 특정 폴더를 </span><span style="font-size: 10pt;">마음대로 수정, 편집할 수 있도록 설정하는 것이다.</span></span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">/home 에는 각 유저의 파일들이 있으니 모든 노드가</span></p>
+<p data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">공유, 수정할 수 있어야 할 것이다. 즉 읽기,쓰기 권한이 다 필요하다.</span></p>
+<p data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">테스트를 위해 /mnt/tmp 에 /home을 마운트 했었다. 해지하려하니 busy라고 안된다.</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 10pt;">실제로 뭔가를 하지는 </span><span style="font-size: 10pt;">않고 있는데. 삭제도 안됨. 어떻게 해야하지?</span></span></p>
+<p data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 10pt; white-space: pre;" class="Apple-tab-span"> </span><span style="font-size: 10pt;"># aptitude install fuse</span></span></p>
+<p data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 10pt; white-space: pre;" class="Apple-tab-span"> </span><span style="font-size: 10pt;"># fusermount -u /mnt/tmp</span></span></p>
+<p data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">fusermount 는 강제로 마운트 시키거나 해지 시키는 명령어이다. -u 를 하면 언마운트 한다.</span></p>
+<p data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">fusermount -u (대상 폴더) 라고 하면 됨.</span></p>
+<p data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">여기서 중요한 차이가 있다. 루트파일시스템은 NFS 를 통해서 항상 노드에 제공되고 있다.</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 10pt;">네트워크에 항상 </span><span style="font-size: 10pt;">부하가 걸려있다는 뜻. </span></span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">트 파일 시스템이 제공되지 않는다면 노드는 다운되고 만다.</span></p>
+<p data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">NFS 로 제공된 폴더에 외부 클라이언트가 접속하려고 할 때</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 10pt;">&nbsp;당연히 '접속 권한'이 있어야 한다. 그 권한을 서버가 </span><span style="font-size: 10pt;">어떻게 줄지 결정하는 파일이</span></span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">바로 /etc/exports 파일이다. 이 파일을 vi로 열자.</span></p>
+<p data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">모든 노드는 부트서버의 /nfsroot 에 읽기 or 읽고쓰기 권한으로 접근할 수 있어야 한다.&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 10pt;">(하지만 읽기 권한만 받는 다면 부팅과정에서&nbsp;</span><span style="font-size: 9pt;">심각한 오류가 발생할 수 있다.)</span></span></p>
+<p data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">읽기권한만 주려면</span></p>
+<p data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 10pt; white-space: pre;" class="Apple-tab-span"> </span><span style="font-size: 10pt;">/nfsroot 192.168.100.0/24(ro,no_root_squash,no_subtree_check,async)</span></span></p>
+<p data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">라고 써주면 된다. 그리고 루트 파일 시스템 폴더는 default 하나만 있으면 된다.</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 10pt;">모든 노드가 하나의 </span><span style="font-size: 10pt;">루트 파일 시스템을 써도 상관없으니까.</span></span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 10pt;">각 노드에서 수정이 안되거든. 하지만 읽고 쓰기 권한을 다 주려면 </span><span style="font-size: 10pt;">ro 대신 rw 를 입력하자.</span></span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">그리고 모든 노드들마다 다른 루트 파일시스템 폴더를 만들어줘야한다.</span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 10pt;">예를 들어 </span><span style="font-size: 10pt;">default, node101, node102 이렇게.</span></span></p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">&nbsp;</span></p>
+<p data-ke-size="size14"><span style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;"><span style="font-size: 10pt;">노드마다 루트폴더를 수정할 수 있으므로, 루트파일을 서로 공유했다가는&nbsp;</span><span style="font-size: 10pt;">큰일 난다.</span></span></p>
+<p data-ke-size="size14">&nbsp;</p>
+<p data-ke-size="size14"><span style="font-size: 10pt; font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, 돋움, sans-serif;">no_root_squash 라는 옵션은 노드에서 root 권한으로 접속할 수 있도록 허용하는 옵션이다.</span></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

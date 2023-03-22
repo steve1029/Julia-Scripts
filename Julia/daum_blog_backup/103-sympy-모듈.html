@@ -1,0 +1,61 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>sympy 모듈</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">sympy 모듈</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/Python</p>
+                                    <p class="date">2016-11-07 16:56:03</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>symbolic calculation 을 가능하게 해주는 모듈.</p><p><br></p><p>매스매티카와 같은 계산이 가능해진다. 일반적인 언어에서는 불가능한 symbolic 계산이 파이썬에서는 가능하다.</p><p><br></p><p>아나콘다를 사용하거나, aptitude 에서 python-sympy 를 설치하자.</p><p><br></p><p>import sympy as sy</p><p><br></p><p>먼저 사용할 변수들을 선언해줘야 한다.</p><p><br></p><p>x, y, z = sy.symbol('x y z')</p><p><br></p><p>이제 이 변수들은 symbol 로서 사용 가능하다.</p><p><br></p><p>변수를 선언할 때, 띄어쓰기로 x y z 를 구별하거나 , 를 이용해서 구별해줘야한다.</p><p><br></p><p>가령</p><p><br></p><p>x,y,z = sy.symbols('xyz')</p><p><br></p><p>TypeErrorTraceback (most recent call last)</p><p>&lt;ipython-input-5-c29bc8e0acf3&gt; in &lt;module&gt;()</p><p>----&gt; 1 x,y,z = sy.symbols('xyz')</p><p><br></p><p>TypeError: 'Symbol' object is not iterable</p><p><br></p><p>내가 입력한 object가 iterable 불가능 이라고 나온다. iterable 가능한 form 으로 argument 를 입력해줘야 한다.</p><p><br></p><p>다음의 코드를 보고 이상한 점을 느껴보자.</p><p><br></p><pre style="overflow-x: auto; overflow-y: hidden; padding: 5px; background-color: rgb(238, 255, 204); color: rgb(51, 51, 51); line-height: 15.6px; border-top: 1px solid rgb(170, 204, 153); border-bottom: 1px solid rgb(170, 204, 153); border-image: initial; border-left: none; border-right: none; margin-top: 0px; margin-bottom: 0px;"><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o" style="color: rgb(102, 102, 102);">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s1" style="color: rgb(64, 112, 160);">'x'</span><span class="p">)</span>
+</div><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">expr</span> <span class="o" style="color: rgb(102, 102, 102);">=</span> <span class="n">x</span> <span class="o" style="color: rgb(102, 102, 102);">+</span> <span class="mi" style="color: rgb(32, 128, 80);">1</span>
+</div><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o" style="color: rgb(102, 102, 102);">=</span> <span class="mi" style="color: rgb(32, 128, 80);">2</span>
+</div><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="k" style="color: rgb(0, 112, 32); font-weight: bold;">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+</div><div><span class="go">x + 1</span></div></pre><p><br></p><p>왜 이런 결과가 나오는가?</p><p>x=2 라 하면 새로운 파이썬 변수 x 를 선언하고 초기화한 것이다. 그러나 이 x 는 sympy 에서 만든 x 가 아니다. 파이쎤 변수와 sympy 변수를 구별해야 한다. 파이썬의 특징 중 하나가, 어떤 변수를 이용한 표현이 있을 때, 변수가 바뀌어도 그 표현이 바로 바뀌지는 않는다. 다음의 예를 보자.</p><pre style="overflow-x: auto; overflow-y: hidden; padding: 5px; background-color: rgb(238, 255, 204); color: rgb(51, 51, 51); line-height: 15.6px; border-top: 1px solid rgb(170, 204, 153); border-bottom: 1px solid rgb(170, 204, 153); border-image: initial; border-left: none; border-right: none; margin-top: 0px; margin-bottom: 0px;"><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o" style="color: rgb(102, 102, 102);">=</span> <span class="s1" style="color: rgb(64, 112, 160);">'abc'</span>
+</div><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">expr</span> <span class="o" style="color: rgb(102, 102, 102);">=</span> <span class="n">x</span> <span class="o" style="color: rgb(102, 102, 102);">+</span> <span class="s1" style="color: rgb(64, 112, 160);">'def'</span>
+</div><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">expr</span>
+</div><div><span class="go">'abcdef'</span>
+</div><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o" style="color: rgb(102, 102, 102);">=</span> <span class="s1" style="color: rgb(64, 112, 160);">'ABC'</span>
+</div><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">expr</span>
+</div><div><span class="go">'abcdef'</span></div></pre><p><br></p><p>이런 식으로, 바로 바뀌지 않는다. 그런데 이럴 거면 sympy 를 쓸 이유가 없지 않은가? 어떤 변수를 마음 대로 바꿔서 함수의 결과를 보고 싶은 것이 symbolic math 인데...?</p><p><br></p><p>다 방법이 있다.</p><p><br></p><pre style="overflow-x: auto; overflow-y: hidden; padding: 5px; background-color: rgb(238, 255, 204); color: rgb(51, 51, 51); line-height: 15.6px; border-top: 1px solid rgb(170, 204, 153); border-bottom: 1px solid rgb(170, 204, 153); border-image: initial; border-left: none; border-right: none; margin-top: 0px; margin-bottom: 0px;"><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o" style="color: rgb(102, 102, 102);">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s1" style="color: rgb(64, 112, 160);">'x'</span><span class="p">)</span>
+</div><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">expr</span> <span class="o" style="color: rgb(102, 102, 102);">=</span> <span class="n">x</span> <span class="o" style="color: rgb(102, 102, 102);">+</span> <span class="mi" style="color: rgb(32, 128, 80);">1</span>
+</div><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">expr</span><span class="o" style="color: rgb(102, 102, 102);">.</span><span class="n">subs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi" style="color: rgb(32, 128, 80);">2</span><span class="p">)</span>
+</div><div><span class="go">3</span></div></pre><p><br></p><p>이렇게 하면 symbol의 의미를 바꿀 수 있다.</p><p><br></p><p>어떤 수식을 입력하고 싶다면?!</p><p><br></p><p>Eq 함수를 사용하자.</p><p><br></p><p>sy.Eq(x+1,4)</p><p><br></p><p>x+1 == 4</p><p><br></p><p>를 입력하면 왜 안될까? == 는 python 에서 두 값이 같은지 테스트 하라는 의미이기 때문이다.</p><p><br></p><p>두식이 같은지 테스트 하는 방법은 두 가지가 있다.</p><p><br></p><pre style="overflow-x: auto; overflow-y: hidden; padding: 5px; background-color: rgb(238, 255, 204); color: rgb(51, 51, 51); line-height: 15.6px; border-top: 1px solid rgb(170, 204, 153); border-bottom: 1px solid rgb(170, 204, 153); border-image: initial; border-left: none; border-right: none; margin-top: 0px; margin-bottom: 0px;"><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o" style="color: rgb(102, 102, 102);">=</span> <span class="p">(</span><span class="n">x</span> <span class="o" style="color: rgb(102, 102, 102);">+</span> <span class="mi" style="color: rgb(32, 128, 80);">1</span><span class="p">)</span><span class="o" style="color: rgb(102, 102, 102);">**</span><span class="mi" style="color: rgb(32, 128, 80);">2</span>
+</div><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o" style="color: rgb(102, 102, 102);">=</span> <span class="n">x</span><span class="o" style="color: rgb(102, 102, 102);">**</span><span class="mi" style="color: rgb(32, 128, 80);">2</span> <span class="o" style="color: rgb(102, 102, 102);">+</span> <span class="mi" style="color: rgb(32, 128, 80);">2</span><span class="o" style="color: rgb(102, 102, 102);">*</span><span class="n">x</span> <span class="o" style="color: rgb(102, 102, 102);">+</span> <span class="mi" style="color: rgb(32, 128, 80);">1</span>
+</div><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">simplify</span><span class="p">(</span><span class="n">a</span> <span class="o" style="color: rgb(102, 102, 102);">-</span> <span class="n">b</span><span class="p">)</span>
+</div><div><span class="go">0</span></div></pre><p><br></p><pre style="overflow-x: auto; overflow-y: hidden; padding: 5px; background-color: rgb(238, 255, 204); color: rgb(51, 51, 51); line-height: 15.6px; border-top: 1px solid rgb(170, 204, 153); border-bottom: 1px solid rgb(170, 204, 153); border-image: initial; border-left: none; border-right: none; margin-top: 0px; margin-bottom: 0px;"><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o" style="color: rgb(102, 102, 102);">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o" style="color: rgb(102, 102, 102);">**</span><span class="mi" style="color: rgb(32, 128, 80);">2</span> <span class="o" style="color: rgb(102, 102, 102);">-</span> <span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o" style="color: rgb(102, 102, 102);">**</span><span class="mi" style="color: rgb(32, 128, 80);">2</span>
+</div><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o" style="color: rgb(102, 102, 102);">=</span> <span class="n">cos</span><span class="p">(</span><span class="mi" style="color: rgb(32, 128, 80);">2</span><span class="o" style="color: rgb(102, 102, 102);">*</span><span class="n">x</span><span class="p">)</span>
+</div><div class="live-statement"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="n">a</span><span class="o" style="color: rgb(102, 102, 102);">.</span><span class="n">equals</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</div><div><span class="go">True</span></div></pre><p><br></p><p>둘 중 아무거나 사용하자.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

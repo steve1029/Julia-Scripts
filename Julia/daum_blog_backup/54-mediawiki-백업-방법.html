@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>mediawiki 백업 방법</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">mediawiki 백업 방법</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/서버 앱 설정 방법</p>
+                                    <p class="date">2016-09-28 16:23:38</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p># aptitude install -y automysqlbackup<br><br>이 앱은 내 mysql 을 자동으로 백업해주는 놈이다.<br><br>모든 백업 데이터는 /var/lib/automysqlbackup/ 에 저장된다.<br><br>여기 보면 daily, weekly, monthly 로 나오는데, 자동으로 매일, 매주, 매월 해주나보다.<br><br>수동으로 백업하려면 다음을 입력하면 된다.<br><br># automysqlbackup<br><br>그리고 백업 파일로 데이터베이스를 복구하는 방법은 다음과 같다.<br><br># gunzip &lt; /var/lib/automysqlbackup/weekly/nolwiki/nolwiki_2016-09-28_16h10m.sql.gz|mysql -uUSER -pPASSWORD nolwiki<br><br>여기에서 USER, PASSWORD 자리에 사용자의 아이디와 비번을 넣으면 된다.<br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

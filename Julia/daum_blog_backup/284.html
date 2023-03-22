@@ -1,0 +1,236 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>ubuntu 18.04에 anaconda, cupy, pycuda, scikit-cuda 설치법</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">ubuntu 18.04에 anaconda, cupy, pycuda, scikit-cuda 설치법</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/우분투 cuda 환경 구축</p>
+                                    <p class="date">2020-07-31 15:47:04</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>2020년 07월 31일에 시도해보고 정리한 것.</p>
+<p>먼저 기본 개념을 잡고 가자.</p>
+<p>nvidia driver 와 nvidia cuda toolkit 은 다른 것이다!</p>
+<p>driver는 계산 기능을 뺀, 그저 하드웨어로서의 gpu를 다루기 위한 툴일 뿐이다.</p>
+<p>cuda programming 과는 상관없이 모니터로 쓸 때 필요한 기능이 있는 놈이다.</p>
+<p>거기다가 cuda 를 사용하고 싶을 때 nvidia cuda toolkit을 설치하는 것이다.</p>
+<p>물론 nvidia cuda toolkit 을 다운 받아 설치하면 nvidia driver 가 같이 설치 된다.</p>
+<p>만약 먼저 driver를 설치해버렸다면 설치 과정을 중단하고 이것부터 지우라고 한다.</p>
+<p>그 때는</p>
+<p><a href="https://askubuntu.com/questions/206283/how-can-i-uninstall-a-nvidia-driver-completely">https://askubuntu.com/questions/206283/how-can-i-uninstall-a-nvidia-driver-completely</a></p>
+<p>[</p>
+<p>How can I uninstall a nvidia driver completely ?</p>
+<p>As expected, Nvidia drivers have reduced my customizations. I can&#39;t login to Unity 3D session. I can&#39;t find any content to help me to uninstall the driver and I don&#39;t know what to do as I have never</p>
+<p>askubuntu.com</p>
+<p>](<a href="https://askubuntu.com/questions/206283/how-can-i-uninstall-a-nvidia-driver-completely">https://askubuntu.com/questions/206283/how-can-i-uninstall-a-nvidia-driver-completely</a>)</p>
+<p>여기를 따라하자. 혹은 간단히</p>
+<pre><code># sudo nvidia-uninstall</code></pre><p>해도 된다.</p>
+<h2>설치 파일 옮기기</h2>
+<p>먼저 yboot:/root/ 에 아나콘다 2019.07 버전, cuda 10.2 버전 리눅스 설치 이미지를 다운받아 놓는다.</p>
+<p>그 다음 각 노드의 /root 로 뿌린다.</p>
+<pre><code># scp Anaconda3-2019.07-Linux-x86\_64.sh root@y202:/root/
+# scp cuda\_10.2.89\_440.33.01\_linux.run root@y202:/root/</code></pre><p>학교 인터넷은 10 MB/s 이므로 매우 느리기 때문에 100MB/s 인 내부네트워크로 각 노드에 뿌리는 것이 훨씬 빠르다.</p>
+<p>그 다음 다른 글에 써놓은 18.04에 pycuda, cupy, scikit-cuda 설치하기 방법을 따른다.</p>
+<h2>Anaconda 설치</h2>
+<p>먼저 cupy, pycuda, scikit-cuda 의 documentation 에서 installation requirement를 본다. 거기에 지원하는 python 버전이 있다. 이 파이썬 버전을 가진 아나콘다를 다운 받아 설치하자. 아나콘다는 여러 python 버전을 동시에 설치해 사용할 수 있기는 하나 귀찮으니 애초에 필요한 것만 설치하는게 낫다.</p>
+<p>리눅스용 아나콘다 설치 방법은 아나콘다 공식 홈페이지에서 잘 설명되어 있다. 하지만 혹시 모르니 내용을 여기에 조금 옮겨놓겠다.</p>
+<p>먼저 설치 이미지를 다운 받아서 /root 에 넣는다. 다음 명령어로 실행한다.</p>
+<pre><code># bash ./Anaconda3-2019.07-Linux-x86\_64.sh</code></pre><p>lisence 과정을 물어보는데 무조건 yes 를 선택한다.</p>
+<p>설치 과정 중에 설치 위치를 물어보는데, /opt/anaconda3 로 하자.</p>
+<p>/opt 폴더는 말 그대로 option. 사용자가 편의를 위해 마음대로 사용할 수 있는 폴더이다.</p>
+<p>여기에 설치해야 Disk node 에서 모든 사용자를 대상으로 anaconda3 를 쓰게 만들 수 있다.</p>
+<p>“Do you wish the installer to initialize Anaconda3 by running conda init?” 이라는 질문이 나오는데</p>
+<p>아나콘다에서 추천하는 대답은 “yes”.</p>
+<p>그리고 설치가 끝났으면 기본 python 을 anaconda로 바꿔주는 작업을 해야한다.</p>
+<p>최근 아나콘다는 자동으로 해주긴 하는데 그래도 알고 있는게 좋다.</p>
+<p>bashrc 파일을 수정하면 된다. 전체 bashrc 를 수정하려면 /etc/bash.bashrc 를 수정하면 된다.</p>
+<pre><code># vi ~/.bashrc</code></pre><p>다음의 conda initialize 부분을 마지막에 추가한다.</p>
+<p><figure class="imageblock alignCenter" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent">
+    <span data-lightbox="lightbox">
+        <img src="./img/img.png" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent" />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<pre><code>export PATH=$PATH:/usr/local/cuda-10.2/bin  
+export CUDADIR=/usr/local/cuda-10.2  
+export LD\_LIBRARY\_PATH=$LD\_LIBRARY\_PATH:/usr/local/cuda-10.2/lib64  
+
+export PATH=$PATH:/usr/local/openmpi/bin  
+export LD\_LIBRARY\_PATH=$LD\_LIBRARY\_PATH:/usr/local/openmpi/lib</code></pre><p>이제 적용한다.</p>
+<pre><code># source ~/.bashrc</code></pre><p>확인해보자.</p>
+<pre><code># which python  
+-&gt; /opt/anaconda3/bin/python</code></pre><h2>cuda 설치</h2>
+<p>이건 반드시 root 계정으로 설치하자.</p>
+<p>이 또한 nvidia 공식 홈페이지에 ubuntu 설치 방법이 매우 잘 나와 있다. 그래도 편의를 위해 옮겨 적는다.</p>
+<p>먼저 cupy, pycuda, scikit-cuda 의 documentation 에서 installation requirement를 보고 지원하는 cuda 버전을 확인 후 구글 검색을 통해 해당 cuda 설치 파일을 /root에 받도록 한다.</p>
+<p>다음 명령어로 CUDA available GPU가 인식되어 있는지 확인할 수 있다.</p>
+<pre><code># lshw -C display</code></pre><p>각 패키지와의 버전은 위에서 확인했으니, 필수 프로그램만 설치한다.</p>
+<pre><code># apt-get install linux-headers-$(uname -r)</code></pre><p>다음은 모 블로그에서 추천한 dependency 인데 필수인지는 잘 모르겠다.</p>
+<pre><code># apt-get install build-essential dkms</code></pre><p>어찌되었든 인터넷으로 다운받아 설치하는 것보단 .run 설치파일을 받아서 실행하는게 버전관리에 훨씬 편하다.</p>
+<p>인터넷으로 설치하면 무조건 최신버전이 받아지기 때문이다.</p>
+<pre><code># bash cuda\_&lt;version&gt;\_linux.run</code></pre><p><strong>이때 nvidia driver가 이미 설치되어 있다면, 다시 설치하겠느냐는 질문을 한다. 이 때 반드시 no 를 선택해야한다.</strong></p>
+<p>간혹 설치가 failed 될 수 있다. 다음 두 log 파일을 확인해볼 수 있다.</p>
+<pre><code># vi /var/log/cuda-installer.log
+# vi /var/log/nvidia-installer.log</code></pre><p>이 두가지를 확인해보면, nouveau 때문에 nvidia driver가 설치 중단 되었음을 확인할 수 있다. 먼저 nouveau를</p>
+<p>끄고 설치를 다시 진행하면 된다.</p>
+<p>설치 후 다음을 실행한다.</p>
+<pre><code># apt-get install libcupti-dev</code></pre><p>그 다음 nouveau 를 꺼야한다. 이건 GNU 에서 제공하는 gpu driver이다.</p>
+<p><figure class="imageblock alignCenter" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent">
+    <span data-lightbox="lightbox">
+        <img src="./img/img_1.png" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent" />
+    </span>
+    <figcaption>Nvidia toolkit documentation의 installation for linux 파트에서 가져온 내용.</figcaption>
+</figure></p>
+<p>다음을 실행해본다.</p>
+<pre><code># nvcc --version</code></pre><p>nvcc가 없다면 다음 폴더로 들어가 본다.</p>
+<pre><code># cd /usr/local/</code></pre><p>여기에 cuda/ 와 내가 설치한 버전의 cuda ex) cuda-10.2/ cuda-11.0/ 등의 폴더가 있다면 설치는 잘 된 것이다.</p>
+<p>(cuda는 여러 버전을 동시에 설치 가능하다)</p>
+<p>즉 bash 설정이 안된 것이니 bash를 수정한다.</p>
+<pre><code># vi ~/.bashrc</code></pre><p>다음을 추가한다.</p>
+<pre><code>export PATH=/usr/local/cuda-9.0/bin${PATH:+:${PATH}}  
+export LD\_LIBRARY\_PATH=/usr/local/cuda/lib64:${LD\_LIBRARY\_PATH:+:${LD\_LIBRARY\_PATH}}</code></pre><p>혹은</p>
+<pre><code>export PATH\=$PATH:/usr/local/cuda-10.2/bin
+export CUDADIR\=/usr/local/cuda-10.2
+export LD\_LIBRARY\_PATH\=$LD\_LIBRARY\_PATH:/usr/local/cuda-10.2/lib64</code></pre><p>를 추가한다. cuda 버전에 맞춰서 알아서 바꿔서 넣으면 된다.</p>
+<p>그 다음 적용한다.</p>
+<pre><code># source ~/.bashrc</code></pre><p>설치가 다 되면 다음과 같은 메세지가 뜬다. 나중에 삭제할 때 유용하다. nvidia-smi가 안먹히면 삭제하고 다시 설치하는게 제일 편하고 쉽기 때문.</p>
+<pre><code>============
+= Summary =
+===========
+
+Driver:   Installed
+Toolkit:  Installed in /usr/local/cuda-10.2/
+Samples:  Installed in /root/, but missing recommended libraries
+
+Please make sure that
+ -   PATH includes /usr/local/cuda-10.2/bin
+ -   LD_LIBRARY_PATH includes /usr/local/cuda-10.2/lib64, or, add /usr/local/cuda-10.2/lib64 to /etc/ld.so.conf and run ldconfig as root
+
+To uninstall the CUDA Toolkit, run cuda-uninstaller in /usr/local/cuda-10.2/bin
+To uninstall the NVIDIA Driver, run nvidia-uninstall
+
+Please see CUDA_Installation_Guide_Linux.pdf in /usr/local/cuda-10.2/doc/pdf for detailed information on setting up CUDA.
+Logfile is /var/log/cuda-installer.log</code></pre><h2>cupy, pycuda, scikit-cuda 설치하기</h2>
+<p>cuda 버전에 맞추어 잘 설치만 했다면 패키지들은 오류 없이 설치된다. 설치 과정에서 에러 뜬다면 지원하지 않는 cuda를 설치했을 가능성이 매우 높다.</p>
+<p>conda 에서 cupy는 지원하는 모듈이었던 걸로 기억하는데 pycuda 와 scikit-cuda는 conda install 로 설치가 안된다.</p>
+<p>사용자 계정으로 다시 바꾼다. 먼저 anaconda의 pip을 업뎃해주자.</p>
+<pre><code>$ which pip</code></pre><p>시스템의 pip이 아닌 것을 확인한 다음에</p>
+<pre><code>$ pip install -U setuptools pip</code></pre><p>하고</p>
+<pre><code>$ pip install cupy pycuda scikit-cuda</code></pre><p>하면 끝.</p>
+<p>다 설치되면 python 에서 꼭 확인해보도록 하자.</p>
+<h2>OpenMPI 설치하기</h2>
+<p>일단 openmpi 공식홈페이지에서 stable 버전을 다운 받는다.</p>
+<p>나는 2018년 12월에 나온 4.0.0 버전을 다운 받았다.</p>
+<p>그 다음 mpi4py 공식 홈페이지에 나와있는 설치 방법을 따른다.</p>
+<pre><code>$ tar -zxf openmpi-X.X.X tar.gz
+$ cd openmpi-X.X.X
+$ ./configure --prefix=/usr/local/openmpi
+$ make all
+$ make install</code></pre><p>이러면 /usr/local/openmpi 에 설치가 된다. 그러고보니... anaconda3를 /usr/local 에 설치해도 될 거 같다.</p>
+<p>cuda도 설치하면 여기 깔리니까...</p>
+<p>뭐 어쨌든, 다음 문구를 ~/.bashrc 에 추가해 준뒤 source ~/.bashrc 를 하자.</p>
+<pre><code>export PATH=$PATH:/usr/local/openmpi/bin  
+export LD\_LIBRARY\_PATH=$LD\_LIBRARY\_PATH:/usr/local/openmpi/lib</code></pre><p>이 내용을 /etc/bash.bashrc 에 적용했다간 openmpi 가 제대로 작동 안할거다.</p>
+<p>openmpi 는 root 계정보단 사용자계정으로 mpi를 쓸 것을 강력히 권장한다. 내가 ldg 로 서버에</p>
+<p>접속하여 다른 노드들에게 mpi 명령을 내린다고 해보자. 내가 직접적으로 접속해 있는 지금 이 노드와는 달리 다른 노드로는</p>
+<p>non-interactive login 을 해야한다. 이 때 나는 해당 노드의 ~/.bashrc 파일만 볼 수 있을 뿐, root 사용자가 수정할 수 있는</p>
+<p>/etc/bash.bashrc 파일에 적힌 내용은 적용받지 못한다. 따라서 export 구문은 반드시 ~/.bashrc 에 적도록 하자.</p>
+<p>그 뒤 다음을 입력한다.</p>
+<pre><code># pip install mpi4py</code></pre><h2>Trial and Error</h2>
+<p>우분투는 기본적으로 python3 가 깔려있다. python2는 없다. anaconda3 와 openmpi 를 직접 설치해보았는데 어느날 갑자기</p>
+<p>다음과 같은 에러가 뜨면서 내 SHPF method 의 main.py 가 실행되질 않았다.</p>
+<pre><code>This application failed to start because it could not find or load the Qt platform plugin &quot;xcb&quot;
+in &quot;&quot;.
+
+Available platform plugins are: eglfs, minimal, minimalegl, offscreen, vnc, xcb.
+
+Reinstalling the application may fix this problem.
+[y203:15958] *** Process received signal ***
+[y203:15958] Signal: Aborted (6)
+[y203:15958] Signal code:  (-6)
+[y203:15958] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0x128a0)[0x7f02cf0ed8a0]
+[y203:15958] [ 1] /lib/x86_64-linux-gnu/libc.so.6(gsignal+0xc7)[0x7f02ced28f47]
+[y203:15958] [ 2] /lib/x86_64-linux-gnu/libc.so.6(abort+0x141)[0x7f02ced2a8b1]
+[y203:15958] [ 3] /opt/anaconda3/lib/python3.7/site-packages/PyQt5/../../../libQt5Core.so.5(+0x959ab)[0x7f02ae04c9ab]
+[y203:15958] [ 4] /opt/anaconda3/lib/python3.7/site-packages/PyQt5/../../../libQt5Gui.so.5(_ZN22QGuiApplicationPrivate25createPlatformIntegrationEv+0x6d2)[0x7f02ab29ea8e]
+[y203:15958] [ 5] /opt/anaconda3/lib/python3.7/site-packages/PyQt5/../../../libQt5Gui.so.5(_ZN22QGuiApplicationPrivate21createEventDispatcherEv+0x13)[0x7f02ab29ee2b]
+[y203:15958] [ 6] /opt/anaconda3/lib/python3.7/site-packages/PyQt5/../../../libQt5Core.so.5(_ZN23QCoreApplicationPrivate4initEv+0x217)[0x7f02ae1637d7]
+[y203:15958] [ 7] /opt/anaconda3/lib/python3.7/site-packages/PyQt5/../../../libQt5Gui.so.5(_ZN22QGuiApplicationPrivate4initEv+0x21)[0x7f02ab29f481]
+[y203:15958] [ 8] /opt/anaconda3/lib/python3.7/site-packages/PyQt5/../../../libQt5Widgets.so.5(_ZN19QApplicationPrivate4initEv+0x9)[0x7f02a977e3bd]
+[y203:15958] [ 9] /opt/anaconda3/lib/python3.7/site-packages/PyQt5/QtWidgets.so(+0x166789)[0x7f02a9ca8789]
+[y203:15958] [10] /opt/anaconda3/lib/python3.7/site-packages/PyQt5/QtWidgets.so(+0x16684f)[0x7f02a9ca884f]
+[y203:15958] [11] /opt/anaconda3/lib/python3.7/site-packages/sip.so(+0x14f64)[0x7f02ab921f64]
+[y203:15958] [12] python(_PyObject_FastCallKeywords+0x128)[0x55b50fe249b8]
+[y203:15958] [13] python(_PyEval_EvalFrameDefault+0x537e)[0x55b50fe807ae]
+[y203:15958] [14] python(_PyFunction_FastCallKeywords+0xfb)[0x55b50fe2379b]
+[y203:15958] [15] python(_PyEval_EvalFrameDefault+0x416)[0x55b50fe7b846]
+[y203:15958] [16] python(_PyEval_EvalCodeWithName+0x5da)[0x55b50fdc17da]
+[y203:15958] [17] python(_PyFunction_FastCallKeywords+0x387)[0x55b50fe23a27]
+[y203:15958] [18] python(_PyEval_EvalFrameDefault+0x14ce)[0x55b50fe7c8fe]
+[y203:15958] [19] python(_PyEval_EvalCodeWithName+0x5da)[0x55b50fdc17da]
+[y203:15958] [20] python(_PyFunction_FastCallDict+0x1d5)[0x55b50fdc25d5]
+[y203:15958] [21] python(_PyObject_Call_Prepend+0x63)[0x55b50fdd9c43]
+[y203:15958] [22] python(+0x1710aa)[0x55b50fe1c0aa]
+[y203:15958] [23] python(_PyObject_FastCallKeywords+0x128)[0x55b50fe249b8]
+[y203:15958] [24] python(_PyEval_EvalFrameDefault+0x537e)[0x55b50fe807ae]
+[y203:15958] [25] python(_PyFunction_FastCallKeywords+0xfb)[0x55b50fe2379b]
+[y203:15958] [26] python(_PyEval_EvalFrameDefault+0x4aa9)[0x55b50fe7fed9]
+[y203:15958] [27] python(_PyEval_EvalCodeWithName+0x2f9)[0x55b50fdc14f9]
+[y203:15958] [28] python(_PyFunction_FastCallDict+0x400)[0x55b50fdc2800]
+[y203:15958] [29] python(_PyObject_Call_Prepend+0x63)[0x55b50fdd9c43]
+[y203:15958] *** End of error message ***
+Aborted (core dumped)</code></pre><p>분명히 qt 문제인데 해결방법을 도저히 찾지 못했다. qt는 심지어 내가 쓰지도 않는데.</p>
+<p>vscode로 원격접속해서 쓰던 중에 발생한 에러 같다. qt는 gui 가 들어있는데 vscode 에서 접속하면</p>
+<p>gui를 건드리는 것 같다. 내 우분투 서버는 gui가 없으니깐 뭔가 충돌나는듯?</p>
+<p>결국 ubuntu apt 에서 제공하는 python3, openmpi 모듈들로 롤백했다.</p>
+<p>~/.bashrc 를 수정하여 기존의 anaconda3 를 PATH 및 LD_LIBRARY_PATH 에서 지우자. openmpi 도 지우자.</p>
+<p>그 다음 재로그인한 뒤에 다음을 입력한다.</p>
+<pre><code>apt install python3-numpy python3-scipy python3-matplotlib python3-h5py python3-psutil python3-pip python3-mpi4py ipython3</code></pre><p>이렇게 하고 다시 main.py 를 실행시켰더니 다음과 같은 warning 이 나타났다.</p>
+<pre><code>--------------------------------------------------------------------------
+[[12634,1],0]: A high-performance Open MPI point-to-point messaging module
+was unable to find any relevant network interfaces:
+
+Module: OpenFabrics (openib)
+  Host: y203
+
+Another transport will be used instead, although this may result in
+lower performance.
+
+NOTE: You can disable this warning by setting the MCA parameter
+btl_base_warn_component_unused to 0.
+--------------------------------------------------------------------------</code></pre><p>이건 다음과 같이 없앨 수 있다.</p>
+<pre><code>vi /etc/openmpi/openmpi-mca-params.conf</code></pre><p>에</p>
+<p>btl_base_warn_component_unused = 0</p>
+<p>를 추가하면 된다.</p>
+
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

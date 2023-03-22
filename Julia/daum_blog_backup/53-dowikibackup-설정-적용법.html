@@ -1,0 +1,52 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>dowikibackup 설정 적용법</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">dowikibackup 설정 적용법</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/서버 앱 설정 방법</p>
+                                    <p class="date">2016-09-28 12:25:40</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>dowikibackup 파이썬 코드를 만들고, chmod 755 dowikibackup 을 이용해 실행파일로 동작하도록 권한을 줌. 그리고<br><br># vi /etc/rc.local<br><br>에 다음의 내용을 추가<br><br> log_begin_msg "Start wiki backup process..."<br> 14 /usr/local/sbin/dowikibackup<br> 15 log_end_msg $?<br><br>마지막에 exit 0 이 있어야함을 명심.<br><br>그리고 /usr/local/sbin/ 으로 파일을 옮겨준다.<br><br></p><p>매달 01일에 백업하도록 설정해놨다. 끝나지 않는 프로세스이다.</p><p><br></p><p><br></p><p><A href="https://t1.daumcdn.net/cfile/blog/2446BC4757EB4A7233?download" target="_blank"><img src="//i1.daumcdn.net/icon/editor/p_etc_s.gif"/> dowikibackup</a></p><p><br></p><p><br></p><figure class="fileblock" data-ke-align="alignCenter">
+    <a href="./file/dowikibackup" class="">
+        <div class="image"></div>
+        <div class="desc">
+            <div class="filename">
+                <span class="name">dowikibackup</span>
+            </div>
+            <div class="size">0.0MB</div>
+        </div>
+    </a>
+</figure>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

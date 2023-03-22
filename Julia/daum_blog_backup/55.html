@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>160928 뜬금없이 testcluster 의 apache2 가 제대로 작동하지 않음</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">160928 뜬금없이 testcluster 의 apache2 가 제대로 작동하지 않음</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/시행 착오 노트</p>
+                                    <p class="date">2016-09-28 19:05:25</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>바로 어제 UEFI로 데비안을 깔았던 앤데 왜 apache2 가 제대로 작동하지 않는지 모르겠다<br><br>apache2 mysql-server php5 php5-mysql<br><br>4개를 전부 다시 지우고 다시 깔고 재부팅하고 이래도 안됨. mediawiki ganglia 모두 접속이 안된다.<br><br><a class="tx-link" target="_blank" href="http://163.152.40.36/">http://163.152.40.36/</a> 으로 들어가면 아무것도 안나오고 접속이 안된다고 뜸.<br><br>어디가 문제일까...<br></p><p><br></p><p># /etc/init.d/apache2 status</p><p><br></p><p>를 하니까&nbsp;could not reliably determine the server's fully qualified domain name 어쩌구 이런 에러가 떠서</p><p><br></p><p># vi /etc/apache2/apache2.conf</p><p><br></p><p>의 마지막 줄에</p><p><br></p><p>ServerName localhost</p><p><br></p><p>를 추가하고 저장하고&nbsp;</p><p><br></p><p># /etc/init.d/apache2 restart</p><p># /etc/init.d/apache2 status</p><p><br></p><p>하니까 사라지긴 했는데, 그래도 여전히 서버로 접속은 안된다.</p><p><br></p><p>데비안의 웹 포트는 80번인데,</p><p><br></p><p># netstat -ntl&nbsp;</p><p><br></p><p>하면 80번은 분명 열려있음. 왜 접속이 안됟까?</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

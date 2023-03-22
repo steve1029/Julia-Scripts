@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>os 모듈</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">os 모듈</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/Python</p>
+                                    <p class="date">2016-10-07 14:07:16</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>환경 변수나 디렉토리, 파일 등의 os 자원을 제어할 수 있게 해주는 모듈이다.<br><br>	* 환경변수란?<br><br>		변수라 함은, 컴퓨터에서 어떤 값을 메모리에 저장해 놓을 때 쓰는 것이다.<br><br>		변수를 지정하고, 그 변수 안에 들어갈 값을 지정해주는 것이 보통 프로그램의 방식.<br><br>		그런데 만약 시스템에서 전체적인 규모로 어떤 간단한 값을 저장해 놓고, 여러 프로그램들이 그 값을 쉽게 참조하려면<br><br>		환경 변수라는 것을 이용한다. 가령 윈도우에는 SystemRoot 라는 환경 변수가 있는데, 이 변수의 값은 운영체제가 설치된<br><br>		디렉토리이다. 따라서 이 SystemRoot 라는 변수의 값만 조사하면, 운영체제가 설치된 폴더를 알아낼 수 있다.<br><br>		어떤 프로세스나 프로그램이 윈도우가 설치된 폴더를 알아야 한다면, 이 환경변수에 접근하기만 하면 알아낼 수 있다.<br><br>	* PATH 란?<br><br>		쉘 상에서, 어떤 Foo.exe 프로그램을 실행하기 위해서 Foo 라는 명령을 주어도, 현재 위치한 폴더 안에 Foo.exe 가 없다면<br><br>		실행되지 않는다. foo.exe 가 있는 폴더로 가서 Foo 를 입력해줘야한다. 하지만 매번 .exe 파일을 실행시킬 때마다<br><br>		그 폴더로 이동할 수는 없지 않은가? 그렇다고 Foo.exe 라고 명령을 입력할 때마다 전체 시스템의 폴더를 모두 뒤지라고 <br><br>		할 수는 없는 노릇이다. 하지만 특정 디렉토리 몇 개만 뒤져보라고 지정해준다면? 항상 빠르게 .exe 파일을 실행할 수 있을 것이다.<br><br>		그 특정 디렉토리의 위치가 바로 PATH 이다. 이 PATH는 파일이 아닌, 환경 변수라 하는 메모리 변수에 저장된다.<br><br>		따라서 배치 파일이나 쉘 스크립트를 만든 뒤에 이 PATH 경로 안에 넣어주면, 언제어디서나 그 파일을 실행할 수 있는 것이다.<br><br>		이 PATH 는 환경변수에 등록되어 있으므로, 어떤 명령을 내리면 쉘은 이 환경변수를 참조하여 PATH의 위치를 알아내고, 그 위치을<br><br>		모두 뒤져서 내가 입력한 명령어를 실행하는 것이다.<br><br>1. os.environ<br><br>	현재 시스템의 환경변수 값을 딕셔너리 형태로 보여준다. key 들만 보고 싶다면,<br><br>	&gt;&gt;&gt; os.environ.keys()<br><br>	이 key 들 중에 'PATH' 가 있다. PATH는 '환경 변수'의 값이다.<br><br>	&gt;&gt;&gt; os.environ['PATH']<br><br>	PATH key의 value 를 보여준다.<br><br>	하지만 하나의 문자열로 나오므로 경로를 알아보기 매우 힘들다.<br><br>	&gt;&gt;&gt; os.environ['PATH'].split(';')<br><br>	이는 string 을 ';' 를 기준으로 짤라서 다시 보여주는 method 이다. 이렇게하면 경로를 알아보기 편하다.<br><br>	윈도우에서 환경 변수를 추가하는 방법은 구글에 많이 소개되어 있으므로 검색 ㄱㄱ.<br><br>2. os.chdir<br><br>	현재 디렉토리의 위치를 변경 할 수 있다.<br><br>	&gt;&gt;&gt; os.chdir("C:\WINDOWS")<br><br>3. os.getcwd()<br><br>	현재 디렉토리의 위치를 반환한다.<br><br>4. os.system<br><br>	현재 시스템 자체의 명령어를 파이썬에서 호출해서 쓸 수 있다.<br><br>	예를 들어 리눅스에서는 bin 및 sbin 폴더 내에 있는 명령어 셋을 shell 이 아닌 python에서 쓸 수 있는 파이썬 내장 모듈인셈<br><br>	&gt;&gt;&gt; os.system("ls")<br><br>5. os.popen<br><br>	process open 의 약자이다. 시스템 명령어를 실행시킨 결과를 읽기모드 형태의 파일 객체로 리턴한다.<br><br>	시스템 명령어들도 전부 .exe 파일이다. 하나의 프로그램이란 뜻. 그래서 명령어를 수행하는 것은 하나의 프로세스를 새로 수행한다는 말이다.<br><br>	&gt;&gt;&gt; f = os.popen("dir")<br><br>	이렇게 하면 dir 명령어를 수행한 결과가 읽기모드의 파일 객체로 형성이 된 것.<br><br>	&gt;&gt;&gt; print(f.read())<br><br>	파일을 읽어서 결과를 쉘 창에 출력.<br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

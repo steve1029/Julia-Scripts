@@ -1,0 +1,393 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>17. 계정 생성 및 아이디, 비밀번호 동기화 그리고 home 폴더의 이전 및 소유권에 대하여</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">17. 계정 생성 및 아이디, 비밀번호 동기화 그리고 home 폴더의 이전 및 소유권에 대하여</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/데비안 서버 구축</p>
+                                    <p class="date">2017-01-10 16:44:14</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>다음 과정은 노드들의 원격부팅이 모두 완료된 상태에서 진행하도록 한다<span>. </span>서버에서 노드들로 사용자들이 원격접속 할 수 있도록 노드의 루트 파일 시스템에 사용자들을 등록하는 과정을 설명할 것이다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;</span></span></p>
+<p><span>&nbsp;</span></p>
+<p><span>1. </span>계정 만들기</p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>계정을 만드는 방법은 여러군데에 잘 나와있으나<span>, 18-10-22 </span>에 쓴 방법을 적어 놓겠다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>참고<span>: \</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>1. <a href="http://mirwebma.tistory.com/112">http://mirwebma.tistory.com/112</a></span></p>
+<p><span>&nbsp;</span></p>
+<p><span>2. <a href="https://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4_%EA%B3%84%EC%A0%95_%EC%83%9D%EC%84%B1_useradd">https://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4_%EA%B3%84%EC%A0%95_%EC%83%9D%EC%84%B1_useradd</a></span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>1. </span>계정이 있는지 확인</p>
+<p><span>&nbsp;</span></p>
+<p><span># cat /etc/passwd | grep </span>계정명</p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>2. </span>우분투의 경우 홈폴더<span> + </span>쉘 환경 지정하여 계정만들기</p>
+<p><span>&nbsp;</span></p>
+<p><span># useradd </span>계정명<span> -m -s /bin/bash</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&gt; -m </span>옵션이 있어야 홈폴더가 생성됨</p>
+<p><span>&nbsp;</span></p>
+<p><span>&gt; -s /bin/bash </span>옵션이 있어야 쉘 환경이 설정됨</p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>3. </span>만든 뒤 계정 비밀번호 생성</p>
+<p><span>&nbsp;</span></p>
+<p><span># passwd </span>계정명</p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>yboot </span>의<span> /etc/{passwd,shadow,group,gshadow} </span>에 각 사용자들의 계정 정보가 모두 들어 있다<span>.</span><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>이를 데이터 서버의<span> /etc/, </span>각 노드의 루트 파일 시스템의<span> /etc/</span>에 복사해준다<span>.</span><span><span>&nbsp;</span></span></p>
+<p><span>&nbsp;</span></p>
+<p>예를 들어<span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span># cp -a /etc/{passwd,shadow,group,gshadow} /nfsroot/yhome1/etc/</span><span>&nbsp;</span></p>
+<p><span># cp -a /etc/{passwd,shadow,group,gshadow} /nfsroot/y101/etc/</span><span>&nbsp;</span></p>
+<p><span><span>&nbsp;</span></span></p>
+<p><span>&nbsp;</span></p>
+<p>이런식으로 모든 노드에 대해 하면 되는데 노드가 굉장히 많으므로 스크립트로 해결하자<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p>명수형이 짜놓은<span> copy.ids.py </span>파일을 이용한다<span>. </span>이 때 루트 사용자의 비밀번호를 스크립트에서 설정해주어야 하니</p>
+<p><span>&nbsp;</span></p>
+<p>파일을 꼭 열어보고 확인하자<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;</span></span></p>
+<p><span>&nbsp;</span></p>
+<p><span># vi /tftpboot/copy.ids.py</span><span><span>&nbsp;</span></span></p>
+<p><span>&nbsp;</span></p>
+<p><span># python /tftpboot/copy.ids.py</span></p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;</span></span></p>
+<p><span>&nbsp;</span></p>
+<p>이렇게 하면 모든 사용자가 모든 데이터 서버와 모든 노드로<span> ssh </span>접속을 할 수 있게 된다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>yboot</span>에서 각 사용자의 아이디를 만들어 주었으므로<span><span>&nbsp; </span>yboot /home </span>에 각 사용자들의 홈폴더가 생겼을 것이다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>이제부터 할 내용은<span> NFS </span>를 쓸 것인지<span> AUTOFS </span>를 쓸 것인지에 따라 방법이 다르다<span>.</span><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>2. </span>홈 폴더 옮겨주기</p>
+<p><span><span>&nbsp;</span></span></p>
+<p><span>&nbsp;</span></p>
+<p><span>2.1. NFS Mount </span>를 이용할 경우</p>
+<p><span>&nbsp;</span><span>&nbsp;</span></p>
+<p><span>scp </span>명령어를 사용할 것이므로 다음 설명서를 읽는다<span>.</span></p>
+<p><span>ssh</span>에서 제공되는<span> scp </span>명령어를 통해 로컬서버<span>&harr;</span>원격서버 로의 파일을 간단하게 전송할 수 있다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;</span></span><span>&nbsp;</span></p>
+<p><span><span>&nbsp;</span>1. </span>사용방법</p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp; </span>1) </span>원격 서버<span> &rarr; </span>로컬 서버로 파일 전송</p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span># scp [</span>옵션<span>] [</span>계정명<span>]@[</span>원격지<span>IP</span>주소<span>]:[</span>원본 경로 및 파일<span>] [</span>전송받을 위치<span>]</span></p>
+<p><span>&nbsp;</span><span>&nbsp;</span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span>예제<span>1) IP 111.222.333.444 </span>서버의<span> abc</span>라는 계정으로<span> /home/abc/index.html </span>파일을 로컬서버<span> /home/me/ </span>디렉토리에 전송 받기</p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span># scp abc@111.222.333.444:/home/abc/index.html /home/me/</span></p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;</span></span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp; </span>2) </span>로컬 서버<span> &rarr; </span>원격 서버로 파일 전송</p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span># scp [</span>옵션<span>] [</span>원본 경로 및 파일<span>] [</span>계정명<span>]@[</span>원격지<span>IP</span>주소<span>]:[</span>전송할 경로<span>]</span></p>
+<p><span>&nbsp;</span><span>&nbsp;</span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span>예제<span>2) </span>로컬서버<span> /home/me/wow.html </span>파일을<span> IP 111.222.333.444 </span>서버의<span> /home/abc/ </span>디렉토리에 전송 하기</p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span># scp /home/me/wow.html abc@111.222.333.444:/home/abc/</span></p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;</span></span></p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp; </span>3) ssh</span>포트를 기본<span> 22</span>번으로 사용하고 있지 않는 서버로의 전송</p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span>예제<span>3) 2222</span>번인<span> SSH</span>포트를 사용한다면 아래와 같이<span> &ndash;P </span>옵션과 포트번호를 넣어준다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span># scp &ndash;P 2222 abc@111.222.333.444:/home/abc/index.html /home/me/</span></p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span># scp &ndash;P 2222 /home/me/wow.html abc@111.222.333.444:/home/abc/</span></p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;</span></span></p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>[</span>주의사항<span>]</span></p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span>옵션중에<span> &ndash;P</span>와<span> &ndash;p</span>가 있으니 대<span>/</span>소문자 확인을 하여야 한다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>-P: </span>포트번호를 지정함</p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>-p: </span>원본파일 수정<span>/</span>사용시간 및 권한을 유지함</p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>-r: </span>하위 디렉토리 및 파일 모두 복사함</p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>출처<span>: <a href="http://faq.hostway.co.kr/?mid=Linux_ETC&amp;page=9&amp;document_srl=1426">http://faq.hostway.co.kr/?mid=Linux_ETC&amp;page=9&amp;document_srl=1426</a></span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>모든 서버의<span> /home </span>에는 각 사용자의 홈 폴더가 있어야 한다<span>.</span><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>위의<span> scp </span>명령어를 이용해 부팅 서버에 있는 각기 다른 사용자의 홈 폴더들을 데이터 서버로 복사해주어<span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>모든 서버가 모든 사용자의 홈폴더를 가지고 있도록 만든다<span>. </span>다음 명령어를 실행한다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span># cp -a yboot:/home/ldg yhome1:/home/ldg</span></p>
+<p><span>&nbsp;</span></p>
+<p><span># cp -a yboot:/home/ldg yhome2:/home/ldg</span></p>
+<p><span>&nbsp;</span></p>
+<p><span># cp -a yboot:/home/ldg yhome3:/home/ldg</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>모든 데이터 서버에 이제 내 홈폴더<span> ldg </span>가 생겼다<span>. </span>이제 생각해보자<span>. </span>모든<span> yhome </span>이 내 홈폴더 내용물을<span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>가지고 있을 필요는 없다<span>. </span>동기화 시키기도 어려울 뿐더러 다른 사람도 사용해야하니깐 용량 낭비를 해서는<span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>안될 것이다<span>. </span>그래서 나는<span> yhome3 </span>에만 내 실제 데이터를 저장하고<span>, yhome1 </span>과<span> yhome2 </span>의 홈폴더는<span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>nfs mount </span>를 이용해<span> yhome3:/home/ldg </span>를 마운트 시켜놓을 것이다<span>. </span>이러면 모든 서버에서 내 홈폴더에<span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>편리하게 접근가능하며<span>, </span>일일이 동기화 해줄 필요도 없고<span>, </span>용량 낭비도 줄일 수 있다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>yhome3 </span>에<span> ldg, kbs, sms </span>세 명의<span> home </span>폴더 데이터를 저장한다고 하자<span>.</span><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>yhome1 </span>과<span> yhome2 </span>에는 홈폴더의 껍데기만 둘 것이다<span>.</span><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>그러면<span>, yhome1</span>와<span> yhome2 </span>가<span> yhome3 </span>의 폴더를<span> nfsmount </span>하기 위해<span>,</span><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>yhome3/:/home/ldg </span>를 모든 서버와 노드에게 뿌리는 작업을 해보자<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>root@yhome3:# vi /etc/exports</span><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>여기서 전체 노드와 서버에<span> /home </span>을 뿌리는 설정을 한다<span>. </span>물론<span> /home </span>의 하위 폴더에도 모두</p>
+<p><span>&nbsp;</span></p>
+<p>접근할 수 있게<span> no_root_squash </span>등의 욥선이 반드시 있어야 한다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>/home<span>&nbsp;&nbsp; </span>192.168.100.0/24(rw,no_root_squash,no_subtree_check,sync)</span><span><span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></span></p>
+<p>&nbsp;</p>
+<p><span>root@yhome1:# vi /etc/fstab</span><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>proc<span>&nbsp;&nbsp;&nbsp; </span>/proc<span>&nbsp;&nbsp; </span>proc<span>&nbsp;&nbsp;&nbsp; </span>defaults<span>&nbsp;&nbsp;&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span><span>&nbsp;</span></p>
+<p><span>none<span>&nbsp;&nbsp;&nbsp; </span>/tmp<span>&nbsp;&nbsp;&nbsp; </span>tmpfs<span>&nbsp;&nbsp; </span>defaults<span>&nbsp;&nbsp;&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>yboot:/root /root<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span><span>&nbsp;</span></p>
+<p><span>#yhome1:/home/intro /home/intro<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span><span>&nbsp;</span></p>
+<p><span>#yhome1:/home/turtle /home/turtle<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span></p>
+<p><span>#yhome1:/home/cris /home/cris<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>yhome2:/home/kth /home/kth<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span><span>&nbsp;</span></p>
+<p><span>yhome2:/home/lsy /home/lsy<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span></p>
+<p><span>yhome2:/home/cwj /home/cwj<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span></p>
+<p><span>&nbsp;</span><span>&nbsp;</span></p>
+<p><span>yhome3:/home/ldg /home/ldg<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span><span>&nbsp;</span></p>
+<p><span>yhome3:/home/kbs /home/kbs<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span></p>
+<p><span>yhome3:/home/sms /home/sms<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>나머지 서버에도 해당되는 사용자에 따라 같은 작업을 한다<span>.</span><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>그리고 노드의 루트파일 시스템에도 설정해주자<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>root@yboot:# vi /nfsroot/y101/etc/fstab</span><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>proc<span>&nbsp;&nbsp;&nbsp; </span>/proc<span>&nbsp;&nbsp; </span>proc<span>&nbsp;&nbsp;&nbsp; </span>defaults<span>&nbsp;&nbsp;&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span><span>&nbsp;</span></p>
+<p><span>none<span>&nbsp;&nbsp;&nbsp; </span>/tmp<span>&nbsp;&nbsp;&nbsp; </span>tmpfs<span>&nbsp;&nbsp; </span>defaults<span>&nbsp;&nbsp;&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>yboot:/root /root<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>yhome1:/home/intro /home/intro<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span><span>&nbsp;</span></p>
+<p><span>yhome1:/home/turtle /home/turtle<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span></p>
+<p><span>yhome1:/home/cris /home/cris<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>yhome2:/home/kth /home/kth<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span><span>&nbsp;</span></p>
+<p><span>yhome2:/home/lsy /home/lsy<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span></p>
+<p><span>yhome2:/home/cwj /home/cwj<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>yhome3:/home/ldg /home/ldg<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span><span>&nbsp;</span></p>
+<p><span>yhome3:/home/kbs /home/kbs<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span></p>
+<p><span>yhome3:/home/sms /home/sms<span>&nbsp;&nbsp; </span>nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768<span>&nbsp; </span>0<span>&nbsp;&nbsp; </span>0</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>nfsmount </span>를 이용할 경우<span> /home </span>폴더를 그대로 이용하기 때문에<span>, </span>리눅스를 처음 설치할 시<span> /home </span>을 용량이 큰 하드에 따로 마운트하여 설치하는 것이 좋다<span>. </span>반면 앞으로 설명할<span> autofs </span>의 경우<span> /home </span>을 저장소로 이용하지 않기 때문에 하드를 추가 적으로 마운트해주는 것이 좋다<span>. </span>읽어보면 이게 무슨 말인지 알게 된다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>2.2. Autofs </span>를 이용할 경우</p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span><span>&nbsp;</span></p>
+<p>각 사용자들의 홈폴더는 용량이 매우 크다<span>. 2017</span>년<span> 7</span>월<span> 24</span>일 기준으로<span>, </span>연구실 개인 평균 약<span> 3 TB </span>의 용량을 사용중이다<span>.</span></p>
+<p>각<span> yhome </span>당<span> 6TB </span>하드디스크가<span> 3</span>개씩 연결되어 있으므로<span>, yhome </span>당 약<span> 6</span>명이 사용할 수 있다<span>. </span></p>
+<p>&nbsp;</p>
+<p>여유를 두어서 각<span> yhome </span>당<span> </span><span>4</span>명씩 정도 배치한다면<span>, </span>하드의 용량을 넉넉히 쓸 수 있을 것이다<span>.</span><span>&nbsp;</span></p>
+<p>하지만 이는 곧<span> /home </span>을 여러 하드디스크에 분산시켜야 한다는 뜻이다<span>. </span>어떤 방법을 쓸 것인가<span>?</span><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>우리가 사용할 방법은<span>, </span>원래의<span> yhome:/home </span>은 그대로 놔두고<span>, yhome:/local_home </span>을 새로 만들어<span> </span><span>yhome:/home </span>과<span> yhome:/local_home </span>을<span> autofs </span>로 연결시켜 사용할 것이다<span>. </span>이 떄 헷갈리지 말아야 할 것은 <span>yhome:/home </span>에는 리눅스가 설치된 하드가 마운트 되어있지만<span>, yhome:/local_home </span>에는 홈폴더용 하드디스크가 마운트되어 있다는 것이다<span>. </span>이렇게하면 리눅스의 루트파일시스템이 온전히 보전되어 있으므로 나중에 홈폴더용 하드를 떼어내도 <span>yhome </span>의 리눅스는 정상작동 할 것이다<span>. </span>또한 홈폴더용 하드를 따로 보관하기도 좋다<span>. </span>즉 관리하기가 훨씬 편한 방법이다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span><span>&nbsp;</span></p>
+<p>먼저 홈폴더에 마운트할 새로운 하드들을<span> yhome</span>에 설치한다<span>. </span>그 다음 마운트할 새 디렉토리를 만든다<span>.</span></p>
+<p><span>&nbsp;</span><span><span>&nbsp;</span></span></p>
+<p><span>&nbsp;</span></p>
+<p><span># mkdir /local_home</span><span>&nbsp;</span></p>
+<p><span># mkdir /local_home/home1 /local_home/home2</span></p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;</span></span></p>
+<p><span>&nbsp;</span></p>
+<p>그리고 새로운 하드들을<span> yhome 1,2,3 </span>에 연결한 뒤<span> parted </span>앱을 이용해<span> ext4 </span>로 포맷하고 마운트 시킨다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span><span>&nbsp;</span></span></p>
+<p><span>&nbsp;</span></p>
+<p>각<span> yhome </span>에서<span> fstab </span>을 수정하자<span>. yhome1 </span>의 경우만 예시로 적겠다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>root@yhome1# vi /etc/fstab</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>yhome1:/local_home</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>yhome1,2,3</span>에 설치된 하드디스크를 각 노드의<span> /home</span>에<span> nfs </span>로 마운트 한다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>먼저<span> 1</span>번 방법부터 살펴보자<span>. mount /dev/sdb1 </span>등으로 마운트된 새 하드를<span> /mnt/[new folder] </span>등으로 마운트 시켜준다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>마운트 하는 방법은 이 전 게시글 및 구글링을 통해서 정보를 얻자<span>. parted </span>앱을 사용하는 것이 편하다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>하드를 마운트 시켰으면<span>, </span>각 사용자들의 홈 폴더를 복사해주자<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span># cp -a /home/ldg /mnt/[new folder]/</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>이렇게 홈폴더를 속성까지 싸그리 다 복사해주면 새 하드에도 <span>ldg </span>유저가 사용할 수 있는 홈폴더가 만들어진다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>두 번째 방법도 비슷하다<span>. </span>네트워크로 마운트 시켜서 위의 복사 명령어를 해주면 끝<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span># umount /mnt/[new folder] </span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>작업이 다 끝나면 잊지말고 마운트 해제시켜주자<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>그러면 서버에는 처음 만든 사용자들의 아이디와 비밀번호가 다 입력이 되어 있지만<span>, </span>노드들이 가져오는</p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>tftpboot, nfsroot </span>파일들에는 사용자들의 계정정보가 당연히 없다<span>. </span>사용자들의 계정정보는</p>
+<p><span>&nbsp;</span></p>
+<p>루트 파일 서버의<span> /etc/group,shadow,gshadow,passd 4</span>가지의 파일에 들어있다<span>. </span>이것을<span> </span></p>
+<p><span>&nbsp;</span></p>
+<p><span>/nfsroot/default,node101,node102... </span>등등의<span> etc </span>폴더 안에 복사해서 넣어주면 된다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>cp /etc/{group,shadow,gshadow,passwd} /nfsroot/default/etc</span></p>
+<p><span>&nbsp;</span></p>
+<p>라고 해주면<span> default </span>파일안에 복사가 다 된다<span>. </span>이때 최종경로가 폴더라면 그 안에 복사가 되지만</p>
+<p><span>&nbsp;</span></p>
+<p>최종경로가 파일이라면 그 파일을 대체 해버리니 주의하자<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p>그리고<span> default </span>폴더를<span> rsync</span>를 이용해서<span> node101,node102.. </span>등과 동기화를 하거나 아니면 일일이</p>
+<p><span>&nbsp;</span></p>
+<p>노드 폴더마다 복사해주던가 하면 된다<span>. </span>혹은 자동으로 항상 동기화 되도록 설정해주자<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span># vi /etc/cron.hourly/passwdsync</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>여기에 다음과 같은 내용을 추가한다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>#!/bin/sh</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>ln -f /etc/passwd /etc/shadow /etc/group /etc/gshadow /node/etc/</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>/etc/cron </span>파일은 백그라운드에서 자동으로 계속 실행되는 스크립트이다<span>. </span>즉 한시간 마다 매번 그 내용을 실행한다<span>.</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p>설정 파일을 만들었으면<span> 755 </span>권한을 주자</p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span>&nbsp;</span></p>
+<p><span># chmod 755 /etc/cron.hourly/passwdsync</span></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

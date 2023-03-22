@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>pycuda 윈도우 설치법</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">pycuda 윈도우 설치법</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/CUDA</p>
+                                    <p class="date">2016-09-25 18:55:44</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>1. Visual studio 를 설치해야 한다. 이때, nvidia toolkit 에서 지원하는 버전으로 반드시 설치해야한다. 현재 toolkit 이 어느 버전까지 지원 하는지는 nvidia toolkit 의 &#111;&#110;line documentation 의 installation guide에 나와 있다.</p><p><br>http://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html#axzz4W0z2xQrj<br><br>	이때 반드시 VS를 먼저 설치하고 toolkit을 설치해야한다.</p><p><br></p><p>toolkit에서 VS의 설정 파일에 추가하는 것이 있기 때문이다.<br><br>	VS를 설치해야하는 이유는, python으로 구동한다 하더라도 C compiler가 필요하기 때문이다. <br><br>	윈도우는 7 이후로는 개발툴을 윈도우 자체에 포함시키지 않고 빼버렸으며, 윈도우에서 개발툴을 이용하기 위해서는 반드시 VS를 설치하여야만 한다.</p><p><br></p><p>VS 를 설치할 때 반드시 default 로 설치하지 말고 custom setting 으로 들어가서 programming language 파트를 같이 설치해주어야&nbsp;<span style="font-size: 9pt;">python extension 이 설치된다. 만약 그냥 넘겨버렸을시 인스톨러를 다시 실행하면 추가로 설치할 수 있도록 잘 만들어져 있으니 안심.</span></p><p><span style="font-size: 9pt;"><br></span></p><p>대신, 절대로 anaconda python extension 을 깔지 않는다. 그냥 파이썬도 같이 설치하지말자.&nbsp;</p><p><span style="font-size: 9pt;">왜냐하면,</span><br></p><p>1) python 이 기본 경로가 아니라 VS 경로 안에 설치가 되어, 모듈을 설치하고 싶어도 폴더 권한 문제로 설치가 안된다. 개짜증. VS 는 오로지 C, C++, CUDA C 를 윈도우에서 쓰고 싶을 때만 설치하도록 하자.&nbsp;</p><p>3) VS 를 통해 anaconda python 을 설치할 경우 환경 변수에 등록이 안되어 일일이 다시 등록해줘야 한다. 환경변수 경로는 다음과 같다.</p><p><br></p><p>시스템 환경변수의 Path 로 들어가서 다음 3개를 추가한다.</p><p>C:\Program Files (x86)\Microsoft Visual Studio\Shared\Anaconda3_64<br></p><p>C:\Program Files (x86)\Microsoft Visual Studio\Shared\Anaconda3_64\Scripts<br></p><p>C:\Program Files (x86)\Microsoft Visual Studio\Shared\Anaconda3_64\Library\bin<br></p><p><br><br>2.<br><br>	Nvidia 공식 홈페이지에서 toolkit을 다운 받아 설치한다.<br><br><br>3.</p><p><br>	Anaconda python 을 설치한다. 문제는 반드시 파이썬을 맨 나중에 설치해야 한다는 것이다.</p><p><br></p><p>VS -&gt; NVIDIA TOOLKIT -&gt; PYTHON 순으로 설치한다.</p><p><br></p><p>공식 홈페이지에서 그대로 다운 받아서 설치하면 됨. 파이썬 3 로 바꿀 때가 된 것 같다.</p><p><br></p><p>4.<br><br>	pyCUDA module 은 anaconda 에서 제공하지 않는다. 따로 패키지를 다운 받아야한다.<br><br>패키지는 윈도우용 파이썬 패키지를 다운 받을 수 있는&nbsp;</p><p><br></p><p>http://www.lfd.uci.edu/~gohlke/pythonlibs/</p><p><br></p><p>로 가서 다운 받으면 된다. ctrl + f 를 눌러 pycuda를 찾아서 다운 받자.<br><br>	패키지는 다운 받은 뒤 cmd를 열고 해당 파일이 있는 경로로 가서<br><br>	pip install pycuda 어쩌구저쩌구<br><br>	를 입력하면 설치된다.<br><br>	여기서, cmd 창에서 갑자기 pip 명령어가 먹히는 이유는 anaconda 설치과정에서<br><br>	환경변수에 pip.exe 실행파일이 있는 경로가 자동으로 추가되기 때문이다.<br><br>5.<br><br>	그 다음으로 conda prompt 에서 다음을 입력한다.<br><br>	conda install mingw libpython<br><br>	이유는 모르겠지만 설치해야 한단다.</p><p><br></p><p>혹은 아까 그 윈도우용 파이썬 패키지 사이트에서 mingw 와 libpython 을 검색하여 같은 방법으로 설치한다.</p><p><br>6. <br><br>	그 다음 환경 변수에 C compiler 인 cl.exe 가 있는 경로를 추가해줘야 한다.<br><br>	사용자 변수를 편집하여 다음을 추가한다.<br><br>	C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin<br><br>	여기에 cl.exe 파일이 있기 때문이다. 물론 센스 있게 VS 버전에 따라 폴더 경로 달라지는건 알아서 해주자.<br><br><br>7.<br><br>	그 다음 sample script를 돌려보자. 결과가 나오면 성공.<br><br>	<br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>12. 노드의 루트파일 시스템 환경 설정</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">12. 노드의 루트파일 시스템 환경 설정</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/데비안 서버 구축</p>
+                                    <p class="date">2016-09-26 23:14:23</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p><span style="font-family: Dotum; font-size: 9pt;">앞에서 서버에서 nfs 를 통해 노드에 루트파일시스템을 제공하도록 설정하였다.</span></p>
+<p><span style="font-family: Dotum; font-size: 10pt;">&nbsp;</span></p>
+<p><span style="font-family: Dotum; font-size: 9pt;">이제 노드에서도 '잘 받을' 준비를 해야한다.</span></p>
+<p><span style="font-family: Dotum; font-size: 10pt;">&nbsp;</span></p>
+<p><span style="font-family: Dotum; font-size: 9pt;">이번 장에서는 다음의 설정 파일을 수정하고 앱을 설치하는 과정에 대해 설명 할 것이다.</span></p>
+<p><span style="font-family: Dotum; font-size: 10pt;">&nbsp;</span></p>
+<p style="margin-left: 2em;">&nbsp;</p>
+<p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 10pt;"><span style="font-family: Dotum; font-size: 9pt;">/etc/apt/sources.list 수정</span></span></p>
+<p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;">locales, nfs-common,&nbsp;vim, htop, aptitude&nbsp;앱 설치</span></p>
+<p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;">/etc/fstab 수정</span></p>
+<p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;">/etc/hostname 수정</span></p>
+<p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;">/etc/hosts 수정</span></p>
+<p>&nbsp;</p>
+<p><span style="font-family: Dotum; font-size: 9pt;">노드의 최상위 디렉토리 '/' 는 리눅스 커널의 nfs-root 기능을 통해 자동으로 마운트가 된다.</span></p>
+<p><span style="font-size: 10pt;">&nbsp;</span></p>
+<p><span style="font-family: Dotum; font-size: 9pt;">그래서 따로 설정이 필요가 없다.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-family: Dotum; font-size: 9pt;">하지만 /home 을 마운트 하려면 nfs 클라이언트 설정이 필요하다.</span></p>
+<p><span style="font-size: 10pt;">&nbsp;</span></p>
+<p><span style="font-family: Dotum; font-size: 9pt;">여기서 클라이언트란 nfs 서비스를 제공 받는 유저를 말한다.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-family: Dotum; font-size: 9pt;">그리고 짚고 넘어 가야할 것이 있다. 왜 서버의 /home 을 노드에서 nfs 로 받아야 하는가?</span></p>
+<p>&nbsp;</p>
+<p><span style="font-family: Dotum; font-size: 9pt;">서버는 각 노드들 에게 /nfsroot/y</span><span style="font-family: Dotum; font-size: 9pt;">101, y102 등등 으로 루트파일시스템을 제공하고 있지만,</span></p>
+<p><span style="font-size: 10pt;">&nbsp;</span></p>
+<p><span style="font-family: Dotum; font-size: 9pt;">/home 은 아직 따로 제공하지 않고 있다. </span><span style="font-family: Dotum; font-size: 9pt;">유저들의 개인 데이터들은 모두 서버의 /home 에 있다.&nbsp;</span></p>
+<p><span style="font-size: 10pt;">&nbsp;</span></p>
+<p><span style="font-family: Dotum; font-size: 9pt;">노드에 접속을 해서 서버에 저장된 자신의 데이터를 작업할 수 있어야 </span></p>
+<p><span style="font-family: Dotum; font-size: 10pt;">&nbsp;</span></p>
+<p><span style="font-family: Dotum; font-size: 9pt;">진정한&nbsp;</span><span style="font-family: Dotum; font-size: 9pt;">클러스터 서버라고 할 수 있지 않겠는가?</span></p>
+<p><span style="font-size: 10pt;">&nbsp;</span></p>
+<p><span style="font-family: Dotum; font-size: 9pt;">서버에 접속하는 모든 유저가 노드에는 접근이 불가하고, 서버 컴퓨터에만 접근할 수 있다면</span></p>
+<p><span style="font-size: 10pt;">&nbsp;</span></p>
+<p><span style="font-family: Dotum; font-size: 9pt;">서버의 데이터 트래픽도 매우 높을 것이고 안정성도 떨어지며</span><span style="font-family: Dotum; font-size: 9pt;">&nbsp;이용성도 떨어질 것이다.</span></p>
+<p><span style="font-size: 10pt;">&nbsp;</span></p>
+<p><span style="font-family: Dotum; font-size: 9pt;">따라서&nbsp;</span><span style="font-family: Dotum; font-size: 9pt;">노드에서</span><span style="font-family: Dotum; font-size: 9pt;">&nbsp;</span><span style="font-family: Dotum; font-size: 9pt;">서버의 /home 에 접근할 수 있도록 하여,</span></p>
+<p><span style="font-size: 10pt;">&nbsp;</span></p>
+<p><span style="font-family: Dotum; font-size: 9pt;">사용자들이 노드에 접속해도 서버의 /home 을 이용할 수 있도록 </span><span style="font-family: Dotum; font-size: 9pt;">만들어주어야 한다.</span></p>
+<p><span style="font-size: 9pt;">&nbsp;</span></p>
+<p><span style="font-family: Dotum; font-size: 9pt;">(1) 노드에 필수 애플리케이션 설치</span></p>
+<p><span style="font-size: 9pt;">&nbsp;</span></p>
+<p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;">노드의 루트파일 시스템으로 바꿔서 앱을 설치한다. 서버에는 설치할 필요가 없다.</span></p>
+<p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 10pt;">&nbsp;</span></p>
+<p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;">서버는 nfs 제공하는 쪽이지&nbsp;</span><span style="font-family: Dotum; font-size: 9pt;">nfs 로 뭔가를 받는 쪽이 아니므로.</span></p>
+<p style="margin-left: 2em;">&nbsp;</p>
+<p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;"># chroot /nfsroot/y101 aptitude -y install nfs-common</span></p>
+<p><span style="font-size: 9pt;">&nbsp;</span></p>
+<p><span style="font-family: Dotum; font-size: 9pt;">(2) 노드의 fstab 에 가상파일 시스템과 서버의 /home 디렉토리 마운트 설정</span></p>
+<p>&nbsp;</p>
+<p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;"># vi /nfsroot/y101/etc/fstab</span></p>
+<p style="margin-left: 2em;">&nbsp;</p>
+<p><span style="font-family: Dotum; font-size: 9pt;">proc &nbsp; &nbsp;</span><span style="font-family: Dotum; font-size: 9pt;">/proc&nbsp;</span><span style="font-family: Dotum; white-space: pre; font-size: 9pt;" class="Apple-tab-span"> </span><span style="font-family: Dotum; font-size: 9pt;">proc &nbsp; &nbsp;</span><span style="font-family: Dotum; font-size: 9pt;">defaults &nbsp; &nbsp;</span><span style="font-family: Dotum; font-size: 9pt;">0 &nbsp; &nbsp;</span><span style="font-family: Dotum; font-size: 9pt;">0</span></p>
+<p><span style="font-family: Dotum; font-size: 9pt;">none &nbsp; &nbsp;/tmp &nbsp; &nbsp;tmpfs &nbsp; &nbsp;</span><span style="font-family: Dotum; font-size: 9pt;">defaults &nbsp; &nbsp;</span><span style="font-family: Dotum; font-size: 9pt;">0 &nbsp; &nbsp;0</span></p>
+<p><span style="font-size: 9pt;">&nbsp;</span></p>
+<p><span style="font-family: Dotum; font-size: 9pt;">yboot:/root /root &nbsp; nfs defaults,async,nosuid,nodev,intr,nfsvers=3,rsize=32768,wsize=32768 &nbsp;0 &nbsp; 0</span></p>
+<p>&nbsp;</p>
+<div>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;">입력순서는 다음과 같다.</span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;">&nbsp;</p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-size: 13.33px;"><span style="font-family: Dotum; font-size: 9pt;">&lt;소스&gt;</span><span style="font-family: Dotum; white-space: pre; font-size: 9pt;" class="Apple-tab-span"> </span><span style="font-family: Dotum; font-size: 9pt;">&lt;데스티네이션&gt;</span><span style="font-family: Dotum; white-space: pre; font-size: 9pt;" class="Apple-tab-span"> </span><span style="font-family: Dotum; font-size: 9pt;">&lt;타입&gt;</span><span style="font-family: Dotum; white-space: pre; font-size: 9pt;" class="Apple-tab-span"> </span><span style="font-family: Dotum; font-size: 9pt;">&lt;옵션&gt;</span><span style="font-family: Dotum; white-space: pre; font-size: 9pt;" class="Apple-tab-span"> </span><span style="font-family: Dotum; font-size: 9pt;">&lt;dump&gt;</span><span style="font-family: Dotum; white-space: pre; font-size: 9pt;" class="Apple-tab-span"> </span><span style="font-family: Dotum; font-size: 9pt;">&lt;pass&gt;</span></span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-size: 13.33px;">&nbsp;</span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-size: 13.33px;"><span style="font-family: Dotum; font-size: 9pt;">여기서 defaults로 하면 rw가 기본이다.</span></span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-size: 13.33px;"><span style="font-family: Dotum;">&nbsp;</span></span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-size: 13.33px;"><span style="font-family: Dotum; font-size: 9pt;">마지막 줄은 명수형이 추가 했던 옵션. 원래 메뉴얼에는 없다.</span></span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-size: 13.33px;"><span style="font-family: Dotum;">&nbsp;</span></span></p>
+<span style="font-family: Dotum; font-size: 9pt;">하지만 위 내용을 보면 서버의 /home 에 대한 내용은 전혀 없는데?</span><span style="font-size: 13.33px;"><br /></span><span style="font-family: Dotum; font-size: 9pt;">그 이유는 autofs 라는 방법으로 마운트할 것이기 때문이다. fstab 은 nfs로 마운트할 때 설정하는 파일이고 autofs 는 따로 있다.</span><span style="font-size: 13.33px;"><br /></span><span style="font-family: Dotum; font-size: 9pt;">아니 여태까지 nfs로 한다고 해놓고 왜 갑자기 autofs 로 한다는건가?</span><span style="font-size: 13.33px;"><br /></span><span style="font-family: Dotum; font-size: 9pt;">원래 nfs 로만 했는데, 네트워크 트래픽을 줄이고자 nfs 와 비슷한 autofs 를 사용하게 되었다.</span><span style="font-size: 13.33px;"><br /></span><span style="font-family: Dotum; font-size: 9pt;">하지만 실제로 얼마나 줄어드는 지는 나노광학연구실에서 직접 확인한&nbsp;바 없다.</span><span style="font-size: 13.33px;"><br /></span><span style="font-family: Dotum; font-size: 9pt;">따라서 autofs 가 실행되지 않는다면 그냥 nfs 마운트를 이용하자. autofs 는 안될 때가 많다.&nbsp;</span><span style="font-size: 13.33px;"><br /></span><span style="font-family: Dotum; font-size: 9pt;">nfs 마운트는 거의 항상 된다. </span><span style="font-family: Dotum; font-size: 9pt;">autofs 는 사용자가 원할 때만 마운트시키는 방법이다.</span><span style="font-size: 13.33px;"><br /></span><span style="font-family: Dotum; font-size: 9pt;">좀 더 편리하고, 네트워크 트래픽을 줄일 수 있다.</span>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-size: 13.33px;">&nbsp;</span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-size: 13.33px;"><span style="font-family: Dotum; font-size: 9pt;">만약 데이터 서버의 /home 이 autofs 로 마운트 되지 않는다면,</span></span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-size: 13.33px;"><span style="font-family: Dotum;">&nbsp;</span></span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-size: 13.33px;"><span style="font-family: Dotum; font-size: 9pt;">다음의 줄을 추가하자. nfs로 연결하는 방식이다.</span></span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-size: 13.33px;">&nbsp;</span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-size: 13.33px;"><span style="font-family: Dotum; font-size: 9pt;">192.168.100.1:/home</span><span style="font-family: Dotum; white-space: pre; font-size: 9pt;" class="Apple-tab-span"> </span><span style="font-family: Dotum; font-size: 9pt;">/home</span><span style="font-family: Dotum; white-space: pre; font-size: 9pt;" class="Apple-tab-span"> </span><span style="font-family: Dotum; font-size: 9pt;">nfs</span><span style="font-family: Dotum; white-space: pre; font-size: 9pt;" class="Apple-tab-span"> </span><span style="font-family: Dotum; font-size: 9pt;">defaults</span><span style="font-family: Dotum; white-space: pre; font-size: 9pt;" class="Apple-tab-span"> </span><span style="font-family: Dotum; font-size: 9pt;">0</span><span style="font-family: Dotum; white-space: pre; font-size: 9pt;" class="Apple-tab-span"> </span><span style="font-family: Dotum; font-size: 9pt;">0</span></span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-size: 13.33px;"><span style="font-family: Dotum;">&nbsp;</span></span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;">외부의 폴더를 노드의 /home에 nfs 방식으로 mount하겠다는 의미이다. rw로 사용이 가능!</span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;">&nbsp;</p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;">사용자들의 홈폴더가 각기 다른 데이터 서버에 있다면 다음의 경우를 응용하여 </span><span style="font-family: Dotum; font-size: 9pt;">추가하자.</span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;">&nbsp;</p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;">&nbsp;</p>
+<p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;">yhome1:/home/lsy&nbsp; &nbsp; /home/lsy&nbsp; &nbsp; nfs&nbsp; &nbsp; defaults&nbsp; &nbsp; 0&nbsp; &nbsp; 0</span></p>
+<p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;">yhome2:/home/cris123&nbsp; &nbsp; /home/cris123&nbsp; &nbsp; nfs&nbsp; &nbsp; defaults&nbsp; &nbsp; 0&nbsp; &nbsp; 0</span></p>
+<p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;">yhome3:/home/ldg&nbsp; &nbsp; /home/ldg&nbsp; &nbsp;nfs&nbsp; &nbsp; defaults&nbsp; &nbsp; 0&nbsp; &nbsp; 0</span></p>
+<p style="margin-left: 2em;">&nbsp;</p>
+<p style="margin-left: 2em;">&nbsp;</p>
+<p style="margin-left: 2em;"><span style="font-size: 9pt;">엄밀히 말하자면 서버가 /nfsroot/y101 폴더를 nfs로 제공하는 것은</span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-family: Dotum; font-size: 13.33px;">&nbsp;</span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;">nfsroot 서버로서의 역할이며,&nbsp;</span><span style="font-family: Dotum; font-size: 9pt;">/home 을 nfs로 제공하는 것은 데이터 서버로서의 역할이다.</span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-family: Dotum; font-size: 13.33px;">&nbsp;</span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-family: Dotum; font-size: 9pt;">여기선 nfsroot 서버로서의 역할에 대한 설명이 더 중요하므로 </span></p>
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><span style="font-family: Dotum; font-size: 13.33px;">&nbsp;</span></p>
+<span style="font-family: Dotum; font-size: 9pt;">autofs 에 대한 설명은 다음으로 미루겠다.</span><span style="font-family: Dotum; font-size: 13.33px;"><br /></span><span style="font-family: Dotum; font-size: 9pt;">그리고 다음의 파일 또한 바꾸어 주어야 한다</span><span style="font-family: Dotum; font-size: 13.33px;"><br /></span><span style="font-family: Dotum; font-size: 9pt;">/nfsroot/gpunode/etc/hosts</span><br />
+<p style="font-family: 'Times New Roman', serif; margin-left: 2em;"><figure class="fileblock" data-ke-align="alignCenter">
+    <a href="./file/Yggdrasil script.7z" class="">
+        <div class="image"></div>
+        <div class="desc">
+            <div class="filename">
+                <span class="name">Yggdrasil script.7z</span>
+            </div>
+            <div class="size">0.01MB</div>
+        </div>
+    </a>
+</figure></p>
+<span style="font-family: Dotum; font-size: 13.33px;"><br /></span><span style="font-family: Dotum; font-size: 9pt;">/nfsroot/gpunode/etc/hostname</span></div>
+<p>&nbsp;</p><figure class="fileblock" data-ke-align="alignCenter">
+    <a href="./file/Yggdrasil script_1.7z" class="">
+        <div class="image"></div>
+        <div class="desc">
+            <div class="filename">
+                <span class="name">Yggdrasil script.7z</span>
+            </div>
+            <div class="size">0.01MB</div>
+        </div>
+    </a>
+</figure>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

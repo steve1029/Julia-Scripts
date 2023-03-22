@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>BLAS 설치 법</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">BLAS 설치 법</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/리눅스 일반</p>
+                                    <p class="date">2017-05-16 11:26:10</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>http://ab-initio.mit.edu/wiki/index.php/MPB_Installation<br></p><p><br></p><p>일단 윈도우에서 공식 홈페이지로 들어간 다음 blas 최신 버전 압축파일을 받는다.</p><p><br></p><p>혹은 리눅스에서 바로 다운 받는 방법도 있다.</p><p>get http://www.netlib.org/blas/blas.tgz</p><p><br></p><p><br></p><p>그리고 리눅스로 옮기고 압축을 풀어 준다.</p><p><span style="font-size: 9pt;"><br></span></p><p><span style="font-size: 9pt;"># tar -xvf blas-3.7.0.tgz</span><br></p><p><br></p><p>그리고 압축 푼 폴더로 들어간 뒤 다음을 실행한다.</p><p><br></p><p># cd ./BLAS-3.7.0</p><p><br></p><p><br></p><p>gunzip blas.tgz</p><p>tar xf blas.tar</p><p>cd BLAS</p><p>f77 -c -O3 *.f &nbsp; # compile all of the .f files to produce .o files</p><p>ar rv libblas.a *.o &nbsp; &nbsp;# &nbsp;combine the .o files into a library</p><p>su -c "cp libblas.a /usr/local/lib" &nbsp; # switch to root and install</p><p><br></p><p>여기서 f77 은 포트란 컴파일 명령어이므로 command not found 에러가 뜨면 aptitude 에서 다음을 설치하자.</p><p><br></p><p># aptitude install -y fort77</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,149 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>5. DHCP 서버 설정</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">5. DHCP 서버 설정</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/데비안 서버 구축</p>
+                                    <p class="date">2016-09-25 20:26:57</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p><span style="color: rgb(191, 219, 232); font-size: 9pt;">마스터 노드, 즉 부트 서버가 dhcp 서버로 동작할 수 있게끔 만들어줘야 한다.&nbsp;</span></p><p><span style="color: rgb(191, 219, 232); font-size: 9pt;">그래야 slave node 들이 내부 네트워크에서 상대방과 자신을 구별할 수 있다,</span></p><p><span style="font-size: 9pt;"><br></span></p><p><span style="color: rgb(191, 219, 232); font-size: 9pt;">dhcp는 유선 네트워크로&nbsp;</span><span style="color: rgb(191, 219, 232); font-size: 9pt;">연결되어 있는 기기들에게 ip주소를 할당해주는 프로토콜이다.</span></p><p style="margin-left: 2em;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">	</span><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">	# aptitude -y install isc-dhcp-server</span></p><p style="margin-left: 2em;"><br></p><p><span style="color: rgb(191, 219, 232); font-size: 9pt;">그 다음 dhcp 설정을 해줘야 한다.</span></p><p><br></p><p style="margin-left: 2em;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">vi /etc/dhcp/dhcpd.conf</span></p><p style="margin-left: 2em;"><br></p><p><span style="color: rgb(191, 219, 232); font-size: 9pt;">그리고 다음과 같이 입력해준다. 물론 이건 언제까지나 예시이다. 노드의 수와 맥 주소에 따라, 이름에 따라 해당 부분만 바꿔주면 된다.</span></p><hr style="border-width: 1px 0px 0px; border-style: solid none none; border-color: black; border-image: none; height: 1px; display: block;"><p><span style="color: rgb(191, 219, 232); font-size: 9pt;">option space
+pxelinux;</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">option pxelinux.magic
+code 208 = string;</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">option
+pxelinux.configfile code 209 = text;</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;site-option-space "pxelinux";</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">option pxelinux.magic
+f1:00:74:7e;</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">if exists
+dhcp-parameter-request-list </span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">{</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp; option dhcp-parameter-request-list =
+concat(option dhcp-parameter-request-list,d0,d1,d2,d3);</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">}</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span><span style="color: rgb(191, 219, 232); font-size: 9pt;">next-server </span><span style="color: rgb(191, 219, 232); font-size: 9pt;">192.168.100.1</span><span style="color: rgb(191, 219, 232); font-size: 9pt;">;</span></span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span><span style="color: rgb(191, 219, 232); font-size: 9pt;">filename "</span><span style="color: rgb(191, 219, 232); font-size: 9pt;">pxelinux.0</span><span style="color: rgb(191, 219, 232); font-size: 9pt;">";</span></span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">subnet 192.168.100.0
+netmask 255.255.255.0 </span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">{</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;option pxelinux.configfile
+"config.pxelinux.cpunode";</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host y101 </span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hardware
+ethernet 1c:6f:65:d5:63:e6;</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fixed-address
+192.168.100.101;</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; option
+host-name "y101";</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host y102 </span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hardware
+ethernet 1c:6f:65:d5:63:e3;</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fixed-address
+192.168.100.102;</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; option
+host-name "y102";</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">}</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">subnet 192.168.100.0
+netmask 255.255.255.0 </span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">{</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; option pxelinux.configfile "config.pxelinux.gpunode";</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host y201 </span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hardware
+ethernet 1c:6f:65:d7:85:4e;</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fixed-address
+192.168.100.201;</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; option
+host-name "y201";</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host y202 </span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hardware
+ethernet 1c:6f:65:d5:5b:f6;</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fixed-address
+192.168.100.202;</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; option
+host-name "y202";</span></p><p style="line-height: 170%; -ms-word-break: keep-all; mso-pagination: widow-orphan;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p><p><span style="color: rgb(191, 219, 232); font-size: 9pt;">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</span><span style='color: rgb(191, 219, 232); line-height: 107%; font-family: "Times New Roman",serif; font-size: 9pt; mso-fareast-font-family: 바탕; mso-ansi-language: EN-US; mso-fareast-language: KO; mso-bidi-language: AR-SA;'>}</span></p><p><font face="Times New Roman, serif"><br></font></p><hr style="border-width: 1px 0px 0px; border-style: solid none none; border-color: black; border-image: none; height: 1px; display: block;"><p><span style="color: rgb(191, 219, 232); font-size: 9pt;">next-server 란 내부 네트워크에서 dhcp 서버의 ip주소이다.</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">그리고 filename 은 네트워크 부트로더의 이름을 뜻한다. pxelinux 라는 네트워크부팅 패키지의</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">부트로더 이름은 pxelinux.0 이다.</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">또한 다음 부분을 주목하자.</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">option pxelinux.configfile "config.pxelinux.cpunode";</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">노드가 ip를 부여 받고 나서 config.pxelinux.cpunode 라는 파일의 설정을 따르라는 의미이다.</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">이 파일 안에 어떻게 부트를 해야할지에 대한 정보가 다 적혀있다.</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">kernel를 불러오기 위해서는 어떤 이름의 파일을 불러와야할지, 램디스크 파일은 무엇을 읽어 올지,</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">다 여기서 결정할 수 있다. 노드마다 nfsroot를 만들어준다면, 여기에서 설정해줘야 한다.</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">메뉴얼과는 다르게 filename "pxelinux.0" 항의 밑을 다음과 같이 바꿔준다고 해보자.</span></p><p><br></p><hr style="border-width: 1px 0px 0px; border-style: solid none none; border-color: black; border-image: none; height: 1px; display: block;"><p><span style="color: rgb(191, 219, 232); font-size: 9pt;">subnet 192.168.100.0 netmask 255.255.255.0</span><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">	{</span></p><p style="margin-left: 2em;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">option pxelinux.configfile "config.pxelinux.node101"</span><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">		host node101</span><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">		{</span></p><p style="margin-left: 4em;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">hardware ethernet 맥주소1;</span></p><p style="margin-left: 4em;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">			fixed-address 192.168.100.101;</span><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">			option host-name "node101"</span></p><p style="margin-left: 2em;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">}</span></p><p><span style="color: rgb(191, 219, 232); font-size: 9pt;">}</span></p><p><br></p><p><span style="color: rgb(191, 219, 232); font-size: 9pt;">subnet 192.168.100.0 netmask 255.255.255.0</span><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">	{</span></p><p style="margin-left: 2em;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">option pxelinux.configfile "config.pxelinux.node102"</span><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">		host node101</span><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">		{</span></p><p style="margin-left: 4em;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">hardware ethernet 맥주소2;</span></p><p style="margin-left: 4em;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">			fixed-address 192.168.100.102;</span><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">			option host-name "node102"</span></p><p style="margin-left: 2em;"><span style="color: rgb(191, 219, 232); font-size: 9pt;">}</span></p><p><span style="color: rgb(191, 219, 232); font-size: 9pt;">}</span><br></p><hr style="border-width: 1px 0px 0px; border-style: solid none none; border-color: black; border-image: none; height: 1px; display: block;"><p><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">이는 맥주소1 에 해당하는 랜카드에는 192.168.100.101 이라는 ip주소를 부여하며,</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">그 노드는 마스터 노드가 node101 이라는 이름으로 부를 것이며, "node101" 이라는 이름으로 표기할 것이다.</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">그리고 부팅 방법(우린 네트워크 부팅을 사용한다)과 부팅시에 필요한 커널파일의 위치와 이름, 부팅화면 해상도</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">등을 config.pxelinux.node101 이라는 설정파일에 있는대로 참고하여 부팅을 하겠다는 의미이다.</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">마찬가지로 맥주소2 에 해당하는 랜카드에는 192.168.100.102 라는 ip주소를 부여하며,</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">그 노드는 마스터 노드가&nbsp;node102 라는 이름으로 부를 것이며, "node102"라는 이름으로 표기할 것이다. 그리고</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">설정파일은 config.pxelinux.node102를 참고하겠다는 뜻이다.</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">즉 모든 노드들의 맥주소를 알고 있어야 ip를 부여해줄 수 있다.</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">새로 노드를 사오면, 메인보드 내장 랜카드의 맥주소부터 따는 것이 우선일 것이다.</span><br><br></p><div style='background: url("//i1.daumcdn.net/deco/contents/horizontalrule/line06.gif?v=2") repeat-x left; width: 99%; height: 15px;'><hr style="border: 0px black; border-image: none; left: -9999px; top: -9999px; position: relative;"></div><p><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">%%%%%%%% 2016-02-24에 새로운 오류를 발견!! %%%%%%%%%%%</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">htop 을 설치 했으니 dhcpd가 작동하는지 확인해보자.</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">yboot 의 프로세스 리스트에서 /usr/sbin/dhcpd 어쩌구 저쩌구가 잇으면 dhcp server 프로세스가 정상 작동하고 있는 것이다.</span><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">		</span><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">하지만 내 testcluster에서 보면 dhcpd가 백그라운드 데몬으로 실행되고 있지가 않았다.</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;">쉘에서 다음을 입력해보자.</span><br><br><span style="color: rgb(191, 219, 232); font-size: 9pt;"># dhcpd</span><br><br><font color="#ffffff"><span style="color: rgb(191, 219, 232); font-size: 9pt;">아무것도 출력되지 않았다. 이것은 명백한 문제가 있다. dhcp 서버 설정을 다 해줬는데도 불구하고 dhcp 프로세스가 동작하지 않아</span></font></p><p><font color="#ffffff"><span style="font-size: 13.33px;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(191, 219, 232); font-size: 9pt;">서버로서의 역할을 전혀하지 못하고 있었다.</span></font></p><p><font color="#ffffff"><span style="font-size: 13.33px;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(191, 219, 232); font-size: 9pt;">원인은 debian testing 의 문제였다. testing 이 다른 리눅스 버전만큼의 안정성이 있다고 하는데, 전혀 아닌거 같다.</span></font></p><p><font color="#ffffff"><span style="font-size: 13.33px;"><br></span></font></p><p><font color="#ffffff"><span style="color: rgb(191, 219, 232); font-size: 9pt;">추후에 업데이트가 되면서 이 문제는 다시 해결되었지만, 나는 이번 일을 계기로 testing 은 전혀 사용하지 않을 것이다.</span></font></p><p><br></p><div style='background: url("//i1.daumcdn.net/deco/contents/horizontalrule/line06.gif?v=2") repeat-x left; width: 99%; height: 15px;'><hr style="border: 0px black; border-image: none; left: -9999px; top: -9999px; position: relative;"></div><p>Error note, 171122</p><p><br></p><p>isc-dhcp-server 패키지를 설치하고 dhcpd.conf 의 설정을 마친 다음</p><p><br></p><p># /etc/init.d/isc-dhcp-server restart</p><p><br></p><p>를 했더니 다음과 같으 오류가 뜨면서 실행되지 않았다. </p><p><br></p><p>Failed to start LSB: DHCP server</p><p><br></p><p>이유는 너무나 간단했다!</p><p><br></p><p>다음과 같은 오류를 발견했을 때는 당황하지 말고 이유를 따져보자. 이 오류가 발생한 이유는 </p><p><br></p><p>랜 카드i&nbsp;중에&nbsp;192.168.100.1 로 아이피를 받은 놈이 없어서 이다. 다시 인터넷 설정 파일을 열어보자.</p><p><br></p><p># vi /etc/network/interfaces</p><p><br></p><p># The loopback network interface<br>auto lo<br>iface lo inet loopback</p><p><br># The primary network interface</p><p># This LAN card is for the Internet<br>auto enp3s0<br>iface enp3s0 inet static<br>&nbsp; &nbsp;&nbsp;&nbsp; address 163.152.40.47<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; netmask 255.255.255.0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; network 163.152.40.0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gateway 163.152.40.1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dns-nameservers 163.152.1.1 <br></p><p><br></p><p>즉 랜카드가 하나 밖에 없는데 그 하나는 인터넷 아이피를 사용하고 있고, 내부 네트워크에 쓸 랜 카드가 없었던 상황... 나중에 랜 카드만 하나 달아서 이름만 넣어주면 되는 상황이다. 그러니 당황 ㄴㄴ! 설명서 대로 하면 무조건 되게 되어 있다!<br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

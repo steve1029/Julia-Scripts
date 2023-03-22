@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>3차원 array 의 동적할당과 free 함수</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">3차원 array 의 동적할당과 free 함수</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/C 언어</p>
+                                    <p class="date">2018-01-05 16:52:38</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>3 차원 array 를 선언하고 free 함수를 쓸 때 segmentation fault 에러가 안나오게 하려면,</p><p><br></p><p>선언은 3차원으로 선언하되 할당할 때 4차원 array 처럼 생각하여 할당 해야한다.</p><p><br></p><p>stackoverflow 에 좋은 예제 코드가 있다.</p><p>https://stackoverflow.com/questions/17820018/free-dynamically-created-3d-array-in-c/17820153#17820153<br></p><p><br></p><p>free 함수는 포인터 변수를&nbsp;인자로 받으며,</p><p><br></p><p>포인터 변수의 값을 참조하여 (주소 값이 되겠지)&nbsp;들어가 할당된 메모리를 해제한다.</p><p><br></p><p>하지만 인자로 받은 그 포인터 변수 자체는 지우지 않는다는 것을 명심하자.</p><p><br></p><p>또한 free 함수를 쓰는 원칙은 반드시 할당의 역순으로 해제한다는 것!</p><p><br></p><p><br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

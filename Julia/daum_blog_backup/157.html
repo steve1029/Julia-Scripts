@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>사용자를 추가할 때 home 폴더를 지정해주거나 사용자 생성 후에 옮기는 법</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">사용자를 추가할 때 home 폴더를 지정해주거나 사용자 생성 후에 옮기는 법</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/리눅스 일반</p>
+                                    <p class="date">2017-04-05 11:20:16</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>출처 : <a class="tx-link" target="_blank" href="http://blog.naver.com/PostView.nhn?blogId=jjg2510&logNo=10028813710<br><br><br>간단하게">http://blog.naver.com/PostView.nhn?blogId=jjg2510&logNo=10028813710<br><br><br>간단하게</a> 내용정리를 해 보겠습니다.<br> <br>1. 기존에 /home 디렉토리를 사용중이나, 공간의 문제로 다른 파티션에 홈디렉토리를 생성하고 싶다.<br>    1)  useradd 했을때, 자동으로 자신의 원하는 위치(default로)로 생성되게 하고 싶다.<br>    2) 필요한 사용자만 따로 home 디렉토리를 지정해 주고 싶다.<br> <br>2. /home이라는 디렉토리를 계속 사용하나 실질적으로는 다른 곳의 파티션을 사용하고 싶다.<br> <br>이렇게 세가지 중에 한가지를 원하시는 듯 합니다.<br> <br>이제 각각에 대한 답을 달아 보겠습니다<br>=====================================================================<br>1. 기존에 /home 디렉토리를 사용중이나, 공간의 문제로 다른 파티션에 홈디렉토리를 생성하고 싶다.<br>    1)  useradd 했을때, 자동으로 자신의 원하는 위치(default로)로 생성되게 하고 싶다.<br> <br># man useradd    &lt;-- 전반적인 useradd의 과정을 알수 있습니다.<br>읽어 보시면 "/etc/default/useradd - default information" 부분을 보실수 있을 겁니다.<br> <br># vi /etc/default/useradd<br># useradd defaults file<br>GROUP=100<br>HOME=/home<br>INACTIVE=-1<br>EXPIRE=<br>SHELL=/bin/bash<br>SKEL=/etc/skel<br> <br>기본 정보를 확인 하실수 있을 겁니다. 여기서 HOME=/home을 변경해 주시면 초기 셋팅이 완료 됩니다.<br>** 관련 디렉토리는 꼭 생성해 주셔야 합니다. (HOME=/home1 이라 하시면 # mkdir /home1 을 꼭 만들어주셔야 합니다.)<br> <br> <br>   2) 필요한 사용자만 따로 home 디렉토리를 지정해 주고 싶다.<br> 위의 님 말씀 처럼<br># useradd -m -d /home1/test111 test1111  &lt;-- 마찬가지고 /home1은 만들어 주셔야 합니다.<br>기존 사용자를 변경 하시려면,<br># usermod -d /home1/test1111 test1111  &lt;-- 기존 사용자의 home 디렉토리 변경.<br>위 명령어를 간단하게 설명 드리면,  test1111 사용자의 홈디렉토리를 /home1/test1111로 바꾸라는 말입니다.<br> <br> <br>2. /home이라는 디렉토리를 계속 사용하나 실질적으로는 다른 곳의 파티션을 사용하고 싶다.<br> <br>위의 님 말씀 처럼 ln -s를 잡아 주시면 됩니다. 이 부분은 상세히 기재하지 않겠습니다.<br> <br>필요하시면 관련 내용 추가 질문 하세요~~!<br> <br>그럼 원하시는 결과 있으시길.....<br>[출처] 리눅스 계정 생성 및 홈 디렉토리 지정|작성자 햇빛한스푼<br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

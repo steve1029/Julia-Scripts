@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>노드의 MAC 주소가 바뀌었을 때 서버에서 수정해줘야 할 것들</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">노드의 MAC 주소가 바뀌었을 때 서버에서 수정해줘야 할 것들</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/리눅스 일반</p>
+                                    <p class="date">2017-01-10 16:52:49</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>	먼저 노드가 dhcp 서버를 찾을 수 있어야 하므로 서버에서 dhcp 설정을 수정해줘야 한다.<br><br>	# vi /etc/dhcp/dhcpd.conf<br><br>	여기서 해당 노드의 호스트 네임(서버에서 이 노드에 붙이는 이름)을 찾아 맥주소를 바꿔준다.<br><br>	그런데 로컬 네트워크에서 이 노드의 ip 주소는 정해져있다는 것을 명심!<br><br>	# /etc/init.d/isc-dhcp-server restart<br><br>노드의 UEFI 혹은 BIOS 에서 네트워크 부팅으로 설정해주면 노드가 부팅하면서<span style="font-size: 9pt;">&nbsp;dhcp 서버를 찾게 된다.</span></p><p><br></p><p>이 dhcp 서버로부터 네트워크부트로더, 리눅스 커널, 커널 모듈, 루트파일시스템을 램디스크로 받으면 부팅이 될 것.<br><br>	그런데 처음 pxelinux 설정 파일을 만들때, 로컬 ip를 지정해줬었다.<br><br>	# vi /tftpboot/config.pxelinux.cpunode<br><br>	여기 보면 특정 로컬 ip에 특정 커널을 제공하도록 설정되어 있다. 즉<br><br>	노드의 맥주소가 바뀌더라도 dhcp 서버에서 할당받은 로컬 ip는 변하지 않으므로 pxelinux 파일을 받을 수 있다!<br><br>	pxelinux 설정파일 안에 커널의 위치와 이름이 들어가 있으므로 리눅스 커널 또한 받을 수 있게 된다.<br><br>	커널 모듈은 설정파일이 따로 존재했었다.<br><br>	# vi /tftpboot/initramfs-pxe/initramfs.conf<br><br>	여기서도 로컬 ip로 설정되어 있음을 알 수 있다. 즉 커널 모듈도 별다른 설정을 바꿀 필요가 없다.<br><br>	루트파일 시스템도 마찬가지. 따라서 맥주소가 바뀌었을 땐 dhcpd.conf 파일의 맥주소만 바꿔주면 된다는 뜻!<br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

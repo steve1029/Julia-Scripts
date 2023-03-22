@@ -1,0 +1,223 @@
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/sda1 during installation
+UUID=b0b481b7-a93e-4da5-a00c-f076d3565f63 /               ext4    errors=remount-ro 0       1
+# /tftpboot was on /dev/sda6 during installation
+UUID=9b652a51-1ecb-4e35-b3d0-936fd0eaa04e /tftpboot       ext4    defaults        0       2
+# swap was on /dev/sda5 during installation
+UUID=68e89fa1-920a-4c0b-b1cf-e91a7295bb49 none            swap    sw              0       0
+/dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
+
+# mount raid 5 filesystem to /nfsroot
+/dev/md1	/nfsroot	ext4	defaults	0	2
+
+none	/nfsroot/default/proc	proc	defaults,nosuid,nodev	0	0
+devpts	/nfsroot/default/dev/pts	devpts	defaults,nosuid,noexec	0	0
+
+none	/nfsroot/testing/proc	proc	defaults,nosuid,nodev	0	0
+devpts	/nfsroot/testing/dev/pts	devpts	defaults,nosuid,noexec	0	0
+
+none	/nfsroot/jessie/proc	proc	defaults,nosuid,nodev	0	0
+devpts	/nfsroot/jessie/dev/pts	devpts	defaults,nosuid,noexec	0	0
+
+none	/nfsroot/testing_3.16/proc	proc	defaults,nosuid,nodev	0	0
+devpts	/nfsroot/testing_3.16/dev/pts	devpts	defaults,nosuid,noexec	0	0
+
+none	/nfsroot/testing_4.1/proc	proc	defaults,nosuid,nodev	0	0
+devpts	/nfsroot/testing_4.1/dev/pts	devpts	defaults,nosuid,noexec	0	0
+
+none	/nfsroot/testing_4.3/proc	proc	defaults,nosuid,nodev	0	0
+devpts	/nfsroot/testing_4.3/dev/pts	devpts	defaults,nosuid,noexec	0	0
+
+none	/nfsroot/yhome1/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/yhome2/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/yhome3/proc	proc	defaults,nosuid,nodev	0	0
+
+none	/nfsroot/y101/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y102/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y103/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y104/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y105/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y106/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y107/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y108/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y109/proc	proc	defaults,nosuid,nodev	0	0
+
+none	/nfsroot/y110/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y111/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y112/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y113/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y114/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y115/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y116/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y117/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y118/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y119/proc	proc	defaults,nosuid,nodev	0	0
+
+none	/nfsroot/y120/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y121/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y122/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y123/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y124/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y125/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y126/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y127/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y128/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y129/proc	proc	defaults,nosuid,nodev	0	0
+
+none	/nfsroot/y130/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y131/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y132/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y133/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y134/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y135/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y136/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y137/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y138/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y139/proc	proc	defaults,nosuid,nodev	0	0
+
+none	/nfsroot/y140/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y141/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y142/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y143/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y144/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y145/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y146/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y147/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y148/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y149/proc	proc	defaults,nosuid,nodev	0	0
+
+none	/nfsroot/y150/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y151/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y152/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y153/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y154/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y155/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y156/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y157/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y158/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y159/proc	proc	defaults,nosuid,nodev	0	0
+
+none	/nfsroot/y160/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y161/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y162/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y163/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y164/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y165/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y166/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y167/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y168/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y169/proc	proc	defaults,nosuid,nodev	0	0
+
+none	/nfsroot/y201/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y202/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y203/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y204/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y205/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y206/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y207/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y208/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y209/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y210/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y211/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y212/proc	proc	defaults,nosuid,nodev	0	0
+none	/nfsroot/y213/proc	proc	defaults,nosuid,nodev	0	0
+
+devpts	/nfsroot/yhome1/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/yhome2/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/yhome3/dev/pts	devpts	defaults,nosuid,noexec	0	0
+
+devpts	/nfsroot/y101/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y102/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y103/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y104/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y105/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y106/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y107/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y108/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y109/dev/pts	devpts	defaults,nosuid,noexec	0	0
+
+devpts	/nfsroot/y110/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y111/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y112/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y113/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y114/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y115/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y116/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y117/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y118/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y119/dev/pts	devpts	defaults,nosuid,noexec	0	0
+
+devpts	/nfsroot/y120/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y121/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y122/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y123/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y124/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y125/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y126/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y127/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y128/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y129/dev/pts	devpts	defaults,nosuid,noexec	0	0
+
+devpts	/nfsroot/y130/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y131/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y132/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y133/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y134/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y135/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y136/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y137/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y138/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y139/dev/pts	devpts	defaults,nosuid,noexec	0	0
+
+devpts	/nfsroot/y140/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y141/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y142/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y143/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y144/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y145/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y146/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y147/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y148/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y149/dev/pts	devpts	defaults,nosuid,noexec	0	0
+
+devpts	/nfsroot/y150/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y151/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y152/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y153/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y154/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y155/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y156/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y157/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y158/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y159/dev/pts	devpts	defaults,nosuid,noexec	0	0
+
+devpts	/nfsroot/y160/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y161/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y162/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y163/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y164/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y165/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y166/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y167/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y168/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y169/dev/pts	devpts	defaults,nosuid,noexec	0	0
+
+devpts	/nfsroot/y201/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y202/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y203/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y204/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y205/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y206/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y207/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y208/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y209/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y210/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y211/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y212/dev/pts	devpts	defaults,nosuid,noexec	0	0
+devpts	/nfsroot/y213/dev/pts	devpts	defaults,nosuid,noexec	0	0

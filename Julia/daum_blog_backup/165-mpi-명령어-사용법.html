@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>mpi 명령어 사용법</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">mpi 명령어 사용법</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/Python</p>
+                                    <p class="date">2017-04-10 10:58:40</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>aptitude 를 이용해 mpi4py 를 설치하면 openmpi 가 같이 설치된다. 그리고 인텔 c 컴파일러를 설치하면 그 안에도 mpi 가 있다.</p><p><br></p><p>이 두 개를 구별하여 사용할 줄 알아야 한다.</p><p><br></p><table class="txc-table" width="552px" cellspacing="0" cellpadding="0" border="0" style="border: none; border-collapse: collapse; font-family: Dotum; font-size: 12px; width: 552px;"><tbody><tr><td style="width: 155px; height: 24px; border-width: 1px; border-style: solid; border-color: rgb(204, 204, 204);"><p style="text-align: center;"></p></td><td style="width: 207px; height: 24px; border-bottom: 1px solid rgb(204, 204, 204); border-right: 1px solid rgb(204, 204, 204); border-top: 1px solid rgb(204, 204, 204);"><p style="text-align: center;">인텔 컴파일러가 있는 리눅스</p></td><td style="width: 189px; height: 24px; border-bottom: 1px solid rgb(204, 204, 204); border-right: 1px solid rgb(204, 204, 204); border-top: 1px solid rgb(204, 204, 204);"><p style="text-align: center;">인텔 컴파일러가 없는 리눅스</p></td></tr><tr><td style="width: 155px; height: 25px; border-bottom: 1px solid rgb(204, 204, 204); border-right: 1px solid rgb(204, 204, 204); border-left: 1px solid rgb(204, 204, 204);"><p style="text-align: center;">mpiexec</p></td><td style="width: 207px; height: 25px; border-bottom: 1px solid rgb(204, 204, 204); border-right: 1px solid rgb(204, 204, 204);"><p style="text-align: center;">인텔 C mpi 를 이용</p></td><td style="width: 189px; height: 25px; border-bottom: 1px solid rgb(204, 204, 204); border-right: 1px solid rgb(204, 204, 204);"><p style="text-align: center;">Openmpi 를 이용</p></td></tr><tr><td style="width: 155px; height: 24px; border-bottom: 1px solid rgb(204, 204, 204); border-right: 1px solid rgb(204, 204, 204); border-left: 1px solid rgb(204, 204, 204);"><p style="text-align: center;">mpiexec.openmpi</p></td><td style="width: 207px; height: 24px; border-bottom: 1px solid rgb(204, 204, 204); border-right: 1px solid rgb(204, 204, 204);"><p style="text-align: center;">Openmpi 를 이용</p></td><td style="width: 189px; height: 24px; border-bottom: 1px solid rgb(204, 204, 204); border-right: 1px solid rgb(204, 204, 204);"><p style="text-align: center;">없음</p></td></tr></tbody></table><p><br></p><p>파이썬의 mpi4py package 는 openmpi 기반으로 만들어져 있다. 따라서 .py 를 mpi로 실행하고 싶다면</p><p><br></p><p>반드시 mpiexec.openmpi 명령어를 이용해서 실행해야하므로&nbsp;<span style="font-size: 9pt;">구별해서 사용하자. 안그럼 에러가 날 수 있다.</span></p><p><span style="font-size: 9pt;"><br></span></p><p>ldg@yhome3:~/pyscript/MPI$ mpiexec.openmpi -host y101,y102,y103,y104 python broadcast.py</p><p><br></p><p>이런식으로 broadcast.py 파일을 host 를 지정해주어서 실행할 수 있다.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

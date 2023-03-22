@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>노드들이 원격 부팅을 하지 못할 때.</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">노드들이 원격 부팅을 하지 못할 때.</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/시행 착오 노트</p>
+                                    <p class="date">2017-06-22 10:56:05</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>데비안 testing 은 업뎃을 마음대로 할 수 없다는 점에서 발생하는 에러들.<br><br>2017.06.21<br>---------<br>yhome3 에 reikna 및 scikit-cuda 를 설치했더니 openmpi 앱이 업뎃이 되면서 mpi4py 앱이 제거가 됨. 그래서 다시 설치. <br><br>yhome3의 openmpi 버전이 노드의 openmpi 버전과 다르게 되면서 코드가 돌아가지 않게 됨.<br><br>gpu 노드에 mpi4py 와 openmpi 를 설치하니 자동으로 dependency 가 있는 앱들이 업뎃이 됨. 그러면서 yboot 의 nfs-kernel-server 앱이<br><br>새로 업뎃이 필요하게 되었음. 하지만 그게 자동으로 업뎃이 안됨. 원격 부팅이 불가해짐. nfs-server-kernel 을 업뎃하면서 문제가 해결 됨.<br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>14. 노드의 부팅 과정 이해 및 부팅 확인</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">14. 노드의 부팅 과정 이해 및 부팅 확인</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/데비안 서버 구축</p>
+                                    <p class="date">2016-10-06 10:32:54</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>이제 모든 서버의 설정이 끝났다. 지금까지의 과정을 다 제대로 따랐다면, 최종적으로 무엇이 갖추어져야 하는지 확인해보자.<br><br>yggdrasil 에서는 노드의 종류를 cpunode, gpunode 두 가지로 분류한다. 그리고 각 노드의 이름은&nbsp;y101, y102,... y201, y202, ...</p><p><br></p><p>등으로 분류한다. 예를 들어 cpunode가 40 개, gpunode 가 10 개 라면,</p><p><br></p><p>cpunode : y101, y102, y103, ... y140</p><p>gpunode : y201, y202, ... y210</p><p><br></p><p>그리고 이 숫자들은 각 노드의 내부 아이피의 마지막 자릿수이다. 예를 들어 y101의 내부아이피는</p><p><br></p><p>IP address of y101 : 192.168.100.101</p><p>IP address of y102 : 192.168.100.102&nbsp;</p><p>...</p><p><br></p><p>이렇게 해야 각 노드의 번호와 아이피를 한 눈에 알 수 있어 클러스터를 관리하기 쉬워진다.</p><p><br></p><p><span style="font-size: 12pt; color: rgb(255, 228, 0);"><b>1. DHCP 서버로부터 IP를 부여받음</b></span></p><p><br></p><p>네트워크 부팅과정에서 이해하였듯이 각 노드의 메인보드에는 MAC 주소가 부여되어 있다. ---<span style="font-size: 9pt;">참고) 정확히 말하자면 메인보드에 부여된 것이 아니라 메인보드에 설치된 랜카드에 MAC 주소가 부여되어있다---&nbsp;</span><span style="font-size: 9pt;">DHCP 서버가 노드에게 내부 아이피를 부여할 때, MAC 주소를 판별하여 아이피를 부여하기 때문에 각 노드의 맥주소를 반드시&nbsp;</span><span style="font-size: 9pt;">알아야 한다. MAC주소를 확인하는 방법은 하드디스크없이 노드를 일단 모니터에 연결하고 부팅시키는 것이다. 그리고 BIOS 나 UEFI 설정에서 부팅순서를 네트워크 부팅만 되도록 설정해놓고 재시작한다. 재부팅되면서 화면에 나타나는&nbsp;부팅 메세지들 중에 MAC 주소가 뜬다.&nbsp;견출지를 이용해 각 노드의 메인보드에 MAC 주소를 확인하여 붙여놓자. 그리고 노트에 적어서 서버의 dhcpd.conf 파일을 수정하면 된다. yboot 의 dhcpd.conf 파일을 첨부한다.</span></p><p><A href="https://t1.daumcdn.net/cfile/blog/25019E3B57F5AC560F?download" target="_blank"><img src="//i1.daumcdn.net/icon/editor/p_etc_s.gif"/> dhcpd.conf</a></p><p><span style="font-size: 9pt;">모든 노드는 네트워크 부팅과정에서 ip를 부여받기 위해 dhcp 서버를 먼저 찾는다. 여기서 '찾는다' 라고 함은, 네트워크에 연결된 모든 컴퓨터에 DHCP 서버만 응답할 수 있는 전기신호를 보낸다는 뜻이다. DHCP 서버는 이 신호를 받으면 바로 해당 노드의 MAC 주소를 확인한 뒤, dhcpd.conf 에 적힌 대로 아이피 주소를 부여한다.&nbsp;</span></p><p><span style="font-size: 9pt;"><br></span></p><p><span style="font-size: 12pt; color: rgb(255, 228, 0);"><b>2. TFTP 를 이용해 부트로더를 받음</b></span></p><p><span style="font-size: 9pt;"><br></span></p><p><span style="font-size: 9pt;">노드가 ip 주소를 부여받으면 TCP/IP 통신을 할 수 있다. 노드의 메인보드는 네트워크 부팅을 시작할 것이고, TCP/IP 통신을 통해 TFTP 서버</span><span style="font-size: 9pt;">(</span><span style="font-size: 9pt;">우리의 경우엔 yboot)</span><span style="font-size: 9pt;">를</span><span style="font-size: 9pt;">&nbsp;찾는다.</span><span style="font-size: 9pt;">&nbsp;</span><span style="font-size: 9pt;">이를 위해선 노드가 TFTP 서버의 ip 주소를 알아야 한다. 노드는&nbsp;</span><span style="font-size: 9pt;">TFTP를 통해 하드디스크의 MBR 에 해당하는 부트로더&nbsp;pxelinux.0 파일을 다운로드 받아서 실행한다.</span></p><p><span style="font-size: 9pt;"><br></span></p><p><span style="font-size: 12pt; color: rgb(255, 228, 0);"><b>3. pxelinux.0 에 의해 부팅 과정 시작</b></span></p><p><span style="font-size: 9pt;"><br></span></p><p><span style="font-size: 9pt;">pxelinux.0 는 부팅과정에서 설정 파일을 읽는데, 그 것이&nbsp;/tftpboot/config.pxelinux.y101 등등등 이다. 이 설정 파일에서 부팅시 램에 올릴 커널을 지정해주고, 루트파일시스템의 정보와 위치, 커널 옵션 등을 설정할 수 있다(가령 부팅시 해상도라던지). pxelinux.0 가 설정 파일을 읽고 커널을 실행시키면, 커널은 루트 파일 시스템을 네트워크를 통해 자신의 최상위 디렉토리 '/' 에 마운트 시키고 init 프로그램을 실행한다. init 프로그램이 시스템 구동에 필요한 모든 프로그램과 서버 데몬들을 실행시키고, 마지막으로 getty 를 실행하여 로그인 프롬프트를 띄우는 것으로 모든 부팅 과정이 완료된다.</span></p><p><span style="font-size: 9pt;"><br></span></p><p><span style="font-size: 9pt;">16년 10월 6일, yboot 의 /tftpboot 를 압축한 파일이 용량이 커서, 외장하드에 저장해두었음만을 밝힌다.</span></p><figure class="fileblock" data-ke-align="alignCenter">
+    <a href="./file/dhcpd.conf" class="">
+        <div class="image"></div>
+        <div class="desc">
+            <div class="filename">
+                <span class="name">dhcpd.conf</span>
+            </div>
+            <div class="size">0.02MB</div>
+        </div>
+    </a>
+</figure>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

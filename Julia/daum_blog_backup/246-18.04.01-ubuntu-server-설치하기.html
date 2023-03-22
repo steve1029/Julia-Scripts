@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>18.04.01 ubuntu server 설치하기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">18.04.01 ubuntu server 설치하기</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/우분투 서버 구축</p>
+                                    <p class="date">2018-10-20 11:38:49</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>우분투 서버는 이제 많이 달라졌다. GUI 가 없음에도 cmd 환경에서 매우 좋은 인터페이스를 보여준다. 아주 깔끔하고 멋있어짐.<br><br>1. 우분투 서버 부팅 디스크 만들기<br>2. UEFI 에서 부팅 순서 바꾸고 USB 디스크 실행!<br>3. 네트워크 설정하기</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">이상하게 여태까지 사용해오던 subnetmask 와 ip address 가 서로 안맞는다며, 설치 과정에서 네트워크 설정이 되지가 않는다. 이유는 모르겠다. 일단 네트워크 없이 설치하고, 나중에 바꿔야겠다. 하지만 일단 이 과정에서 새로 알아낸 것들을 적어보겠다.</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">이제 설치 전에 네트워크 세팅을 bond 까지도 다 해줄 수 있다.<br></p><p style="margin-left: 2em;">메인보드의 랜카드는 하던 대로 static ip 를 부여해주고, 나머지 PCI-E 의 랜카드는 모두 본딩으로</p><p style="margin-left: 2em;">묶는다. 이때, 본딩 모드는 0 으로 한다. 다음은 본드 모드의 종류이다. 우분투에는 본드 모드의 번호가 아니라 약어로 나와 있기 때문에, Balance_rr 모드를 선택해주면 bond mode 0 로 설정하는 것이 된다.</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">출처:&nbsp;http://faq.hostway.co.kr/Linux_ETC/3956</p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line08.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">본딩이란 여러 개의 NIC를 논리적으로 하나로 묶어 NIC의 개수만큼의 대역폭을 확장하는 기술인데</p><p style="margin-left: 2em;">mode 에 따라 아래와 같은 기능이 있습니다.</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;"><span style="font-size: 9pt;">bonding mode 종류</span></p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">0 : Balance-round robine 정책 : 2개의 NIC를 통한 분배</p><p style="margin-left: 2em;">&nbsp; &nbsp;첫 번째 가능한 슬레이브부터 마지막까지 순차적으로 전송하며</p><p style="margin-left: 2em;">&nbsp; &nbsp;이 모드는 부하분산과 장애 감내를 제공합니다.</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">1 : Active-standby 정책 : Active상태의 NIC에 문제 발생시 Fault Tolerance&nbsp;</p><p style="margin-left: 2em;">&nbsp; &nbsp; bond에서 하나의 슬레이브만 활성화되며 다른 슬레이브는 활성화된 슬레이브가</p><p style="margin-left: 2em;">&nbsp; &nbsp; fail 된 경우에만 활성화 됩니다.</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">2 : Balance-XOR 정책 : 0과 비슷하지만 xor연산을 이용한 목적지 Mac과 근원지 Mac을 이용한 분배</p><p style="margin-left: 2em;">&nbsp; &nbsp; [(출발지 MAC 주소와 도착지 MAC 주소의 XOR) modula 슬레이브 1개]에 기초하여 전송합니다.</p><p style="margin-left: 2em;">&nbsp; &nbsp; 이것은 도착지 MAC 주소에 대해서 동일한 슬레이브를 선택하게 된다. 이 모드는 부하분산과&nbsp;</p><p style="margin-left: 2em;">&nbsp; &nbsp; &nbsp;장애감지를 제공합니다.</p><p style="margin-left: 2em;">&nbsp;&nbsp;</p><p style="margin-left: 2em;">3 : Broadcast 정책 : 2개의 NIC에 어떤 규칙 없이 데이터 통신</p><p style="margin-left: 2em;">&nbsp; &nbsp; 모든 슬레이브 인터페이스에 모든 것을 전송합니다.</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">4 : 802.3ad (link aggregation) - switch에 aggregation 그룹생성이 필요함.</p><p style="margin-left: 2em;">&nbsp; &nbsp; IEEE 802.3ad dynamic link aggregation정책을 설정하며</p><p style="margin-left: 2em;">&nbsp; &nbsp; 전송과 받는 것은 active aggregator 안에서 모든 slaves 위에서 됩니다.</p><p style="margin-left: 2em;">&nbsp;</p><p style="margin-left: 2em;">5 : transmit load 밸런스로써 보내는 패킷만 밸런스 합니다.</p><p style="margin-left: 2em;">&nbsp; &nbsp; outgoing traffic은 각 slave 인터페이스에 현재의 부하에 따라서 분배됩니다.</p><p style="margin-left: 2em;">&nbsp; &nbsp; incoming traffic는 현재의 slave로 받음.&nbsp;<span style="font-size: 9pt;">&nbsp;</span></p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">6 : receive와 transmit패킷을 밸런스 하며 이때 5,6 은 하나의 스위치에 있을때만 동작합니다.</p><p style="margin-left: 2em;">&nbsp; &nbsp; 이 mode는 load balancing를 더하여 balance-tlb를 포함 합니다.</p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line08.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p><br></p><p style="margin-left: 2em;">랜카드는 어떤 것도 인터넷에 연결하지 않도록 하자. 인터넷</p><p><br></p><p>4. 프록시 설정하기</p><p style="margin-left: 2em;">할 거 없다.</p><p style="margin-left: 2em;"><br></p><p>5. 미러 서버 설정하기</p><p style="margin-left: 2em;">http://us.archive.ubuntu.com/ubuntu/<br></p><p style="margin-left: 2em;">라고 고쳐준다.</p><p style="margin-left: 2em;"><br></p><p>6. 파티션 설정하기</p><p style="margin-left: 2em;">이제 swap partition 은 필요없다! 필수 파티션은 딱 두 가지뿐이다. Manual partitioning 을 하자.</p><p style="margin-left: 2em;">1) /</p><p style="margin-left: 2em;">2) /boot/efi</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">2) 는 부트로더가 깔리는 것이다. 그냥 아무 스토리지나 선택하여 boot device 항목을 선택하면 자동으로 만들어 진다. 그리고 나머지 파티션에 Add partition 항목을 선택하여 / 를 마운트하자. 그리고 다른 하드 2개에 각각 /tftpboot 와 /nfsroot 를 마운트해주면 끝!</p><p><br></p><p>7. 이름 설정하기</p><p style="margin-left: 2em;">your name, server name, user name 등을 설정한다. 이 때 설치 과정이 자동으로 백그라운드에서 진행된다. 그런데 에러가 발생할 수 있다. 나는 18.10.20 토요일 오전 11시 20분 경 이러한 에러를 발견하였고, 다음의 출처에서 힌트를 얻어 해결하였다.</p><p style="margin-left: 2em;"><br></p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line08.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p style="margin-left: 2em;">Unexpected error while running command: unshare --fork --pid -- chroot /target apt-get --quiet --option=Acquire::Languages=none --option=Dir::Etc::sourcelist=/tmp/tmpk_vnogkp/sources.list --option=Dir::Etc::sourceparts=/tmp/tmpk_vnogkp/sources.list.d update</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">Exit code: 100</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">finish: cmd-install: FAIL: curtin command install</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">Traceback:</p><p style="margin-left: 2em;">&nbsp; File "/usr/lib/python3/dist-packages/curtin/commands/curthooks.py", line 191, in install_kernel</p><p style="margin-left: 2em;">&nbsp; &nbsp; map_suffix = mapping[codename][version]</p><p style="margin-left: 2em;">KeyError: 'bionic'</p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line08.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p style="margin-left: 2em;">해결방법은 간단하였다. 메인보드의 바이오스 상 날짜가 실제 날짜와 맞지 않았던 것. 해결 방법을 찾은 사이트는 여기다.&nbsp;https://answers.launchpad.net/ubuntu/+question/669976</p><p style="margin-left: 2em;"><br></p><p>8. 추가 패키지 선택하기</p><p style="margin-left: 2em;">여기서 우리한테 필요한 것은 없다. 하지만 우분투 넘나 친절해서 좋다!</p><p style="margin-left: 2em;"><br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

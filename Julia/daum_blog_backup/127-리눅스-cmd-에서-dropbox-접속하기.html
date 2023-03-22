@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>리눅스 cmd 에서 dropbox 접속하기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">리눅스 cmd 에서 dropbox 접속하기</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/서버 앱 설정 방법</p>
+                                    <p class="date">2017-01-18 14:35:11</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>먼저 curl 이라는 앱을 설치해야 한다.<br><br># aptitude install -y curl<br><br>그 다음 dropbox uploader 를 다운 받는다.<br><br># wget <a class="tx-link" target="_blank" href="https://raw.github.com/andreafabrizi/Dropbox-Uploader/master/dropbox_uploader.sh<br>#">https://raw.github.com/andreafabrizi/Dropbox-Uploader/master/dropbox_uploader.sh<br>#</a> chmod 755 dropbox_uploader.sh<br><br>이제 다운받은 것을 실행해본다.<br><br>./dropbox_uploader.sh<br><br>그러면 어쩌구 저꺼구 실행되면서 access token 을 입력하라고 뜬다.<br><br>그럼 이 access token 을 알아내기 위해 데스크톱에서 다음 사이트로 접속한다.<br><br> <a class="tx-link" target="_blank" href="https://www.dropbox.com/developers/apps<br><br>여기서">https://www.dropbox.com/developers/apps<br><br>여기서</a> 새로운 dropbox 애플리케이션을 만들어야한다. 우측 상단의 Create app을 누른 뒤<br><br>Dropbox API 를 선택하고 access 는 Dull Dropbox 라고 한 뒤 앱의 이름도 설정하면 됨.<br><br>앱이 다 만들어지면 그 앱의 setting 탭에서 Generated access token 이라는 항목이 있다. Generate 을 누른 뒤<br><br>거기에 나온 내용을 아까 리눅스 쉘에 입력해주면 된다. <br><br>다시 ./dropbox_uploader.sh 를 실행하면 명령어들이 설명될 것.<br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

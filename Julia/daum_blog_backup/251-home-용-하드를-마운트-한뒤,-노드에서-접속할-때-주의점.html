@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>home 용 하드를 마운트 한뒤, 노드에서 접속할 때 주의점</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">home 용 하드를 마운트 한뒤, 노드에서 접속할 때 주의점</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/우분투 서버 구축</p>
+                                    <p class="date">2018-10-23 16:35:29</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>ubuntu 18.04 LTS server 로 새로이 클러스터를 구축하면서, yhome 을 모두 없애버렸다.<br><br>이에 따라 yhome 의 하드들을 모두 yboot 에 마운트하고 노드에서 이 홈폴더에 접근 할 수 있도록 하였다.<br><br>이를 위해선 먼저 yboot 에서 각 하드들을 특정 폴더에 마운트 한뒤, nfs 를 통해 네트워크로<br><br>이 폴더들에 대한 접근권한을 노드들에게 뿌려야한다.</p><p><br></p><p>yhome1,2,3 에서 총 4개의 하드만 yboot 에 연결하였다. 마운트 포인트는 다음과 같다.</p><p><br></p><p>/mnt/hdd6tb_1</p><p>/mnt/hdd6tb_2</p><p>/mnt/hdd6tb_3</p><p>/mnt/hdd6tb_4</p><p><br></p><p>각 하드 안에는 yboot 에서 만든 각 사용자들의 home 폴더를 cp -a&nbsp; 명령어를 이용해 복사해 놓았다.</p><p><br></p><p>/mnt/hdd6tb_1 &gt;&gt;&gt; cris123, dahlia, intro15, immalku, ldg</p><p>/mnt/hdd6tb_2 &gt;&gt;&gt; encube, kth, triumph</p><p>/mnt/hdd6tb_3 &gt;&gt;&gt; cptb, kifang, lsy, turtle</p><p>/mnt/hdd6tb_4 &gt;&gt;&gt; kbs, smsmsms, qpark</p><p><br></p><p>이제 노드들에게 여기를 뿌려야한다. 중요한 점은, 뿌리고 싶은 폴더의 바로 1단계 상위 폴더를 뿌려야 한다는 것이다. 그 이상을 뿌리면 안됨.</p><p><br></p><p>yboot:~# vi /etc/export</p><p><br></p><p>/home&nbsp;&nbsp; 192.168.100.0/24(rw,no_root_squash,no_subtree_check,sync)<br>/root&nbsp;&nbsp; 192.168.100.0/24(rw,no_root_squash,no_subtree_check,async)<br>/mnt&nbsp;&nbsp;&nbsp; 192.168.100.0/24(rw,no_root_squash,no_subtree_check,sync)</p><p><br></p><p><br></p><p>이때 /mnt 폴더를 뿌리면, 우리가 접근하고 싶은 것은 /mnt/hdd6tb_1/ldg 같은 한단계 더 들어 가야하는 폴더들이기&nbsp;때문에 마운트할 수 없다. 그래서 다음과 같이 바로 한단계 상위 폴더까지 접근을 허용해줘야한다.</p><p><br></p><p>/mnt/hdd6tb_1&nbsp;&nbsp; 192.168.100.0/24(rw,no_root_squash,no_subtree_check,sync)<br>/mnt/hdd6tb_2&nbsp;&nbsp; 192.168.100.0/24(rw,no_root_squash,no_subtree_check,sync)<br>/mnt/hdd6tb_3&nbsp;&nbsp; 192.168.100.0/24(rw,no_root_squash,no_subtree_check,sync)<br>/mnt/hdd6tb_4&nbsp;&nbsp; 192.168.100.0/24(rw,no_root_squash,no_subtree_check,sync)<br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

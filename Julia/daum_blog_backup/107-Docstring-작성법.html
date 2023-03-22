@@ -1,0 +1,52 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>Docstring 작성법</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">Docstring 작성법</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/Python</p>
+                                    <p class="date">2016-11-10 23:30:07</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>보통 스크립트의 첫 부분이나 함수의 첫 부분에 docstring 을 작성하게 된다.</p><p><br></p><p>convention 은 다음과 같다. convention 을 따르는 것이 좋다. 제일 알아보기 쉽고 간결한 형식이라 제일 많이 쓰이는 방법들이</p><p><br></p><p>convention 으로 굳어진 것이기 때문이다.</p><p><br></p><p>다음의 python 공식 홈페이지의 설명을 참조하라. 4.7.6 의 Documentation strings 항목을 참조.</p><p><br></p><p>https://docs.python.org/2/tutorial/controlflow.html#arbitrary-argument-lists<br></p><p><br></p><p>첫 문장은 프로그램이나 함수에 대한 간략한 설명. 반드시 대문자로 시작하도록 한다. 요약문이므로, 되도록 한 문장으로 마친다.</p><p><br></p><p>부가적인 설명은 한 줄을 띄우고 설명하도록 한다. 요약문과 부가 설명을 구별하기 위해서 반드시 한 줄을 띄우고 적도록 하자.</p><p><br></p><p>docstring 의 시작과 끝은 """ 으로 마무리해야한다. 그래야 다음 method 가 먹힌다.</p><p><br></p><pre style="overflow-x: auto; overflow-y: hidden; padding: 5px; background-color: rgb(238, 255, 204); color: rgb(51, 51, 51); line-height: 15.6px; border-top: 1px solid rgb(170, 204, 153); border-bottom: 1px solid rgb(170, 204, 153); border-image: initial; border-left: none; border-right: none;"><span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="k" style="color: rgb(0, 112, 32); font-weight: bold;">def</span> <span class="nf" style="color: rgb(6, 40, 126);">my_function</span><span class="p">():</span>
+<span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">... </span>    <span class="sd" style="color: rgb(64, 112, 160); font-style: italic;">"""Do nothing, but document it.</span>
+<span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">...</span><span class="sd" style="color: rgb(64, 112, 160); font-style: italic;"></span>
+<span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">... </span><span class="sd" style="color: rgb(64, 112, 160); font-style: italic;">    No, really, it doesn't do anything.</span>
+<span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">... </span><span class="sd" style="color: rgb(64, 112, 160); font-style: italic;">    """</span>
+<span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">... </span>    <span class="k" style="color: rgb(0, 112, 32); font-weight: bold;">pass</span>
+<span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">...</span>
+<span class="gp" style="color: rgb(198, 93, 9); font-weight: bold;">&gt;&gt;&gt; </span><span class="k" style="color: rgb(0, 112, 32); font-weight: bold;">print</span> <span class="n">my_function</span><span class="o" style="color: rgb(102, 102, 102);">.</span><span class="n">__doc__</span>
+<span class="go">Do nothing, but document it.</span>
+
+<span class="go">    No, really, it doesn't do anything.</span></pre><p><br></p><p>&gt;&gt;&gt; my_fuction.__doc__</p><p><br></p><p>드디어 이 함수가 무엇을 호출하는지 알 수 있게 되었다.</p><p><br></p><p>함수의 결과물을 보라. 첫 번쨰 문장은 """ 바로 뒤에 오며, 출력될 때 indentation이 안들어가 있지만,</p><p><br></p><p>convention 에 따라 작성한 부가 설명란은 indentation 이 들어가 있어 요약문과 확실히 구별되어 출력된다.</p><p><br></p><p>한마디로, convention 을 지켜라!</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

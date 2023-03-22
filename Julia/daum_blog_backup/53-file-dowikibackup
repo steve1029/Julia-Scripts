@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+import os
+import datetime
+import time
+while 1:
+	today = datetime.date.today()
+	filelist = os.listdir('./')
+	number = 0 
+	
+	for i in filelist:
+		if i == 'wikibackup.%s.tar' %today :
+			#print 'Backup process had done on %s' %today
+			pass
+		elif i !=  'wikibackup.%s.tar' %today :
+			number += 1
+			if number == len(filelist):
+				os.system('tar -cvf wikibackup.%s.tar /var/www/html/mediawiki' %today)
+	
+	time.sleep(3600*15)			
+		#print str(today.day)
+		#print i 

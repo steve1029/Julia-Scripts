@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>openmp 코드를 짜는 방법.</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">openmp 코드를 짜는 방법.</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/C 언어</p>
+                                    <p class="date">2018-01-19 14:38:04</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>명수형이 짜준 예제코드는 다음과 같다.<br><br>Note 1: &lt;omp.h&gt; 는 c 언어에서 기본으로 제공하는 헤더파일이다. <br>Note 2: shared() 안에는 모든 쓰레드가 공유해야할 변수들이 들어간다.</p><p>Note 3: private() 안에는 쓰레드들이 서로 공유해선 안되는 변수들이 들어간다.<br><br>#include &lt;omp.h&gt;<br>#include &lt;stdlib.h&gt;<br>#include &lt;stdio.h&gt;<br><br>void vecadd(double* a, double *b, double *c, int n){<br><br></p><p>int idx;<br>int tid;<br>#pragma omp parallel for shared(a,b,c,n) private(idx)<br>for(idx = 0; idx &lt; n; idx++){</p><p><br>tid = omp_get_thread_num();<br>printf("idx: %05d, tid: %d\n", idx, tid);<br>c[idx] = a[idx] + b[idx];</p><p><br>}</p><p><br>}<br><br>int main(void){<br>int n = 100;<br>int idx;<br>double *a, *b, *c;</p><p><br>a = (double*)calloc(n, sizeof(double));<br>b = (double*)calloc(n, sizeof(double));<br>c = (double*)calloc(n, sizeof(double));</p><p><br>for(idx=0; idx&lt;n; idx++){<br>&nbsp; &nbsp; a[idx] = 1;<br>&nbsp; &nbsp; b[idx] = 2;<br>}<br><br>vecadd(a,b,c,n);<br><br>return 0;<br>}<br><br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

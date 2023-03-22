@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>하드의 연결 순서가 망가졌을때.</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">하드의 연결 순서가 망가졌을때.</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/리눅스 일반</p>
+                                    <p class="date">2018-07-03 19:37:20</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>하드를 그냥 /dev/sd* 식으로 연결해서 써왔다고 하자.</p><p><br></p><p>하드의 연결순서가 뒤죽박죽이 되버리면 재부팅시 마운트가 되지 않는 문제가 발생한다.</p><p><br></p><p>이를 대비하여 하드의 연결순서에 상관없이, 하드의 고유 ID 로 인식하게끔 만드는것이</p><p><br></p><p>UUID 를 이용하여 /etc/fstab 에 작성하는 방법이다.</p><p><br></p><p>그런데 만약 레이드로 묶은 하드들의 순서가 뒤죽박죽이 되어버렸다고 해보자.</p><p><br></p><p>그럼 재부팅이 실패할 것인데, 레이드로 묶은 하드의 UUID 는 뭘까? 그런게 있긴 할까?</p><p><br></p><p>없다.</p><p><br></p><p>레이드로 묶을땐 이 묶음을 md0, md1, ... 등등으로 부르게 되어있다. fstab 에도 그렇게 적혀있다.</p><p><br></p><p>이때 어떻게 묶음을 다시 찾을까?</p><p><br></p><p>https://askubuntu.com/questions/924170/error-on-ubuntu-boot-up-recovering-journal<br></p><p><br></p><p>이 글처럼, 안전모드로 진입하여</p><p><br></p><p>$ fsck -f [mount point]</p><p><br></p><p>혹은</p><p><br></p><p>$ fsck -f [device]</p><p><br></p><p>명령어로 망가진 순서를 회복시켜줄 수 있다.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

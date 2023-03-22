@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>리눅스 Raid 설정법</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">리눅스 Raid 설정법</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/리눅스 일반</p>
+                                    <p class="date">2016-09-26 10:03:59</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">리눅스에서 Raid를 구성하는 방법에 대해 알아보자.</span></p><p><br></p><p><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">먼저 raid 가 무엇인지 알아보자.</span><br><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">서버의 데이터가 오로지 하나의 하드디스크에만 있다고 해보자.</span><br><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">하드디스크가 망가진다면?</span><br><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">데이터를 복구할 방법이 없어진다.&nbsp;</span><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">그래서 데이터를 항상 다른 하드디스크에 백업해놔야 한다.</span><br><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">다른 하드디스크에 일일히 수동으로 백업하는 것은 시간 낭비. 자동으로 백업하도록&nbsp;</span><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">시스템을 설정하는 것이 여러모로 편하다.</span></p><p><br></p><p><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">이처럼 여러 하드디스크를 동시에 이용하는 방법이 Raid 이다.</span><br><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">두 개의 하드를 하나처럼 쓸 수도 있고, 하나의 하드를 백업용으로 구성할 수도 있다.&nbsp;</span></p><p><br></p><p><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">Raid 방법은 총 6가지가 있고 이를 각각 Raid 0 ~ Raid 5 이라고 부른다. 각&nbsp;</span><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">방법들이 어떤 것인지</span><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">&nbsp;먼저 알아보자.</span><br><br></p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line03.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">	<span style="color: rgb(0, 216, 255);">Raid 0</span></span><br><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">		하나의 데이터를 여러 데이터에 분산해서 저장. 예를 들어 100 gb 자료를</span><br><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">		하드 4개에 25 gb 씩 저장하는 것이다. 이는 데이터 저장 및 로딩 속도는 하나의 하드보다 </span><br><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">		4 배로 빠르지만	하나의 하드라도 고장난다면 전체 데이터가 망가진다는 단점이 있어서 안정성이 0.</span><br><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">		1TB 두 개를 Raid 0 으로 묶으면 나는 총 2TB 를 사용할 수 있다. 그러나 1TB, 10TB 를 묶어도</span><br><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">		내가 사용할 수 있는 용량은 2 TB 뿐이니, 반드시 용량이 같은 하드로만 묶어야 낭비가 없다.</span><br><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">		이렇게 여러 개의 하드에 동시에 저장되는 방식을 스트라이핑 방식이라 한다. 참고로 알아두자.</span><br><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">		잘 쓰이지 않는 방법이다.</span><br><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">		</span></p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line03.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p><span style="font-size: 11pt; font-family: Dotum; color: rgb(0, 216, 255);">Raid 1</span><br><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">		양쪽 하드에 같은 내용을 저장.</span><br><br><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">		안정적이다. 하지만 두 개의 하드를 사도 하나 밖에 사용하지 못한다는 점에서 비용이 2배로 들어</span><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">간다고 할 수 있다.&nbsp;</span></p><p><br></p><p><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);">이렇게 완벽히 같은 데이터를 저장하는 방식을 미러링이라고 한다.</span><br></p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line03.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p><span style="font-size: 11pt; font-family: Dotum; color: rgb(0, 216, 255);">Raid 2</span><br></p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line03.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p><span style="font-size: 11pt; font-family: Dotum; color: rgb(0, 216, 255);">Raid 3</span><br></p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line03.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p><span style="font-size: 11pt; font-family: Dotum; color: rgb(0, 216, 255);">Raid 4</span><br></p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line03.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p><span style="font-size: 11pt; font-family: Dotum; color: rgb(0, 216, 255);">Raid 5</span><br></p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line03.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p><span style="font-size: 11pt; font-family: Dotum; color: rgb(255, 255, 255);"></span><br>		<br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

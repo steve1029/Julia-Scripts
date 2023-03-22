@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>우분투 18.04 이후 rc.local 이 사라짐</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">우분투 18.04 이후 rc.local 이 사라짐</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/우분투 서버 구축</p>
+                                    <p class="date">2018-10-25 10:32:26</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>이제 rc.local 은 기본이 아니다. 하지만 활성화하는 방법은 있음.<br><br>출처: <a class="tx-link" target="_blank" href="http://hjnote.com/?p=20&lt;br&gt;">http://hjnote.com/?p=20<br></a><br></p><p>root 로 접속한다. 노드든 서버든.</p><p><br></p><p>1. /etc/rc.local 파일을 만들어준다.</p><p><br></p><p>root@yboot:~# vi /etc/rc.local</p><p><br></p><p>2. 실행파일로 만든다.</p><p><br></p><p>root@yboot:~# chmod +x /etc/rc.local</p><p><br></p><p>3. 다음 파일을 수정. 마지막 두 줄을 추가하면 됨.</p><p><br></p><p># vi /lib/systemd/system/rc-local.service</p><p>[Unit]</p><p>Description=/etc/rc.local Compatibility</p><p>Documentation=man:systemd-rc-local-generator(8)</p><p>ConditionFileIsExecutable=/etc/rc.local</p><p>After=network.target</p><p>[Service]</p><p>Type=forking</p><p>ExecStart=/etc/rc.local start</p><p>TimeoutSec=0</p><p>RemainAfterExit=yes</p><p>GuessMainPID=no</p><p><span style="color: rgb(255, 187, 0);">[Install]</span></p><p><span style="color: rgb(255, 187, 0);">WantedBy=multi-user.target</span></p><p><span style="color: rgb(255, 187, 0);"><br></span></p><p>4. rc-local 활성화</p><p># systemctl enable rc-local.service</p><p><br></p><p>5. 실행</p><p># systemctl start rc-local.service</p><p><br></p><p>6. 상태확인</p><p># systemctl status rc-local.service</p><p><br></p><p><img class="size-full wp-image-24 aligncenter" src="http://hjnote.com/wp-content/uploads/2018/05/rc.local-status.png" alt="" width="566" height="185" srcset="http://hjnote.com/wp-content/uploads/2018/05/rc.local-status.png 566w, http://hjnote.com/wp-content/uploads/2018/05/rc.local-status-300x98.png 300w" sizes="(max-width: 566px) 100vw, 566px" style="box-sizing: inherit; border: 0px; height: auto; max-width: 100%; clear: both; display: block; margin: 0.8em auto; color: rgb(73, 87, 98); font-family: Merriweather, serif; font-size: 16px; background-color: rgb(255, 255, 255);"></p><p><br></p><p>다음은 18.10.24 에 완성한 우분투 18.04 server 의 /etc/rc.local 파일의 내용이다.</p><p><br></p><p>#!/bin/bash</p><p><br></p><p>./lib/lsb/init-functions</p><p><br></p><p>&nbsp; &nbsp; log_begin_msg "ystat Monitoring DAEMON process starting.."</p><p>&nbsp; &nbsp; /usr/local/sbin/ystat_daemon</p><p>&nbsp; &nbsp; log_end_msg $?&nbsp;&nbsp;</p><p><br></p><p>exit 0</p><div><br></div>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

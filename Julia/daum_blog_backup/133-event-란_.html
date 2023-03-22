@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>event 란?</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">event 란?</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/CUDA</p>
+                                    <p class="date">2017-01-23 19:40:01</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>naive 하게 스크립트를 짜게 되면, 컴퓨터에게 일방적으로 명령을 내리는 형식으로 짜게 된다.<br><br>하지만 내가 만약 os 나, gui 를 만드는 작업을 하고 있다고 생각해보자.<br><br>os 입장에서는 사용자가 무슨 명령을 내릴지 전혀 예측할 수 없다. 일반적인 스크립트에서는 해야할 일이 딱딱 정해져서<br><br>명령이 내려오는데, 윈도우 같은 경우 사용자가 무슨 프로그램을 실행할지 어떻게 미리 알겠는가?<br><br>그래서 이렇게 어떤 프로그램이 실행될 지 예측할 수 없을 경우 모든 경우의 수를 다 대기시켜 놓을 수 밖에 없다.<br><br>이렇게 프로그램이 실행되는 것을 os 입장에서는 'event 가 발생한다' 라고 생각할 수 있다.<br><br>이게 곧 event 임.<br><br>그럼 이게 왜 gpu coding 에서 쓰이냐?<br><br>host 가 device 에게 내리는 명령을 event 로 처리한다면?<br><br>device 는 항상 대기 중이다가 event 가 발생할 때 일을 할 것이고, host 는 그 와중에 다른 일을 할 수 있게된다.<br><br>한마디로 스크립트가 순차적이지 않기 때문에 device 의 작업이 끝날 때까지 host 가 기다릴 필요가 없단 말이다.<br><br>실제로 우린 os 에게 여러 일을 동시에, 매번 다른 순서로 지시할 수 있지 않은가? 그 것은 내가 내린 명령이 모두<br><br>event 로 처리 되기 때문이다. 크으~<br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

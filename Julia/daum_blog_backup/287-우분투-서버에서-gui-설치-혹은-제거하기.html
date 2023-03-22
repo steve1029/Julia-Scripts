@@ -1,0 +1,51 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>우분투 서버에서 gui 설치 혹은 제거하기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">우분투 서버에서 gui 설치 혹은 제거하기</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/우분투 서버 구축</p>
+                                    <p class="date">2020-09-15 11:15:12</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>우분투 서버에 gui를 설치하고 싶다면 다음을 입력하자.</p>
+<pre><code>sudo apt-get install ubuntu-desktop</code></pre><p>모르고 gui를 설치해버린 다음에 지우고 싶다면 다음 명령어를 입력하자.</p>
+<pre><code>sudo apt-get -y purge ubuntu-desktop
+sudo apt-get -y purge unity gnome-shell lightdm slim
+sudo apt-get -y remove ubuntu-desktop
+sudo apt purge ubuntu-desktop -y &amp;&amp; sudo apt autoremove -y &amp;&amp; sudo apt autoclean
+sudo apt-get purge ubuntu-desktop -y
+sudo apt-get -y clean
+sudo apt-get -y autoremove
+sudo apt-get -f install</code></pre>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

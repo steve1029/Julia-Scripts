@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>GCC 의 optimization flag 예시</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">GCC 의 optimization flag 예시</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/C 언어</p>
+                                    <p class="date">2019-10-22 12:17:09</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>컴파일 할 때 옵션 -O3 는 무엇을 말하는가?</p><p><br></p><p>최적화 레벨을 말한다. -O1 은 제일 기본 최적화, -O2 는 더 나아간 최적화, -O3 는 그보다 더욱더 나아간 최적화이다.</p><p><br></p><p>하지만 -O3 가 반드시 -O2 보다 빠르다고 단정할 수는 없다.</p><p><br></p><p>혹시 -O3 를 하면 FMA, AVX, SSE 등이 모두 활성화 되는 것은 아닌지 궁금하다... 어찌되었든!</p><p><br></p><p>HPF는 -march=haswell 을 하든 안하든 속도 차이는 없었다.</p><p><br></p><p>참고:&nbsp;<a href="https://gcc.gnu.org/&#111;&#110;linedocs/gcc/Optimize-Options.html" style="font-size: 9pt;">https://gcc.gnu.org/&#111;&#110;linedocs/gcc/Optimize-Options.html</a></p><p><br></p><hr style="display:block; border: black 0 none; border-top: black 1px solid; height: 1px"><p><br></p><p><span style="font-size: 9pt;">-march option을 이용한 cpu 최적화 코드 생성법</span><br></p><p><br>gcc -fPIC -O3 -shared -fopenmp -march=haswell core.real.omp.c -o core.real.omp.so -lfftw3_omp -lfftw3 -lm<br><br>혹은 -mtune 을 이용한 cpu 최적화 코드 생성법<br><br>gcc -fPIC -O3 -shared -fopenmp -mtune=intel core.real.omp.c -o core.real.omp.so -lfftw3_omp -lfftw3 -lm<br><br>만약 cpu 모델명을 모른다면<br><br>gcc -fPIC -O3 -shared -fopenmp -mtune=generic core.real.omp.c -o core.real.omp.so -lfftw3_omp -lfftw3 -lm<br><br>이는 모델명을 직접 명시하는 것보단 성능이 딸림.<br><br><a class="tx-link" target="_blank" href="https://gcc.gnu.org/&#111;&#110;linedocs/gcc/x86-Options.html">https://gcc.gnu.org/&#111;&#110;linedocs/gcc/x86-Options.html</a><br></p><p><br></p><p>위 옵션들이 실제로 효과를 보기 위해선 코드 자체에서 얘네를 활성화 시켜줘야 한다.</p><p><br></p><p>다음 stackoverflow 에 잘 나와 있음.</p><p><br></p><p><a href="https://stackoverflow.com/questions/15933100/how-to-use-fused-multiply-add-fma-instructions-with-sse-avx">https://stackoverflow.com/questions/15933100/how-to-use-fused-multiply-add-fma-instructions-with-sse-avx</a><br></p><p><br></p><p>내 코드는 그냥 openmp 를 위해 #pragma parallel for 를 한게 전부이니, -mavx2 -mfma 등의 옵션을 켜서 컴파일링 해봐야</p><p><br></p><p>속도 향상이 안되는 것이 당연하다. 그냥 하지말자... 논문에 중요한 것도 아니니까...</p><p><br></p><hr style="display:block; border: black 0 none; border-top: black 1px solid; height: 1px"><p></p><p>반면에 특정 instruction 만 활성화 하는 방법도 있다.</p><p><br></p><p>-msse</p><p>-mfma</p><p>-mavx</p><p><br></p><p>등의 옵션을 넣어서 혹은 섞어 넣어서 컴파일 해주면 됨.<br></p><p><br></p><p>$&nbsp;gcc -fPIC -O3 -shared -fopenmp -mavx -mfma core.real.omp.c -o core.real.omp.so -lfftw3_omp -lfftw3 -lm</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

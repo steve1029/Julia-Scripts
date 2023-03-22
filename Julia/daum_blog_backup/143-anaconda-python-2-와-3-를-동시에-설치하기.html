@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>anaconda python 2 와 3 를 동시에 설치하기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">anaconda python 2 와 3 를 동시에 설치하기</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/Python</p>
+                                    <p class="date">2017-02-06 12:38:04</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>https://conda.io/docs/py2or3.html<br></p><p><br></p><p><a class="tx-link" target="_blank" href="https://conda.io/docs/py2or3.html&lt;br&gt;&lt;br&gt;리눅스에">리눅스에</a> 일단 anaconda python 2 나 python 3 를 설치한다.<br><br>그 다음 conda 를 이용해서 다른 파이썬을 설치하는 것.<br><br>conda 는 virtualenv 라고 하는 가상 환경인거 같다. virtualenv 는 무거운데, conda 는 그 중에서 가벼운 편에 속함.<br><br>anaconda official documentation 에서 두 개를 다 설치했으면 다음의 명령으로 왔다갔다 할 수 있다<br><br># source activate py27<br># source activate py36<br><br>사용을 마치고 원래대로 돌아오려면<br><br># source deactivate py27<br></p><p><br></p><p>근데 클러스터에서는 쓸 수 없다. 가상 환경을 만들어서 python 2, 3 을 동시에 쓰는 방법인데, 리눅스에서는</p><p><br></p><p>가상 파일 시스템으로 /proc, /dev/pts 등등이 있다. 두 가지 파이썬을 사용하게 되면 이 두 가상 파일이 항상 사용 중이 되므로</p><p><br></p><p>umount 를 할 수 없어지고, 강제적으로 umount 할 경우 모든 노드의 /proc 이 강제로 umount 되는 현상이 발생한다. 매우 귀찮다.</p><p><br></p><p>클러스터에서는 사용하지 말자... 그냥 python 2 쓰자...</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

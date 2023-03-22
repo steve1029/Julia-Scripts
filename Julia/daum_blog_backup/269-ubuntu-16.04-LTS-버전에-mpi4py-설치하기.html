@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>ubuntu 16.04 LTS 버전에 mpi4py 설치하기</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">ubuntu 16.04 LTS 버전에 mpi4py 설치하기</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/우분투 서버 구축</p>
+                                    <p class="date">2019-03-13 11:13:34</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>설치하기 전 알아둘 것.</p><p><br></p><p>mpi4py 는 OpenMPI, MPICH 등의 MPI standard 를 준수하는 MPI implementation&nbsp;들이 제공하는 기능을&nbsp;</p><p><br></p><p>파이썬에서 사용 가능하게 해주는 wrapper 이다.&nbsp;<span style="font-size: 9pt;">따라서 mpi4py 가 제대로 작동하려면 OpenMPI 나 MPICH 가 설치되어 있어야 하는데,</span></p><p><span style="font-size: 9pt;"><br></span></p><p><span style="font-size: 9pt;">mpi4py 는 기본적으로 OpenMPI 를 쓴다. 그런데 canonical 에서 제공하는 mpi4py 는 오래된 버전의 openmpi 를 쓰기 때문에 최신</span></p><p><span style="font-size: 9pt;"><br></span></p><p><span style="font-size: 9pt;">랜카드를 사용하기 어렵다.&nbsp;</span></p><p><span style="font-size: 9pt;"><br></span></p><p><span style="font-size: 9pt;">1. 각 서버/노드의 내부네트워크가 모두 인텔 랜카드로 연결되어 있는지 확인할 것.</span></p><p style="margin-left: 2em;"><span style="font-size: 9pt;">19-03-13</span></p><p style="margin-left: 2em;">Intel&nbsp;사의 랜카드로 연결한 뒤 mpi 를 실행하니까 오류가 떴다. realtek&nbsp;랜카드로 바꾸니까 잘 되더라.</p><p style="margin-left: 2em;">이유는 intel 의 랜카드가 최신 랜카드라서 openmpi 1.10.2 버전에 이 랜카드에 대한 모듈이 없었기 때문인듯하다.</p><p style="margin-left: 2em;">인텔을 인터넷에 연결하고 realtek 사의 랜카드를 내부 네트워크에 연결했더니 잘 됐다.</p><p style="margin-left: 2em;"><br></p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line08.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;"><span style="font-size: 9pt;">[y213:19374] [[51435,0],1] tcp_peer_send_blocking: send() to socket 9 failed: Broken pipe (32)</span><br></p><p style="margin-left: 2em;">--------------------------------------------------------------------------</p><p style="margin-left: 2em;">ORTE was unable to reliably start &#111;&#110;e or more daemons.</p><p style="margin-left: 2em;">This usually is caused by:</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">* not finding the required libraries and/or binaries &#111;&#110;</p><p style="margin-left: 2em;">&nbsp; &#111;&#110;e or more nodes. Please check your PATH and LD_LIBRARY_PATH</p><p style="margin-left: 2em;">&nbsp; settings, or configure OMPI with --enable-orterun-prefix-by-default</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">* lack of authority to execute &#111;&#110; &#111;&#110;e or more specified nodes.</p><p style="margin-left: 2em;">&nbsp; Please verify your allocation and authorities.</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">* the inability to write startup files into /tmp (--tmpdir/orte_tmpdir_base).</p><p style="margin-left: 2em;">&nbsp; Please check with your sys admin to determine the correct location to use.</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">*&nbsp; compilation of the orted with dynamic libraries when static are required</p><p style="margin-left: 2em;">&nbsp; (e.g., &#111;&#110; Cray). Please check your configure cmd line and consider using</p><p style="margin-left: 2em;">&nbsp; &#111;&#110;e of the contrib/platform definitions for your system type.</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">* an inability to create a connection back to mpirun due to a</p><p style="margin-left: 2em;">&nbsp; lack of common network interfaces and/or no route found between</p><p style="margin-left: 2em;">&nbsp; them. Please check network connectivity (including firewalls</p><p style="margin-left: 2em;">&nbsp; and network routing requirements).</p><p style="margin-left: 2em;">--------------------------------------------------------------------------</p><div style="background: url(//i1.daumcdn.net/deco/contents/horizontalrule/line08.gif?v=2) repeat-x scroll left;  width: 99%; height: 15px"><hr style="border: black 0 none; left: -9999px; position: relative; top: -9999px"></div><p><br></p><p>2. python-mpi4py, python3-mpi4py 설치</p><p><br></p><p># aptitude install -y python-mpi4py python3-mpi4py</p><p><br></p><p>원래 이 둘을 설치하면 dependency 때문에 openmpi 가 같이 설치되지만, 안될 수도 있으니 일단 테스트 해보고 안된다면 다음을 더 설치한다.</p><p><br></p><p>#&nbsp;apt-get install openmpi-bin openssh-client openssh-server&nbsp;<span style="font-size: 9pt;">libopenmpi-dev</span></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

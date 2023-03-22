@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>blocking 과 non-blocking 의 차이</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">blocking 과 non-blocking 의 차이</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/Python</p>
+                                    <p class="date">2017-04-10 15:43:16</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>mpi4py 기준으로 설명하겠다.</p><p><br></p><p>from mpi4py import MPI</p><p><br></p><p>comm = MPI.COMM_WORLD # comm is abbreviation of communicator</p><p><br></p><p>1. Blocking Communication</p><p><br></p><p style="margin-left: 2em;">comm.Send를 이용해서 데이터를 보내면, receive&nbsp;buffer 가 채워지면서 '받았다' 는 신호를 보낸다.</p><p style="margin-left: 2em;">이 신호를 받아야지만 comm.Send 메쏘드가 끝나고 다시 return 한다. 즉 communication이 끝나기 전까지</p><p style="margin-left: 2em;">return 하지 않기 때문에 blocking 이라고 한다.&nbsp;<span style="font-size: 9pt;">comm.Recv 메쏘드 또한 receive buffer가 채워졌다는 신호를 되돌려받기 전까지</span></p><p style="margin-left: 2em;"><span style="font-size: 9pt;">return 하지 않으므로 전송이 마무리 되지 않으면 계속 기다리는 상태가 된다.</span></p><p style="margin-left: 2em;"><br></p><p>2. Non-blocking Communication</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">comm.isend , comm.Isend</p><p style="margin-left: 2em;">comm.irecv, comm,Irecv</p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;">immediate 의 i 가 추가된 naming 이다.</p><p style="margin-left: 2em;">버퍼가 채워졌든가 말든가 일단 보내고 자긴 다른 일 계속한다. 그래서 중간에 메세지 전송이 끝나기 전까지 기다리는 blocking 현상이</p><p style="margin-left: 2em;">발생하지 않는다. 그래서 데이터 전송과 데이터 처리의 overlapping 이 일어나 전체 작업 시간이 단축될 수 있다. 하지만 코드의 안정성이</p><p style="margin-left: 2em;">떨어질 수 있어서, 최적화 단계에서 쓰여야 하는 방법이다.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

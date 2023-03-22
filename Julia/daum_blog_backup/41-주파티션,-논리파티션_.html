@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>주파티션, 논리파티션?</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">주파티션, 논리파티션?</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 기본 및 상용 프로그램</p>
+                                    <p class="date">2016-09-26 18:02:23</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">이 내용은&nbsp;http://dakuo.tistory.com/60 의 내용을 그대로 옮겨왔다. 어짜피 나만 볼거니까. 약간 수정한것도 있긴 하지만 99% 복붙했다.</span></p><p><br></p><p><font color="#ffffff"><span style="font-size: 13.3333px;">2TB 이하의 하드디스크는 pc-bios label 을 가지고 있다. 그 이상의 하드디스크는 gpt label 을 가지고 있다.</span></font></p><p><font color="#ffffff"><span style="font-size: 13.3333px;"><br></span></font></p><p><font color="#ffffff"><span style="font-size: 13.3333px;">pc-bios 하드디스크의 파티션 구성이 주파티션, 확장파티션(논리파티션) 으로 나뉜다.</span></font></p><p><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;"><br></span></p><p><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">영어로 primary partition, logical partition 이라고 쓴다. 하드디스크의 파티션을 나눌 때 중요하게 고려해야 한다.&nbsp;</span><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">간단하게 설명하자면</span></p><p><br><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">primary partition 은 집을 예로 들면 살림을 차릴 수 있는 공간이다</span><br><br><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">logical partition 은 잠만 잘 수 있는 방 혹은 짐만 넣는 방</span><br><br><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">하나의 하드에는 최대 3개의 주 파티션과 최대 4개의 논리 파티션을 만들 수 있다. 즉 총 7개의 파티션으로 나눌 수 있는 것.</span><br><br><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">주 파티션에는 운영체제(살림살이)가 설치될 수 있고 논리파티션에는 운영체제를 설치할 수 없다. </span><br><br><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">논리파티션은 데이터 저장용으로만 쓸 수 있다.</span><br></p><p style="text-align: center;"><img src="./img/hard.jpg" class="txc-image" actualwidth="764" hspace="1" vspace="1" border="0" width="764" exif="{}" data-filename="hard.jpg" style="clear:none;float:none;"  id="A_2253B34F57E8E4353432C6"/></p><p><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">출처 :&nbsp;http://dakuo.tistory.com/60</span></p><p><br><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">1. MBR (Master Boot record)</span></p><p><br></p><p style="margin-left: 2em;"><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">즉 하나의 하드에 최대 3개의 운영체제를 설치할 수 있는데, 이 하드로 부팅을 하면 컴퓨터는 대체 어떤 운영체제를 실행해야할까?</span><br><br><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">당연히 모를 것이므로 우리가 어떤 운영체제를 먼저 부팅시킬지 지정해 줘야 한다. 이 부팅순서가 저장된 곳이 MBR 이다.</span><br></p><p><br></p><p style="margin-left: 2em;"><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">MBR 은 하드에서 가장 먼저 읽히는 부분으로, 여기에 부트레코더가 기록된다. 부트레코더에는 어떤 부트섹터를 먼저 읽어야하는지에 대한</span></p><p><br></p><p style="margin-left: 2em;"><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">정보가 적혀 있다.</span></p><p><br></p><p><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">2. Primary partition</span></p><p><br></p><p style="margin-left: 2em;"><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">파티션 앞에 부트섹터가 자동으로 할당되어 있어서 운영체제를 설치할 수 있다.&nbsp;</span></p><p style="margin-left: 2em;"><span style="color: rgb(255, 255, 255); font-size: 10pt;">주파티션에 운영체제가 설치되면 부트섹터에 부트 레코더를 기록하게 되고 MBR 에도 기록한다.</span><br></p><p style="margin-left: 2em;"><span style="color: rgb(255, 255, 255); font-size: 10pt;">하지만 pc-bios 방식의 하드는 주파티션을 3개까지 밖에 만들수 없다는 단점이 있다.</span></p><p style="margin-left: 2em;"><br></p><p style="margin-left: 2em;"><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">2.1 Activate Primary</span></p><p style="margin-left: 2em;"><br></p><p style="margin-left: 4em;"><span style="font-size: 10pt; color: rgb(255, 255, 255); font-family: Dotum;">활성 파티션이라 한다. MBR에 부트레코더가 기록된 파티션을 말한다.</span></p><p style="margin-left: 4em;"><span style="font-family: Dotum; font-size: 10pt; color: rgb(255, 255, 255);">예를 들어 하나의 하드디스크에&nbsp;주파티션을 2개 설정한 후 첫 파티션에 XP를 2번째에 Vista를 설치하였다. 이때 각각의 주파티션 부트섹터에는 이 운영체제들의 부트레코더가 기록된다.</span><br style="color: rgb(102, 102, 102); font-family: dotum; background-color: rgb(255, 255, 255);"><span style="font-family: Dotum; font-size: 10pt; color: rgb(255, 255, 255);">이중에 하나는 MBR에 적재되는데 만약 XP 부트레코더가 적재됬으면 이 첫번째 파티션이 활성 주파티션이 된다.(MBR에는 하나의 부트레코더만 기록되므로 활성주파티션은 하나다)</span><br></p><p style="margin-left: 4em;"><span style="font-family: dotum;"><br></span></p><p><span style="font-family: Dotum; font-size: 10pt; color: rgb(255, 255, 255);">3. 확장파티션 : Extended</span></p><p><span style="font-family: Dotum; font-size: 10pt; color: rgb(255, 255, 255);"><br></span></p><p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 10pt; color: rgb(255, 255, 255);">논리드라이브(Logical)들을 감싸는 벽이라고 생각하면 된다.</span><br style="color: rgb(102, 102, 102); font-family: dotum; background-color: rgb(255, 255, 255);"><span style="font-family: Dotum; font-size: 10pt; color: rgb(255, 255, 255);">확장파티션은 하나의 물리디스크에 하나만 설정할 수 있으며 4개의 논리드라이브를 가질수 있다.</span></p><p style="margin-left: 2em;"><font color="#ffffff"><span style="font-size: 13.3333px;">pc-bios 방식의 하드는 주파티션을 3개만 만들수 있는데, 경우에 따라 그 이상을 만들고 싶은 경우도 얼마든지 있다.</span></font></p><p style="margin-left: 2em;"><font color="#ffffff"><span style="font-size: 13.3333px;">그 단점을 보완하기 위해 만들어진 방식이 확장 파티션인 것이다.</span></font></p><p style="margin-left: 4em;"><span style="font-family: Dotum; font-size: 10pt; color: rgb(255, 255, 255);"><br></span></p><p><span style="font-family: Dotum; font-size: 10pt; color: rgb(255, 255, 255);">4. 논리드라이브 : Logical</span></p><p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 10pt; color: rgb(255, 255, 255);"><br></span></p><p style="margin-left: 2em;"><span style="font-family: Dotum; font-size: 10pt; color: rgb(255, 255, 255);">데이터를 저장할수 있는 드라이브다. 부트섹터가 없으므로 운영체제는 설치할 수 없다.</span><span style="font-family: dotum;"><br></span></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

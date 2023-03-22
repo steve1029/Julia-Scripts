@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>파이썬의 namespace, scope</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">파이썬의 namespace, scope</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/Python</p>
+                                    <p class="date">2017-04-14 16:29:21</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            출처 :&nbsp;http://egloos.zum.com/killins/v/3011585<div><br></div><div><br><p><br></p></div><p>- Namespace : name과 오브젝트의 매핑. 현재 파이썬 namespace는 대부분 딕셔너리로 되어있다.</p><p><br></p><p>- namespace는 각각 다른 시점에 생성되고, life-time도 다르다.</p><p>&nbsp; built-in namespace는 인터프리터가 기동될때 생성되고 삭제되지 않는다.</p><p>&nbsp; global namespace는 모듈 정의를 읽어올 때 생성되고, 보통 인터프리터가 종료될 때까지 삭제되지 않는다.</p><p>&nbsp; 최초에 실행되는 스크립트(interactive 모드 포함) 역시 __main__ 이라는 모듈로 간주되고,&nbsp;</p><p>&nbsp; 빌트인 name 들도 builtins 라는 모듈에 속한걸로 간주된다.</p><p>&nbsp; 함수의 namespace는 함수가 호출되면 생성되고, return으로 함수가 종료되거나 exception이 발생하면 삭제된다.</p><p><br></p><p>- Scope : 특정 namespace에 direct 하게 접근 가능한 영역이다.</p><p>&nbsp; direct 하게 접근 가능하다는건, namespace에서 특정 이름을 unqualified reference로 찾는것을 뜻한다.</p><p>&nbsp; 여기서 중요한건 reference만을 의미하지, assignment를 의미하지는 않는다는것이다.</p><p>&nbsp; 즉, 값을 얻어올 수는 있으나 바꾸는것까지 의미하는건 아니라는 뜻이다.</p><p>&nbsp; (Python 공식 튜토리얼의 설명을 이해하는데 정말 오랜 시간이 걸렸다.</p><p>&nbsp; scope와 name, namespace를 마구 혼용해서 쓰고 있다.</p><p>&nbsp; python 공식 튜토리얼 만든 사람은 어휘력이 너무 떨어지는듯. 이거 말고도 이상한 설명이 너무 많다.</p><p><br></p><p>- 직접 접근 가능한 scope에는 아래와 같은 범주가 있고, 순서대로 해당 name을 찾는다</p><p>&nbsp; &nbsp; &nbsp;가장 안쪽 scope. 즉 현재 함수</p><p>&nbsp; -&gt; &nbsp;non-local, non-global name를 갖고 있는 enclosing 함수의 scope</p><p>&nbsp; -&gt; 현재 모듈의 global 변수를 갖고 있는 scope</p><p>&nbsp; -&gt; built-in name을 포함하는 가장 바깥쪽 namespace</p><p><br></p><p>- innermost scope 바깥의 변수를 assign도 가능하게 하려면 nonlocal 구문을 사용해야 한다.</p><p><br></p><p>- nonlocal : 해당 scope를 감싸고 있는 scope에서 직전에 바인딩된 식별자(identifier)를 assign 가능하게 해준다.</p><p>&nbsp; 따라서, global과는 다르게 이전에 이미 바인딩된 식별자들을 사용해야 한다.</p><p><br></p><p>&nbsp; &nbsp; def f2():</p><p>&nbsp; &nbsp; &nbsp; &nbsp; def f1():</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print(i) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; # 10</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return</p><p>&nbsp; &nbsp; &nbsp; &nbsp; i = 10</p><p>&nbsp; &nbsp; &nbsp; &nbsp; f1()</p><p>&nbsp; &nbsp; &nbsp; &nbsp; print (i) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;# 10</p><p>&nbsp; &nbsp; &nbsp; &nbsp; return</p><p>&nbsp; &nbsp; f2()</p><p><br></p><p>&nbsp; 위 코드는 f1이 f2에 의해 enclose 되어있으므로 f1에서 f2의 name들을 접근할 수 있다. 따라서 10 10 이 출력된다.</p><p><br></p><p>&nbsp; &nbsp; def f2():</p><p>&nbsp; &nbsp; &nbsp; &nbsp; def f1():</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; i = 20</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print(i) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; # 20</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return</p><p>&nbsp; &nbsp; &nbsp; &nbsp; i = 10</p><p>&nbsp; &nbsp; &nbsp; &nbsp; f1()</p><p>&nbsp; &nbsp; &nbsp; &nbsp; print (i) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;# 10</p><p>&nbsp; &nbsp; &nbsp; &nbsp; return</p><p>&nbsp; &nbsp; f2()</p><p><br></p><p>&nbsp; 위 코드는 f1의 i와 f2의 i가 서로 다른 i이다.</p><p><br></p><p>&nbsp; &nbsp; def f2():</p><p>&nbsp; &nbsp; &nbsp; &nbsp; def f1():</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print(i) &nbsp; &nbsp; &nbsp;# 여기서 에러</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; i = 20</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return</p><p>&nbsp; &nbsp; &nbsp; &nbsp; i = 10</p><p>&nbsp; &nbsp; &nbsp; &nbsp; f1()</p><p>&nbsp; &nbsp; &nbsp; &nbsp; print (i)</p><p>&nbsp; &nbsp; &nbsp; &nbsp; return</p><p>&nbsp; &nbsp; f2()</p><p><br></p><p>&nbsp; 위 코드는 에러가 발생한다. f1에서 i를 프린트한 의도는 f2의 i값을 프린트 하려는 것이었으나,</p><p>&nbsp; 실제로 바로 밑에 i에 20을 assign한 부분이 있기 때문에 인터프리터는 i를 f1의 로컬 변수라고 판단,</p><p>&nbsp; i가 assign 되기 전에 reference 되었다는 에러를 출력한다.</p><p>&nbsp; f1에서 f2의 값을 자유로이 reference, assign 하고 싶을 때 사용하는것이 바로 nonlocal이다</p><p><br></p><p>&nbsp; &nbsp; def f2():</p><p>&nbsp; &nbsp; &nbsp; &nbsp; def f1():</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; nonlocal i</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print(i) &nbsp; &nbsp; &nbsp;# 10</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; i = 20</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return</p><p>&nbsp; &nbsp; &nbsp; &nbsp; i = 10</p><p>&nbsp; &nbsp; &nbsp; &nbsp; f1()</p><p>&nbsp; &nbsp; &nbsp; &nbsp; print (i) &nbsp; &nbsp; &nbsp; &nbsp; # 20</p><p>&nbsp; &nbsp; &nbsp; &nbsp; return</p><p>&nbsp; &nbsp; f2()</p><div><br></div>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

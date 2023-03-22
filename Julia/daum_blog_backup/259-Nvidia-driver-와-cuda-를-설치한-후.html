@@ -1,0 +1,48 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>Nvidia driver 와 cuda 를 설치한 후</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">Nvidia driver 와 cuda 를 설치한 후</h2>
+                                <div class="box-info">
+                                    <p class="category">리눅스/우분투 cuda 환경 구축</p>
+                                    <p class="date">2018-12-15 15:14:41</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>두 개를 설치하고 난 뒤 nvcc command 를 쓰면&nbsp;<span style="font-size: 9pt;">nvcc 가 설치 안되어 있다면서</span></p>
+<p><br />apt-get install nvidia-cuda-toolkit<br /><br />이걸 설치하라고 한다. <b><span style="font-size: 12pt;">절대 하지 않는다.<br /></span></b><span style="font-size: 9pt;">이 것은 apt repository 에</span><b><span style="font-size: 9pt;">&nbsp;</span></b><span style="font-size: 9pt;">올라와 있는 아주 예전버전의 nvidia toolkit 이다</span><b><span style="font-size: 12pt;"><br /></span></b></p>
+<p><span style="font-size: 9pt;">이제 이 모든 것은 cuda 로 통일되었으므로 cuda 를 설치하면 nvcc 는 자동 설치된다.</span></p>
+<p><span style="font-size: 9pt;">설치되어 있는데 못찾는 것일 뿐이므로, 다음 명령어를 실행하면 된다.</span><span style="font-size: 9pt;">$ vi ~/.bachrc</span><span style="font-size: 9pt;">여기에 다음을 추가한다.</span></p>
+<pre class="routeros" style="margin: 0px 0px 1em; padding: 5px; border: 0px currentColor; width: auto; text-align: left; color: #242729; text-transform: none; line-height: inherit; text-indent: 0px; letter-spacing: normal; overflow: auto; font-family: Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; word-spacing: 0px; vertical-align: baseline; max-height: 600px; box-sizing: inherit; orphans: 2; widows: 2; font-stretch: inherit; background-color: #eff0f1; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial; overflow-wrap: normal; font-variant-numeric: inherit; font-variant-east-asian: inherit;"><code>export PATH="$PATH:/usr/local/cuda-10.0/bin" </code></pre>
+<p><span style="font-size: 9pt;">버전은 알아서 바꾸시길. 파일 닫고 다음 명령 실행.</span><span style="font-size: 9pt;"><span style="font-size: 9pt;"># source ~/.bashrc<br />이제 nvcc 를 찾을 수 있게 되었다.</span></span><span style="font-size: 9pt;"><span style="font-size: 9pt;"><span style="font-size: 9pt;"><span style="font-size: 9pt;">모든 사용자에 대해 추가하고 싶다면, /etc/bash.bashrc 에 해당 스크립트를 추가하고 source 하면 됨.</span></span></span></span></p>
+<p>&nbsp;</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

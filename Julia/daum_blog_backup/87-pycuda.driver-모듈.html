@@ -1,0 +1,42 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>pycuda.driver 모듈</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">pycuda.driver 모듈</h2>
+                                <div class="box-info">
+                                    <p class="category">컴퓨터 언어/CUDA</p>
+                                    <p class="date">2016-10-07 14:16:16</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p>import pycuda.driver as drv</p><p><br></p><p>라고 하면 '<span style="font-size: 9pt;">cuda 언어를 이용해 그래픽카드를 제어하는 드라이버'를 불러온다는 뜻이다.</span></p><p><span style="font-size: 9pt;"><br></span></p><p>그래픽카드는 여러가지 언어로 제어할 수 있는데, 대표적으로 윈도우에서 쓰는 Direct X, Direct X 의 오픈소스 버전인 OpengGL</p><p><br></p><p>이 있다. 하지만 이 두 가지는 GPGPU(General purpose GPU) 에는 어울리는 않는 언어라서 새로운 언어가 생겼는데 그 것이</p><p><br></p><p>cuda 와 opencl 이다. cuda 는 NVIDIA 에서, Opencl 은 AMD 및 다른 회사들이 만들었다. pycuda.driver 는 NVIDIA 에서 만든</p><p><br></p><p>그래픽 드라이버를 불러온다는 의미이다. 그래서 이 모듈 안에는 cuda 언어에서 그래픽 카드를 제얼할 때 쓰는 대부분의 함수들이 다 들어있다.</p><p><br></p><p>예를 들어 cudaMalloc 같은 cuda C 함수들이 pycuda 에는 pycuda.driver 모듈 안에 들어있다.<br><br>pycuda.driver 는 모듈이며&nbsp;pycuda 는 패키지임을 당연히 알겠지.<br><br>pycuda.driver 모듈 안에는 다양한 클래스들이 있으며 그 클래스 안의 메쏘드를 이용하여 인스턴스 들을 생성하면 된다.<br><br>가령<br><br>	class pycuda.driver.device_arrtribute<br><br>		MAX_THREADS_PER_BLOCK<br><br>		MAX_BLOCK_DIM_X<br>		<br>		MAX_BLOCK_DIM_Y<br>		<br>		MAX_BLOCK_DIM_Z<br>		<br>		MAX_GRID_DIM_X<br>		<br>		MAX_GRID_DIM_Y<br>		<br>		MAX_GRID_DIM_Z<br><br>		...<br><br>	등등의 매소드들이 쭉 있다.<br><br>	import pycuda.driver as drv<br><br>	라고 했다면<br><br>	M_TH_per_B = drv.device_attribute.MAX_THREADS_PER_BLOCK()<br><br>	라고 하면 되겠지.<br></p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>
